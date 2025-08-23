@@ -1,0 +1,143 @@
+/* =========================
+   Pidichaloupky – HEADER
+   ========================= */
+/* Používají se globální proměnné z index.html: --bg, --accent, --edge, --header-h */
+
+/* Header lišta */
+.pidi-header {
+  position: sticky;
+  top: 0;
+  background: var(--bg);
+  border-bottom: 1px solid var(--accent);
+  z-index: 1000;
+  overflow: visible; /* ať dropdown není uříznutý */
+}
+
+.pidi-header__inner {
+  height: var(--header-h);
+  display: grid;
+  grid-template-columns: 1fr auto 1fr; /* vlevo toggle, uprostřed motto, vpravo logo */
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--edge);              /* stejná „hrana“ zleva i zprava */
+  position: relative;                  /* kotva pro absolutní submenu */
+  box-sizing: border-box;
+}
+
+/* Toggle – dvě čárky, bez rámečku; obsah vlevo na hranu */
+.pidi-menu{
+  background:none; border:none; cursor:pointer;
+  height:40px; padding:8px 10px 8px 0;
+  display:inline-flex;
+  align-items:center;
+  justify-content:flex-start; /* čárky vlevo přesně na --edge */
+}
+.pidi-menu__bars {
+  position: relative;
+  width: 24px;
+  height: 16px;
+  display: block;
+}
+.pidi-menu__bars::before,
+.pidi-menu__bars::after{
+  content:"";
+  position:absolute;
+  left:0; right:0;
+  height:2px;
+  background:var(--accent);
+}
+.pidi-menu__bars::before{ top:0; }
+.pidi-menu__bars::after { bottom:0; }
+
+/* Motto uprostřed */
+.pidi-motto{
+  font-family:'Great Vibes', cursive;
+  font-style: italic;
+  font-size: 26px;
+  color: var(--accent);
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* Logo jako BACKGROUND (řeší průhledné okraje PNG) */
+.pidi-logo-link{
+  justify-self:end;
+  display:flex;
+  align-items:center;
+  height:100%;
+  margin-right:0; /* pravá hrana = --edge */
+}
+.pidi-logo-bg{
+  width:126px; height:126px;
+  border-radius:50%; overflow:hidden;
+  background-image:url('../img/logo.png');
+  background-repeat:no-repeat; background-position:center;
+  background-size:140%; /* “zoom” */
+  /* DYNAMICKÝ přesah podle skutečné výšky headeru → header a footer budou stejně vysoké */
+  margin-top:    calc((126px - var(--header-h)) / -2);
+  margin-bottom: calc((126px - var(--header-h)) / -2);
+}
+
+/* Submenu (dropdown) – vzhled; přesnou pozici řeší JS */
+.pidi-drawer{
+  position:absolute;
+  left:var(--edge);               /* fallback */
+  top:var(--header-h);            /* pod čárou headeru */
+  background:var(--bg);
+  border:1px solid var(--accent);
+  border-radius:10px;
+  padding:4px 0;
+  width:max-content; min-width:180px; max-width:90vw;
+  box-shadow:0 10px 24px rgba(0,0,0,.08);
+  z-index:1002;
+  display:none;
+}
+.pidi-drawer.open{ display:block; }
+.pidi-drawer ul{ list-style:none; margin:0; padding:0; }
+.pidi-drawer li{ margin:0; }
+.pidi-drawer a{
+  display:block; padding:10px 14px; /* JS s tím počítá u desktop zarovnání */
+  font-family:'Raleway',sans-serif; color:var(--accent);
+  text-decoration:none; white-space:nowrap;
+}
+.pidi-drawer a:hover,
+.pidi-drawer a:focus-visible,
+.pidi-drawer a.is-hover{ background:rgba(140,110,68,.12); outline:none; }
+
+/* Breakpointy */
+@media (max-width: 1024px){
+  .pidi-motto{ font-size:22px; }
+}
+
+/* Mobil ≤480px: ověřená symetrie – flex + motto absolutně uprostřed */
+@media (max-width: 480px){
+  .pidi-motto{ font-size:18px; }
+  .pidi-header__inner{
+    display:flex;
+    align-items:center;
+    justify-content:space-between; /* toggle vlevo na --edge, logo vpravo na --edge */
+    padding:0 var(--edge);
+  }
+  .pidi-motto{
+    position:absolute; left:50%; transform:translateX(-50%);
+    pointer-events:none; white-space:nowrap;
+  }
+  .pidi-logo-bg{
+    width:84px; height:84px; background-size:140%;
+    margin-top: calc((84px - var(--header-h)) / -2);
+    margin-bottom: calc((84px - var(--header-h)) / -2);
+  }
+}
+
+/* Desktop: roztažení písmen v mottu */
+@media (min-width: 1025px){
+  .pidi-motto{ letter-spacing: .1em; }
+}
+
+
+
+
+
+
+
