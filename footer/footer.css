@@ -1,71 +1,106 @@
 /* =========================
-   Pidichaloupky – FOOTER
+   Pidichaloupky – FOOTER (logo vpravo, text vlevo)
    ========================= */
+/* Bere jen: --bg, --accent, --edge (z index.html) */
 
-.pidi-footer{
+#footer-root .pidi-footer{
   background: var(--bg);
   border-top: 1px solid var(--accent);
-  overflow: visible;                    /* stejné chování jako header */
+  overflow: hidden;                 /* NIC nepřesahuje – žádné posouvání stránky */
+
+  /* >>> TADY MĚŇ VÝŠKU FOOTERU <<< */
+  --footer-h: 72px;                 /* menší číslo = nižší footer */
+
+  /* dorovnání okrajů */
+  --nudge-desktop: 12px;
+  --nudge-mobile:  10px;
+
+  /* velikosti loga */
+  --logo-d-desktop: 110px;
+  --zoom-desktop:   150%;
+  --logo-d-tablet:  120px;
+  --zoom-tablet:    170%;
+  --logo-d-mobile:   84px;
+  --zoom-mobile:    170%;
 }
 
-.pidi-footer__inner{
-  height: var(--header-h);              /* >>> výška = header */
+#footer-root .pidi-footer__inner{
+  height: var(--footer-h);          /* pevná výška footeru – nezávislá na headeru */
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 var(--edge);               /* stejná „hrana“ jako header */
+  padding: 0 var(--edge);           /* žádný vertikální padding */
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: center;              /* vertikální centrování obsahu */
+  justify-content: space-between;   /* vlevo text, vpravo logo */
   box-sizing: border-box;
 }
 
-/* Logo vlevo – sladěné s headerem + drobný posun k levému okraji */
-.pidi-logo-link{ display:flex; align-items:center; height:100%; margin-left:0; flex:0 0 auto; }
-.pidi-logo-bg{
-  width:140px; height:140px;            /* sladěno s headerem (po zmenšení) */
-  border-radius:50%; overflow:hidden;
-  background-image:url('../img/logo.png');
-  background-repeat:no-repeat; background-position:center;
-  background-size:170%;
-  margin-top:    calc((140px - var(--header-h)) / -2);
-  margin-bottom: calc((140px - var(--header-h)) / -2);
+/* Text vlevo */
+#footer-root .pidi-footer__text{
+  text-align: left;
+  font-family: 'Raleway', sans-serif;
+  color: var(--accent);
+  line-height: 1.2;
+  font-size: 13px;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  margin: 0;                        /* pojistka proti defaultním marginům */
 }
 
-/* Text vpravo */
-.pidi-footer__text{
-  text-align:right; font-family:'Raleway',sans-serif; color:var(--accent);
-  line-height:1.2; font-size:13px; flex:1 1 auto; min-width:0; overflow-wrap:anywhere;
+/* Logo vpravo – BEZ negativních marginů */
+#footer-root .pidi-logo-link{
+  display: flex;
+  align-items: center;
+  height: 100%;
+  margin-right: 0;
+  flex: 0 0 auto;
+}
+#footer-root .pidi-logo-bg{
+  width: var(--logo-d-desktop);
+  height: var(--logo-d-desktop);
+  border-radius: 50%;
+  overflow: hidden;
+  background-image: url('../img/logo.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: var(--zoom-desktop);
+  /* ŽÁDNÉ margin-top/bottom – ořízne to parent overflow:hidden */
 }
 
-/* ===== Desktop dorovnání hran (vizuální) ===== */
+/* Desktop ≥1025px – jemné dorovnání k okrajům headeru */
 @media (min-width: 1025px){
-  .pidi-logo-link{ margin-left:-6px; }     /* logo víc doleva – zarovnat s togglem */
-  .pidi-footer__text{ margin-right:-6px; } /* text blíž k pravému okraji – symetrie s headerem */
+  #footer-root .pidi-footer__text{ margin-left: calc(var(--nudge-desktop) * -1); }
+  #footer-root .pidi-logo-link{   margin-right: calc(var(--nudge-desktop) * -1); }
 }
 
-/* ===== Breakpointy: 1024 / 768 / 480 ===== */
-@media (max-width: 1024px){
-  .pidi-footer__text{ font-size:12.5px; }
-}
-
+/* Tablet ≤768px */
 @media (max-width: 768px){
-  .pidi-logo-bg{
-    width:120px; height:120px; background-size:170%;
-    margin-top:    calc((120px - var(--header-h)) / -2);
-    margin-bottom: calc((120px - var(--header-h)) / -2);
+  #footer-root .pidi-footer__text{ font-size: 12.5px; }
+  #footer-root .pidi-logo-bg{
+    width: var(--logo-d-tablet);
+    height: var(--logo-d-tablet);
+    background-size: var(--zoom-tablet);
   }
 }
 
+/* Mobil ≤480px */
 @media (max-width: 480px){
-  .pidi-footer__inner{ height: var(--header-h); padding:0 var(--edge); }
-  .pidi-logo-link{ margin-left:-6px; }     /* footer víc doleva, aby seděl s headerem */
-  .pidi-footer__text{ margin-right:-6px; } /* text víc doprava, aby seděl s headerem */
-  .pidi-logo-bg{
-    width:84px; height:84px; background-size:170%;
-    margin-top:    calc((84px - var(--header-h)) / -2);
-    margin-bottom: calc((84px - var(--header-h)) / -2);
+  #footer-root .pidi-footer__inner{
+    height: var(--footer-h);
+    padding: 0 var(--edge);
+  }
+  #footer-root .pidi-footer__text{ margin-left: calc(var(--nudge-mobile) * -1); }
+  #footer-root .pidi-logo-link{   margin-right: calc(var(--nudge-mobile) * -1); }
+  #footer-root .pidi-logo-bg{
+    width: var(--logo-d-mobile);
+    height: var(--logo-d-mobile);
+    background-size: var(--zoom-mobile);
   }
 }
+
+
+
 
 
 

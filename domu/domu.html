@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Domů – Pidichaloupky</title>
+
+  <!-- Fonty -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes:ital,wght@1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Sdílené styly z KOŘENE -->
+  <link rel="stylesheet" href="/header/header.css">
+  <link rel="stylesheet" href="/footer/footer.css">
+
+  <!-- Lokální styl sekce Domů (je ve složce /domu/) -->
+  <link rel="stylesheet" href="/domu/domu.css">
+
+  <style>
+    :root{
+      --bg: rgb(248,247,242);
+      --accent: rgb(140,110,68);
+      --edge: 16px;
+      --header-h: 80px;
+    }
+    body{ margin:0; background:var(--bg); font-family:'Raleway',sans-serif; }
+  </style>
+</head>
+<body>
+  <div id="header-root"></div>
+
+  <main>
+    <div class="section-divider"></div>
+
+    <!-- Sekce Domů (video) -->
+    <section class="pidi-home" aria-label="Úvodní video">
+      <div class="video-frame">
+        <video id="pidiVideo"
+               src="/img/PidiChaloupky.mp4"  <!-- video z KOŘENE /img -->
+               autoplay
+               muted
+               loop
+               playsinline
+               preload="metadata">
+          Váš prohlížeč nepodporuje HTML5 video.
+        </video>
+
+        <button id="soundToggle"
+                class="sound-toggle"
+                aria-pressed="false"
+                aria-label="Zapnout zvuk"
+                title="Zapnout zvuk">🔇</button>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+  </main>
+
+  <div id="footer-root"></div>
+
+  <!-- Skripty z KOŘENE -->
+  <script src="/header/header.js"></script>
+  <script src="/footer/footer.js"></script>
+  <!-- Logika sekce Domů -->
+  <script src="/domu/domu.js"></script>
+</body>
+</html>
+
+
+
