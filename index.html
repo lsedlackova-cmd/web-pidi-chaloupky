@@ -6,61 +6,36 @@
   <title>Pidichaloupky – Malý svět, velká radost</title>
 
   <!-- Fonty -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes:ital,wght@1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  <!-- Styly headeru a footeru -->
+  <!-- Styly -->
   <link rel="stylesheet" href="header/header.css">
   <link rel="stylesheet" href="footer/footer.css">
 
   <style>
     :root{
-      /* Globální „zdroj pravdy“ – používají header i footer */
       --bg: rgb(248,247,242);
       --accent: rgb(140,110,68);
-      --edge: 16px;      /* levý/pravý vnitřní okraj */
-      --header-h: 80px;  /* výška headeru i footeru */
+      --edge: 16px;        /* vnitřní odsazení header/footer */
+      --header-h: 80px;    /* výška headeru i footeru */
     }
-
-    /* Malý reset pro konzistentní měření */
-    * , *::before, *::after { box-sizing: border-box; }
-
-    html, body { height: 100%; }
-    body{
-      margin: 0;
-      background: var(--bg);
-      font-family: 'Raleway', sans-serif;
-      color: var(--accent);
-    }
-
-    /* Hlavní obsah – zatím prázdný, jen místo mezi headerem a footerem */
-    main{ min-height: 60vh; }
-
-    .section-divider{
-      height: 1px;
-      width: 100%;
-      background: var(--accent);
-      opacity: .7;
-    }
+    body{ margin:0; background:var(--bg); font-family:'Raleway',sans-serif; }
+    main{ min-height:60vh; }
   </style>
 </head>
 <body>
-  <!-- Header se vloží scriptcem -->
   <div id="header-root"></div>
 
-  <main>
-    <!-- obsah sekcí přijde později -->
-  </main>
+  <main></main>
 
-  <!-- Footer se vloží scriptcem -->
   <div id="footer-root"></div>
 
-  <!-- Vkládání částí stránky -->
   <script src="header/header.js"></script>
   <script src="footer/footer.js"></script>
 </body>
 </html>
+
 
 
 

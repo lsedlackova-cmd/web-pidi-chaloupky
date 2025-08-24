@@ -1,7 +1,6 @@
 /* =========================
    Pidichaloupky – FOOTER
    ========================= */
-/* Bere proměnné z index.html: --bg, --accent, --edge, --header-h */
 
 .pidi-footer{
   background: var(--bg);
@@ -10,78 +9,64 @@
 }
 
 .pidi-footer__inner{
-  height: var(--header-h);              /* >>> stejná výška jako header */
+  height: var(--header-h);              /* >>> výška = header */
   max-width: 1200px;
   margin: 0 auto;
   padding: 0 var(--edge);               /* stejná „hrana“ jako header */
   display: flex;
   align-items: center;
-  justify-content: space-between;       /* logo vlevo, text vpravo */
+  justify-content: space-between;
   box-sizing: border-box;
 }
 
-/* Logo vlevo – stejné řešení jako v headeru (BG + zoom + přesah) */
-.pidi-logo-link{
-  display: flex;
-  align-items: center;
-  height: 100%;
-  margin-left: 0;                       /* levá hrana = --edge (jako toggle v headeru) */
-  flex: 0 0 auto;
-}
+/* Logo vlevo – sladěné s headerem + drobný posun k levému okraji */
+.pidi-logo-link{ display:flex; align-items:center; height:100%; margin-left:0; flex:0 0 auto; }
 .pidi-logo-bg{
-  width: 126px;
-  height: 126px;
-  border-radius: 50%;
-  overflow: hidden;
-
-  /* css je ve /footer → cesta o úroveň výš */
-  background-image: url('../img/logo.png');
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 140%;                /* přiblížení kvůli průhledným okrajům PNG */
-
-  /* optické vycentrování vůči var(--header-h) – stejně jako v headeru */
-  margin-top:    calc((126px - var(--header-h)) / -2);
-  margin-bottom: calc((126px - var(--header-h)) / -2);
+  width:140px; height:140px;            /* sladěno s headerem (po zmenšení) */
+  border-radius:50%; overflow:hidden;
+  background-image:url('../img/logo.png');
+  background-repeat:no-repeat; background-position:center;
+  background-size:170%;
+  margin-top:    calc((140px - var(--header-h)) / -2);
+  margin-bottom: calc((140px - var(--header-h)) / -2);
 }
 
-/* Text vpravo – Raleway, menší, nepřetéká */
+/* Text vpravo */
 .pidi-footer__text{
-  text-align: right;
-  font-family: 'Raleway', sans-serif;
-  color: var(--accent);
-  line-height: 1.2;
-  font-size: 13px;
-  flex: 1 1 auto;
-  min-width: 0;                         /* zabrání přetékání flex itemu */
-  overflow-wrap: anywhere;
+  text-align:right; font-family:'Raleway',sans-serif; color:var(--accent);
+  line-height:1.2; font-size:13px; flex:1 1 auto; min-width:0; overflow-wrap:anywhere;
 }
-.pidi-footer__text .row1{ font-weight: 600; }
-.pidi-footer__text .row2{ opacity: .95; }
 
-/* Tablet */
+/* ===== Desktop dorovnání hran (vizuální) ===== */
+@media (min-width: 1025px){
+  .pidi-logo-link{ margin-left:-6px; }     /* logo víc doleva – zarovnat s togglem */
+  .pidi-footer__text{ margin-right:-6px; } /* text blíž k pravému okraji – symetrie s headerem */
+}
+
+/* ===== Breakpointy: 1024 / 768 / 480 ===== */
+@media (max-width: 1024px){
+  .pidi-footer__text{ font-size:12.5px; }
+}
+
 @media (max-width: 768px){
-  .pidi-footer__text{ font-size: 12.5px; }
   .pidi-logo-bg{
-    width: 105px;
-    height: 105px;
-    background-size: 140%;
-    margin-top:    calc((105px - var(--header-h)) / -2);
-    margin-bottom: calc((105px - var(--header-h)) / -2);
+    width:120px; height:120px; background-size:170%;
+    margin-top:    calc((120px - var(--header-h)) / -2);
+    margin-bottom: calc((120px - var(--header-h)) / -2);
   }
 }
 
-/* Mobil ≤480px – stejné okraje a výška jako header */
 @media (max-width: 480px){
-  .pidi-footer__text{ font-size: 12px; }
+  .pidi-footer__inner{ height: var(--header-h); padding:0 var(--edge); }
+  .pidi-logo-link{ margin-left:-6px; }     /* footer víc doleva, aby seděl s headerem */
+  .pidi-footer__text{ margin-right:-6px; } /* text víc doprava, aby seděl s headerem */
   .pidi-logo-bg{
-    width: 84px;
-    height: 84px;
-    background-size: 140%;
+    width:84px; height:84px; background-size:170%;
     margin-top:    calc((84px - var(--header-h)) / -2);
     margin-bottom: calc((84px - var(--header-h)) / -2);
   }
 }
+
 
 
 
