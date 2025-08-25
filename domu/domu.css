@@ -17,7 +17,7 @@
   width: 100%;
   background: var(--bg);            
   border-radius: 12px;
-  overflow: hidden;                 
+  overflow: hidden;                  
   box-shadow: 0 8px 24px rgba(0,0,0,.06);
   padding: 0;
 }
@@ -28,7 +28,7 @@
   height: auto;
   max-height: 70vh;
   object-fit: contain;              
-  background: var(--bg);          
+  background: var(--bg);           
 }
 
 .sound-toggle{
@@ -52,13 +52,11 @@
 }
 
 @media (min-width: 1025px){
-  .video-frame{ 
-  }
   .video-frame video{
     width: 100%;
     height: auto;
-    max-height: 76vh;            
-    object-fit: contain;           
+    max-height: 76vh;              
+    object-fit: contain;          
     background: var(--bg);
   }
 }

@@ -1,3 +1,4 @@
+// Desktop: submenu pozice + otevírání/zavírání (beze změny navigace)
 (async function () {
   const mount = document.getElementById('header-root');
   if (!mount) return;
@@ -10,11 +11,10 @@
   const btn    = mount.querySelector('.pidi-menu');
   const bars   = mount.querySelector('.pidi-menu__bars');
   const drawer = mount.querySelector('.pidi-drawer');
-  const logo   = mount.querySelector('.pidi-logo-link');
   if (!header || !inner || !btn || !bars || !drawer) return;
 
   const mqMobile = window.matchMedia('(max-width: 480px)');
-  const px = (v) => Number.isFinite(parseFloat(v||'0')) ? parseFloat(v) : 0;
+  const px = (v) => { const n = parseFloat(v || '0'); return Number.isFinite(n) ? n : 0; };
   const padLeft = (el) => px(getComputedStyle(el).paddingLeft);
 
   function positionDrawer() {
@@ -36,7 +36,7 @@
       void drawer.offsetWidth;
       const rDrawer = drawer.getBoundingClientRect();
       const delta = Math.round(rDrawer.left - rBars.left);
-      if (delta) drawer.style.left = `${left - delta}px`;
+      if (delta !== 0) { left = left - delta; drawer.style.left = `${left}px`; }
     }
 
     if (!wasOpen) { drawer.classList.remove('open'); drawer.style.visibility=''; }
@@ -47,35 +47,22 @@
 
   btn.addEventListener('click', toggleMenu);
 
-  document.addEventListener('click', (e)=>{
-    if (!drawer.classList.contains('open')) return;
-    if (!drawer.contains(e.target) && !btn.contains(e.target)) closeMenu();
-  });
-
+  // klik na odkaz: jen zavři menu, navigaci nech defaultně proběhnout
   drawer.querySelectorAll('a').forEach(a=>{
+    a.addEventListener('click', ()=> closeMenu());
     a.addEventListener('pointerenter', ()=> a.classList.add('is-hover'));
     a.addEventListener('pointerleave', ()=> a.classList.remove('is-hover'));
     a.addEventListener('touchstart', ()=> a.classList.add('is-hover'), {passive:true});
     ['touchend','touchcancel'].forEach(ev =>
       a.addEventListener(ev, ()=> a.classList.remove('is-hover'), {passive:true})
     );
-    a.addEventListener('click', ()=> setTimeout(closeMenu, 60));
   });
-
-  if (logo) {
-    logo.addEventListener('click', ()=> {
-      if (drawer.classList.contains('open')) setTimeout(closeMenu, 60);
-    });
-  }
 
   ['resize','scroll'].forEach(ev =>
     window.addEventListener(ev, ()=>{ if (drawer.classList.contains('open')) positionDrawer(); })
   );
-
-  mqMobile.addEventListener?.('change', ()=>{
-    if (drawer.classList.contains('open')) positionDrawer();
-  });
 })();
+
 
 
 

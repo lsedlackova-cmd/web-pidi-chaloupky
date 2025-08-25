@@ -7,7 +7,6 @@
 
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes:ital,wght@1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
-
   <link rel="stylesheet" href="/header/header.css">
   <link rel="stylesheet" href="/footer/footer.css">
   <link rel="stylesheet" href="/domu/domu.css">
@@ -30,7 +29,7 @@
     <section class="pidi-home" aria-label="Úvodní video">
       <div class="video-frame">
         <video id="pidiVideo"
-               src="/img/PidiChaloupky.mp4"  <!-- video z KOŘENE /img -->
+               src="/img/PidiChaloupky.mp4"
                autoplay
                muted
                loop
@@ -38,7 +37,6 @@
                preload="metadata">
           Váš prohlížeč nepodporuje HTML5 video.
         </video>
-
         <button id="soundToggle"
                 class="sound-toggle"
                 aria-pressed="false"
@@ -46,17 +44,17 @@
                 title="Zapnout zvuk">🔇</button>
       </div>
     </section>
-
     <div class="section-divider"></div>
+    <div id="sections-root"></div>
   </main>
-
   <div id="footer-root"></div>
-
   <script src="/header/header.js"></script>
   <script src="/footer/footer.js"></script>
   <script src="/domu/domu.js"></script>
+  <script src="/loading-section.js"></script>
 </body>
 </html>
+
 
 
 

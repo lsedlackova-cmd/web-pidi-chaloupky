@@ -1,9 +1,9 @@
 #footer-root .pidi-footer{
   background: var(--bg);
   border-top: 1px solid var(--accent);
-  overflow: hidden;                 
+  overflow: hidden;
 
-  --footer-h: 72px;              
+  --footer-h: 72px;
 
   --nudge-desktop: 12px;
   --nudge-mobile:  10px;
@@ -17,13 +17,13 @@
 }
 
 #footer-root .pidi-footer__inner{
-  height: var(--footer-h);        
+  height: var(--footer-h);
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 var(--edge);          
+  padding: 0 var(--edge);
   display: flex;
-  align-items: center;              
-  justify-content: space-between;   
+  align-items: center;
+  justify-content: space-between;
   box-sizing: border-box;
 }
 
@@ -36,7 +36,7 @@
   flex: 1 1 auto;
   min-width: 0;
   overflow-wrap: anywhere;
-  margin: 0;                     
+  margin: 0;
 }
 
 #footer-root .pidi-logo-link{
@@ -46,12 +46,14 @@
   margin-right: 0;
   flex: 0 0 auto;
 }
+
 #footer-root .pidi-logo-bg{
   width: var(--logo-d-desktop);
   height: var(--logo-d-desktop);
   border-radius: 50%;
   overflow: hidden;
-  background-image: url('../img/logo.png');
+  /* ZMĚNA: absolutní cesta → funguje odkudkoli */
+  background-image: url('/img/logo.png');
   background-repeat: no-repeat;
   background-position: center;
   background-size: var(--zoom-desktop);

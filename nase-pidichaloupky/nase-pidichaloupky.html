@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Naše PidiChaloupky – Pidichaloupky</title>
+
+  <!-- Fonty -->
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes:ital,wght@1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Sdílené styly -->
+  <link rel="stylesheet" href="/header/header.css">
+  <link rel="stylesheet" href="/footer/footer.css">
+  <!-- Lokální styly sekce -->
+  <link rel="stylesheet" href="/nase-pidichaloupky/nase-pidichaloupky.css">
+
+  <style>
+    :root{
+      --bg: rgb(248,247,242);
+      --accent: rgb(140,110,68);
+      --edge: 16px;
+      --header-h: 80px;
+    }
+    body{ margin:0; background:var(--bg); font-family:'Raleway',sans-serif; }
+  </style>
+</head>
+<body>
+  <div id="header-root"></div>
+
+  <main>
+    <div class="section-divider"></div>
+
+    <section class="pidi-section" aria-label="Naše PidiChaloupky">
+      <h1 class="section-title">Náš příběh a naše pohádka</h1>
+
+      <div class="section-inner">
+        <!-- LEVÝ sloupec – text + (na mobilech) inline fotky -->
+        <div class="text-col">
+          <p>Bylo, nebylo . . . <p>
+          <p>Za lesem, na kraji malé vesničky, stávala chaloupka jako z pohádky. V té chaloupce žili dědeček Míra a babička Ivča. Nebyla to obyčejná chaloupka, sami si ji před pár lety postavili, prkno po prknu, hřebík po hřebíku. Když byla hotová, usadili se v ní a hned cítili, že našli svůj domov.</p>
+
+          <!-- INLINE FOTO #1 (zobrazí se jen na mobilech) -->
+          <figure class="photo-inline">
+            <img src="/img/nase-pidichaloupky-1.jpg" alt="Pidichaloupka – ručně vyráběná mini chaloupka" loading="lazy">
+          </figure>
+
+          <p>Každé ráno je vítal zpěv ptáků a vůně dřeva. U kamen voněl čaj, na lavici hřála deka a v srdci se jim usídlila radost a pohoda. A protože radost je tak krásná věc, že se nedá schovávat jen pro sebe, rozhodli se, že ji budou rozdávat dál.</p>
+
+          <p>„Ivčo,“ řekl jednou dědeček Míra, když vyřezával kousek dřeva, „víš, že v každém domově se skrývá příběh?“<br>
+          Babička se usmála, pohladila ho po tváři a odpověděla: „A takový příběh můžeme vyprávět i druhým.“<br>
+          A tak se zrodily PidiChaloupky.</p>
+
+          <!-- INLINE FOTO #2 -->
+          <figure class="photo-inline">
+            <img src="/img/nase-pidichaloupky-2.jpg" alt="Pidichaloupky – detail práce se dřevem" loading="lazy">
+          </figure>
+
+          <p>Nebyla to země na mapě, ale kouzelný svět ukrytý v jejich dílně. Tam, mezi šuplíky plnými hřebíčků a poličkami plnými barevných kelímků, vznikaly malé chaloupky. Každá z nich byla ručně vyrobený, jedinečná, a když jste k ní přivoněli, cítili jste vůni lesa i lásku, s jakou byla vytvořena.</p>
+
+          <p>Některá chaloupka měla komínek, jiná měla před dveřmi miniaturní stromek, a pod některými okénky rostly houbičky jako z pohádky. Ale všechny chaloupky měly jedno společné. Vyprávěly o domově, o teple a bezpečí.</p>
+
+          <!-- INLINE FOTO #3 -->
+          <figure class="photo-inline">
+            <img src="/img/nase-pidichaloupky-3.jpg" alt="Pidichaloupky – malé detaily, velká radost" loading="lazy">
+          </figure>
+
+          <p>Kdo si je postavil na poličku, ten brzy zjistil, že PidiChaloupka není jen hračka. Byl to malý kousek kouzla, připomínka, že radost se schovává v maličkostech, v otevřeném okénku, v dřevěné stoličce, nebo v malovaném srdíčku nad dveřmi.</p>
+
+          <p>A tak se stalo, že dědeček Míra s babičkou Ivčou rozdávali radost dál a dál. Jejich chaloupky se dostaly do mnoha domovů, a kdo je uviděl, ten si nemohl pomoct a musel se pousmát.<br>
+          Protože PidiChaloupka není jen o domečcích. Je to připomínka, že štěstí se někdy ukrývá v tom nejmenším.<br>
+          A jestli někdy půjdeš kolem té vesničky a ucítíš vůni dřeva, možná uslyšíš i ťukání kladívka. To zrovna dědeček Míra s babičkou Ivčou staví další chaloupku, aby mohl nový příběh začít…</p>
+        </div>
+
+        <!-- PRAVÝ sloupec – 3 fotky nad sebou (desktop/tablet) -->
+        <aside class="photos-column" aria-label="Fotogalerie PidiChaloupek">
+          <img src="/img/nase-pidichaloupky-1.jpg" alt="Pidichaloupka – ručně vyráběná mini chaloupka" loading="lazy" class="photo">
+          <img src="/img/nase-pidichaloupky-2.jpg" alt="Pidichaloupky – detail práce se dřevem" loading="lazy" class="photo">
+          <img src="/img/nase-pidichaloupky-3.jpg" alt="Pidichaloupky – malé detaily, velká radost" loading="lazy" class="photo">
+        </aside>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+  </main>
+
+  <div id="footer-root"></div>
+
+  <!-- Skripty -->
+  <script src="/header/header.js"></script>
+  <script src="/footer/footer.js"></script>
+  <script src="/nase-pidichaloupky/nase-pidichaloupky.js"></script>
+  <script src="/loading-section.js"></script>
+</body>
+</html>
