@@ -69,7 +69,6 @@
   background:rgba(140,110,68,.12); outline:none;
 }
 
-/* ===== Breakpointy: 1024 / 768 / 480 ===== */
 @media (max-width: 1024px){
   .pidi-motto{ font-size:22px; }
 }

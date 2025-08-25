@@ -1,9 +1,7 @@
-// Otevření a pozicování dropdownu; odkazy navigují normálně (nic neblokujeme)
 (async function () {
   const mount = document.getElementById('header-root');
   if (!mount) return;
 
-  // DŮLEŽITÉ: absolutní cesta → funguje z / i z /domu/
   const res = await fetch('/header/header.html', { cache: 'no-cache' });
   mount.innerHTML = await res.text();
 
@@ -54,7 +52,6 @@
     if (!drawer.contains(e.target) && !btn.contains(e.target)) closeMenu();
   });
 
-  // Zavřít menu po kliknutí na libovolnou položku (neblokuje navigaci)
   drawer.querySelectorAll('a').forEach(a=>{
     a.addEventListener('pointerenter', ()=> a.classList.add('is-hover'));
     a.addEventListener('pointerleave', ()=> a.classList.remove('is-hover'));

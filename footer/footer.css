@@ -1,21 +1,13 @@
-/* =========================
-   Pidichaloupky – FOOTER (logo vpravo, text vlevo)
-   ========================= */
-/* Bere jen: --bg, --accent, --edge (z index.html) */
-
 #footer-root .pidi-footer{
   background: var(--bg);
   border-top: 1px solid var(--accent);
-  overflow: hidden;                 /* NIC nepřesahuje – žádné posouvání stránky */
+  overflow: hidden;                 
 
-  /* >>> TADY MĚŇ VÝŠKU FOOTERU <<< */
-  --footer-h: 72px;                 /* menší číslo = nižší footer */
+  --footer-h: 72px;              
 
-  /* dorovnání okrajů */
   --nudge-desktop: 12px;
   --nudge-mobile:  10px;
 
-  /* velikosti loga */
   --logo-d-desktop: 110px;
   --zoom-desktop:   150%;
   --logo-d-tablet:  120px;
@@ -25,17 +17,16 @@
 }
 
 #footer-root .pidi-footer__inner{
-  height: var(--footer-h);          /* pevná výška footeru – nezávislá na headeru */
+  height: var(--footer-h);        
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 var(--edge);           /* žádný vertikální padding */
+  padding: 0 var(--edge);          
   display: flex;
-  align-items: center;              /* vertikální centrování obsahu */
-  justify-content: space-between;   /* vlevo text, vpravo logo */
+  align-items: center;              
+  justify-content: space-between;   
   box-sizing: border-box;
 }
 
-/* Text vlevo */
 #footer-root .pidi-footer__text{
   text-align: left;
   font-family: 'Raleway', sans-serif;
@@ -45,10 +36,9 @@
   flex: 1 1 auto;
   min-width: 0;
   overflow-wrap: anywhere;
-  margin: 0;                        /* pojistka proti defaultním marginům */
+  margin: 0;                     
 }
 
-/* Logo vpravo – BEZ negativních marginů */
 #footer-root .pidi-logo-link{
   display: flex;
   align-items: center;
@@ -65,16 +55,13 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: var(--zoom-desktop);
-  /* ŽÁDNÉ margin-top/bottom – ořízne to parent overflow:hidden */
 }
 
-/* Desktop ≥1025px – jemné dorovnání k okrajům headeru */
 @media (min-width: 1025px){
   #footer-root .pidi-footer__text{ margin-left: calc(var(--nudge-desktop) * -1); }
   #footer-root .pidi-logo-link{   margin-right: calc(var(--nudge-desktop) * -1); }
 }
 
-/* Tablet ≤768px */
 @media (max-width: 768px){
   #footer-root .pidi-footer__text{ font-size: 12.5px; }
   #footer-root .pidi-logo-bg{
@@ -84,7 +71,6 @@
   }
 }
 
-/* Mobil ≤480px */
 @media (max-width: 480px){
   #footer-root .pidi-footer__inner{
     height: var(--footer-h);

@@ -1,4 +1,3 @@
-// Zvukové tlačítko pro úvodní video (mute/unmute)
 (function(){
   const video = document.getElementById('pidiVideo');
   const btn   = document.getElementById('soundToggle');
@@ -23,7 +22,7 @@
       if(video.muted || video.volume === 0){
         video.muted = false;
         video.volume = 1;
-        await video.play();   // klik je uživatelská interakce → projde
+        await video.play();  
       }else{
         video.muted = true;
       }
@@ -35,8 +34,7 @@
     }
   }
 
-  // Inicializace
-  video.muted = true; // jistota pro autoplay
+  video.muted = true; 
   setUI();
 
   btn.addEventListener('click', toggleSound);
