@@ -1,6 +1,5 @@
 /* ===== Naše PidiChaloupky ===== */
 
-/* jemná dělící čára (fallback; pokud už ji máš globálně, nevadí duplicitně) */
 .section-divider{
   width: 100%;
   height: 1px;
@@ -8,34 +7,39 @@
   opacity: .7;
 }
 
-/* Sekce – kontejner */
+/* Kontejner sekce */
 .pidi-section{
   max-width: 1200px;
   margin: 0 auto;
   padding: 28px var(--edge) 36px;
   box-sizing: border-box;
+
+  /* jednotné parametry rámečku (podle fotky 1) */
+  --frame-ar: 4 / 3;        /* poměr stran rámečku */
+  --frame-w-desktop: 520px; /* šířka rámečku na desktopu */
+  --frame-w-tablet:  480px; /* šířka rámečku na tabletu */
+  --frame-pad: 12px;        /* stejné vnitřní okraje pro všechny fotky */
 }
 
-/* Nadpis v duchu motta */
+/* Nadpis v duchu motta – zarovnán stejně jako text */
 .section-title{
   font-family: 'Great Vibes', cursive;
   font-style: italic;
   color: var(--accent);
-  font-size: 24px;
+  font-size: 28px;
   line-height: 1.1;
   text-align: left;
-  margin: 8px 0 18px;
+  margin: 8px auto 18px;
+  max-width: 900px;          /* stejné zarovnání jako text */
 }
 
-/* Dvousloupec */
+/* Jednosloupec s textem (výchozí = mobil/tablet šířka textu) */
 .section-inner{
-  display: grid;
-  grid-template-columns: 1fr 0.9fr;  /* ~text/foto */
-  gap: 22px;
-  align-items: stretch;               /* oba sloupce přes stejnou výšku řádku */
+  display: block;
+  max-width: 900px;          /* příjemná šířka pro čtení */
+  margin: 0 auto;
 }
 
-/* Text – stejné písmo/barva jako dropdown (Raleway + accent) */
 .text-col{
   color: var(--accent);
   font-family: 'Raleway', sans-serif;
@@ -44,63 +48,78 @@
 }
 .text-col p{ margin: 0 0 14px; }
 
-/* Fotky – desktop/tablet: sloupec viditelný, inline fotky skryté */
-.photos-column{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between; /* 1. fotka nahoře, 3. dole; mezery se rozloží */
-  gap: 14px;
-  height: 100%;
-}
-.photo{
-  width: 100%;
-  display: block;
+/* Inline fotky mezi odstavci — stejné rámečky i stejné okraje, BEZ OŘEZU */
+.photo-inline{
+  margin: 14px auto 18px;
+  text-align: center;
   border: 1px solid var(--accent);
   border-radius: 12px;
   box-shadow: 0 6px 18px rgba(0,0,0,.07);
-  object-fit: cover;
-  aspect-ratio: 4 / 3; /* drží pěkný poměr */
+  background: var(--bg);
+  overflow: hidden;
+
+  width: 100%;                 /* přes šířku textu (mobil/tablet) */
+  aspect-ratio: var(--frame-ar);
+  display: grid;               /* snadné centrování obsahu */
+  place-items: center;
 }
-.photo-inline{ display: none; } /* mobilní proložení – výchozí skryté */
+.photo-inline img{
+  /* stejné vnitřní okraje ze všech stran */
+  box-sizing: content-box;
+  padding: var(--frame-pad);
 
-/* ===== Breakpointy ===== */
+  /* ať se vejde CELÝ obrázek */
+  max-width: calc(100% - 2 * var(--frame-pad));
+  max-height: calc(100% - 2 * var(--frame-pad));
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
 
-/* Tablet ≤1024px */
-@media (max-width: 1024px){
+/* ===== Desktop/Tablet rozmístění: text vlevo, fotky vpravo pod sebou ===== */
+@media (min-width: 769px){
+  .text-col{
+    display: grid;
+    grid-template-columns: minmax(0,1fr) auto; /* text | fotky */
+    grid-auto-rows: auto;
+    gap: 16px 24px;                             /* řádky | mezi sloupci */
+    align-items: start;
+  }
+  .text-col p{ grid-column: 1; }               /* text vlevo */
+  .text-col .photo-inline{
+    grid-column: 2;                             /* fotky vpravo */
+    margin: 0;                                  /* mezery řídí grid */
+    width: var(--frame-w-desktop);              /* STEJNÉ rámečky */
+    max-width: var(--frame-w-desktop);
+    aspect-ratio: var(--frame-ar);
+  }
+}
+
+/* ===== Tablet ≤1024px – menší rámečky, stále vpravo ===== */
+@media (max-width: 1024px) and (min-width: 769px){
   .pidi-section{ padding: 24px var(--edge) 32px; }
-  .section-title{ font-size: 30px; margin-bottom: 16px; }
-  .section-inner{ grid-template-columns: 1.1fr 0.9fr; gap: 18px; }
+  .section-title{ font-size: 26px; margin-bottom: 16px; }
+  .text-col{ gap: 14px 20px; }
+  .text-col .photo-inline{
+    width: var(--frame-w-tablet);
+    max-width: var(--frame-w-tablet);
+  }
 }
 
-/* Mobile M ≤768px  — přepneme na 1 sloupec a ZOBRAZÍME fotky mezi odstavci */
+/* ===== Mobile M ≤768px — fotky zůstávají mezi odstavci ===== */
 @media (max-width: 768px){
   .pidi-section{ padding: 20px var(--edge) 28px; }
-  .section-title{ font-size: 26px; }
-
-  .section-inner{
-    display: block; /* jednosloupec */
-  }
-
-  .photos-column{ display: none; }   /* skryj pravý sloupec */
-  .photo-inline{
-    display: block;                   /* ukaž inline fotky mezi textem */
-    margin: 12px 0 16px;
-  }
-  .photo-inline img{
-    width: 100%;
-    display: block;
-    border: 1px solid var(--accent);
-    border-radius: 12px;
-    box-shadow: 0 6px 18px rgba(0,0,0,.07);
-    object-fit: cover;
-    aspect-ratio: 4 / 3;
-  }
+  .section-title{ font-size: 24px; }
+  .section-inner{ max-width: 680px; }
+  .photo-inline{ margin: 12px 0 16px; }
 }
 
-/* Mobile S ≤480px — drobné zmenšení mezer */
+/* ===== Mobile S ≤480px ===== */
 @media (max-width: 480px){
   .pidi-section{ padding: 16px var(--edge) 24px; }
-  .section-title{ font-size: 24px; margin-bottom: 14px; }
+  .section-title{ font-size: 22px; margin-bottom: 14px; }
   .text-col p{ margin-bottom: 12px; }
   .photo-inline{ margin: 10px 0 14px; }
 }
+
