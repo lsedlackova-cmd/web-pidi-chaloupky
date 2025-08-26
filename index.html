@@ -8,16 +8,20 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes:ital,wght@1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="header/header.css">
-  <link rel="stylesheet" href="footer/footer.css">
-  <link rel="stylesheet" href="domu/domu.css">
+  <!-- Sdílené styly -->
+  <link rel="stylesheet" href="/header/header.css">
+  <link rel="stylesheet" href="/footer/footer.css">
+  <link rel="stylesheet" href="/domu/domu.css">
+
+  <!-- Prefetch Galerie (pomůže rychlosti, když se bude načítat jako sekce) -->
+  <link rel="prefetch" href="/galerie/galerie.html">
 
   <style>
     :root{
       --bg: rgb(248,247,242);
       --accent: rgb(140,110,68);
-      --edge: 16px;        
-      --header-h: 80px;    
+      --edge: 16px;
+      --header-h: 80px;
     }
     body{ margin:0; background:var(--bg); font-family:'Raleway',sans-serif; }
     main{ min-height:60vh; }
@@ -36,7 +40,7 @@
     <section class="pidi-home" aria-label="Úvodní video">
       <div class="video-frame">
         <video id="pidiVideo"
-               src="img/PidiChaloupky.mp4"
+               src="/img/PidiChaloupky.mp4"
                autoplay
                muted
                loop
@@ -56,13 +60,21 @@
     <div class="section-divider"></div>
     <div id="sections-root"></div>
   </main>
+
   <div id="footer-root"></div>
-  <script src="header/header.js"></script>
-  <script src="footer/footer.js"></script>
-  <script src="domu/domu.js"></script>
-  <script src="loading-section.js"></script>
+
+  <!-- Skripty (defer = neblokují vykreslení) -->
+  <script src="/header/header.js" defer></script>
+  <script src="/footer/footer.js" defer></script>
+  <script src="/domu/domu.js" defer></script>
+  <script src="/loading-section.js" defer></script>
+
+  <!-- POZOR: starý skript s nuceným redirectem na Galerii byl odstraněn,
+       aby dropdown vždy volal PIDI.loadAndScroll a sekce se načetly/posunuly. -->
 </body>
 </html>
+
+
 
 
 

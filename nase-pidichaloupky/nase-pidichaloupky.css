@@ -1,125 +1,216 @@
-/* ===== Naše PidiChaloupky ===== */
+/* ===== KNIHA – Naše PidiChaloupky (stálá výška, foliování, jemnější „book“ vzhled) ===== */
 
-.section-divider{
-  width: 100%;
-  height: 1px;
-  background: var(--accent);
-  opacity: .7;
-}
+.section-divider{ width:100%; height:1px; background:var(--accent); opacity:.7; }
 
-/* Kontejner sekce */
+/* Stejné plátno jako video/Galerie */
 .pidi-section{
-  max-width: 1200px;
+  max-width: clamp(320px, 96vw, 1440px);
   margin: 0 auto;
-  padding: 28px var(--edge) 36px;
+  padding: 32px var(--edge) 48px;
   box-sizing: border-box;
+  scroll-margin-top: var(--header-h);
 
-  /* jednotné parametry rámečku (podle fotky 1) */
-  --frame-ar: 4 / 3;        /* poměr stran rámečku */
-  --frame-w-desktop: 520px; /* šířka rámečku na desktopu */
-  --frame-w-tablet:  480px; /* šířka rámečku na tabletu */
-  --frame-pad: 12px;        /* stejné vnitřní okraje pro všechny fotky */
+  --g-gap: 16px;
+  --g-radius: 12px;
+
+  /* stálá výška knihy – NEMĚNIT (na přání) */
+  --book-h: clamp(560px, 72vh, 920px);
+
+  /* book styling */
+  --spine-w: 32px;
+  --paper: rgb(242,239,232);
+  --paper-edge: rgba(140,110,68,.24);
+  --paper-shadow: 0 10px 24px rgba(0,0,0,.06);
+  --paper-inset: inset 0 0 0 1px var(--paper-edge),
+                 inset 0 20px 24px rgba(255,255,255,.25),
+                 inset 0 -14px 18px rgba(0,0,0,.03);
+
+  --anim-ms: 280ms;
 }
 
-/* Nadpis v duchu motta – zarovnán stejně jako text */
-.section-title{
+/* Kniha: dvě stejné poloviny + hřbet */
+.book{
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr var(--spine-w) 1fr;
+  gap: 0 var(--g-gap);
+  align-items: start;
+}
+
+/* Obálkový režim — fotostrana pryč, text přes celou šířku */
+.book.is-cover .book__spine,
+.book.is-cover .page--photos{ display:none; }
+.book.is-cover .page--text{ grid-column: 1 / -1; }
+
+/* Hřbet knihy – jemnější */
+.book__spine{
+  width: var(--spine-w);
+  align-self: stretch;
+  border-radius: 2px;
+  background:
+    linear-gradient(to right,
+      rgba(0,0,0,0.05), rgba(0,0,0,0.09) 50%, rgba(0,0,0,0.05));
+  box-shadow:
+    inset 1px 0 0 rgba(255,255,255,.35),
+    inset -1px 0 0 rgba(0,0,0,.06);
+}
+
+/* Stránka („papír“) – stálá výška, jemnější orámování a vnitřní „papírové“ světlo */
+.page__paper{
+  position: relative;
+  background:
+    radial-gradient(120% 100% at 50% 0%, rgba(255,255,255,.65), rgba(255,255,255,0)) no-repeat,
+    var(--paper);
+  border: 1px solid var(--accent);
+  border-radius: 14px;
+  box-shadow: var(--paper-shadow), var(--paper-inset);
+  padding: 24px;
+  height: var(--book-h);
+  transition: transform var(--anim-ms) ease, opacity var(--anim-ms) ease;
+}
+.page--text{ grid-column: 1; }
+.page--photos{ grid-column: 3; }
+
+/* Foliování (malý text dole) */
+.page__folio{
+  position: absolute;
+  bottom: 10px;
+  left: 16px;
+  right: 16px;
+  text-align: left;
+  font-size: 12px;
+  font-style: italic;
+  color: rgba(140,110,68,.85);
+  pointer-events: none;
+}
+
+/* Obálka – dvouřádkový titul + CTA níž */
+.book.is-cover .page--text .page__paper{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.cover{
+  text-align:center;
+  color: var(--accent);
+}
+.cover__title{
+  margin: 0;
+}
+.cover__title-line{
+  display:block;
   font-family: 'Great Vibes', cursive;
   font-style: italic;
+  line-height: 1.06;
+}
+.cover__title-line--big{
+  font-size: clamp(36px, 5vw, 56px);
+  margin: 4px 0 6px;
+}
+.cover__title-line--small{
+  font-size: clamp(28px, 3.8vw, 40px);
+  margin: 0 0 16px;
+}
+.cover__cta{
+  appearance: none;
+  border: 1px solid var(--accent);
+  background: transparent;
   color: var(--accent);
-  font-size: 28px;
-  line-height: 1.1;
-  text-align: left;
-  margin: 8px auto 18px;
-  max-width: 900px;          /* stejné zarovnání jako text */
+  border-radius: 999px;
+  padding: 8px 14px;
+  font: inherit;
+  cursor: pointer;
+  margin-top: 18px;
+  font-size: 14px;
 }
 
-/* Jednosloupec s textem (výchozí = mobil/tablet šířka textu) */
-.section-inner{
-  display: block;
-  max-width: 900px;          /* příjemná šířka pro čtení */
-  margin: 0 auto;
-}
-
-.text-col{
+/* Text – bez svislého scrollu; JS stránkuje, aby se vše vešlo */
+.page--text .page__content{
   color: var(--accent);
   font-family: 'Raleway', sans-serif;
   font-size: 16px;
   line-height: 1.7;
-}
-.text-col p{ margin: 0 0 14px; }
-
-/* Inline fotky mezi odstavci — stejné rámečky i stejné okraje, BEZ OŘEZU */
-.photo-inline{
-  margin: 14px auto 18px;
-  text-align: center;
-  border: 1px solid var(--accent);
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(0,0,0,.07);
-  background: var(--bg);
+  max-height: calc(100% - 28px); /* nech prostor pro foliování */
   overflow: hidden;
-
-  width: 100%;                 /* přes šířku textu (mobil/tablet) */
-  aspect-ratio: var(--frame-ar);
-  display: grid;               /* snadné centrování obsahu */
-  place-items: center;
 }
-.photo-inline img{
-  /* stejné vnitřní okraje ze všech stran */
-  box-sizing: content-box;
-  padding: var(--frame-pad);
+.page--text p{ margin: 0 0 14px; }
 
-  /* ať se vejde CELÝ obrázek */
-  max-width: calc(100% - 2 * var(--frame-pad));
-  max-height: calc(100% - 2 * var(--frame-pad));
-  width: auto;
-  height: auto;
-  object-fit: contain;
-  display: block;
+/* Fotostránka – plná výška, 2×2 mřížka, vždy 4 fotky */
+.photos-grid{
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: var(--g-gap);
+  height: calc(100% - 28px); /* foliování dole */
+}
+.photo{ margin:0; }
+.photo img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  border-radius: var(--g-radius);
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+.photo img.is-ready{ opacity: 1; }
+
+/* Navigace */
+.book__nav{
+  position:absolute;
+  top:50%; transform:translateY(-50%);
+  z-index:2;
+  width:44px; height:44px;
+  border-radius:50%;
+  border:1px solid var(--accent);
+  background: var(--paper);
+  box-shadow: var(--paper-shadow);
+  color: var(--accent);
+  font-size: 22px; line-height: 1;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer;
+}
+.book__nav--prev{ left: -6px; }
+.book__nav--next{ right: -6px; }
+.book__nav:disabled{ opacity:.45; cursor:not-allowed; }
+
+/* Stavový štítek */
+.book__status{
+  margin-top: 8px;
+  color: var(--accent);
+  font-size: 14px;
+  opacity: .9;
 }
 
-/* ===== Desktop/Tablet rozmístění: text vlevo, fotky vpravo pod sebou ===== */
-@media (min-width: 769px){
-  .text-col{
-    display: grid;
-    grid-template-columns: minmax(0,1fr) auto; /* text | fotky */
-    grid-auto-rows: auto;
-    gap: 16px 24px;                             /* řádky | mezi sloupci */
-    align-items: start;
-  }
-  .text-col p{ grid-column: 1; }               /* text vlevo */
-  .text-col .photo-inline{
-    grid-column: 2;                             /* fotky vpravo */
-    margin: 0;                                  /* mezery řídí grid */
-    width: var(--frame-w-desktop);              /* STEJNÉ rámečky */
-    max-width: var(--frame-w-desktop);
-    aspect-ratio: var(--frame-ar);
-  }
-}
+/* Animace výměny obsahu */
+.swap-out-left  { opacity:0; transform: translateX(-8px); }
+.swap-out-right { opacity:0; transform: translateX( 8px); }
+.swap-in        { opacity:0; transform: translateY(6px); }
+.swap-in.active { opacity:1; transform:none; }
 
-/* ===== Tablet ≤1024px – menší rámečky, stále vpravo ===== */
-@media (max-width: 1024px) and (min-width: 769px){
-  .pidi-section{ padding: 24px var(--edge) 32px; }
-  .section-title{ font-size: 26px; margin-bottom: 16px; }
-  .text-col{ gap: 14px 20px; }
-  .text-col .photo-inline{
-    width: var(--frame-w-tablet);
-    max-width: var(--frame-w-tablet);
-  }
-}
-
-/* ===== Mobile M ≤768px — fotky zůstávají mezi odstavci ===== */
+/* Mobil: stále stejná výška, po jedné stránce */
 @media (max-width: 768px){
-  .pidi-section{ padding: 20px var(--edge) 28px; }
-  .section-title{ font-size: 24px; }
-  .section-inner{ max-width: 680px; }
-  .photo-inline{ margin: 12px 0 16px; }
+  .book{
+    grid-template-columns: 1fr;
+    gap: var(--g-gap);
+  }
+  .book__spine{ display:none; }
+  .page--text, .page--photos{ grid-column: 1; }
+
+  .book__nav--prev{ left: 6px; }
+  .book__nav--next{ right: 6px; }
 }
 
-/* ===== Mobile S ≤480px ===== */
-@media (max-width: 480px){
-  .pidi-section{ padding: 16px var(--edge) 24px; }
-  .section-title{ font-size: 22px; margin-bottom: 14px; }
-  .text-col p{ margin-bottom: 12px; }
-  .photo-inline{ margin: 10px 0 14px; }
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce){
+  .pidi-section{ --anim-ms: 0ms; }
+  .photo img{ transition: none; }
 }
+
+
+
+
+
+
+
 

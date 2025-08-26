@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Galerie – Pidichaloupky</title>
+
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes:ital,wght@1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Sdílené styly -->
+  <link rel="stylesheet" href="/header/header.css">
+  <link rel="stylesheet" href="/footer/footer.css">
+  <!-- Galerie -->
+  <link rel="stylesheet" href="/galerie/galerie.css">
+
+  <!-- Základ jako na indexu (proměnné + dělička) -->
+  <style>
+    :root{
+      --bg: rgb(248,247,242);
+      --accent: rgb(140,110,68);
+      --edge: 16px;
+      --header-h: 80px;
+    }
+    body{ margin:0; background:var(--bg); font-family:'Raleway',sans-serif; }
+    main{ min-height:60vh; }
+    .section-divider{ width:100%; height:1px; background:var(--accent); opacity:.7; }
+  </style>
+</head>
+<body>
+  <div id="header-root"></div>
+
+  <main>
+    <div class="section-divider"></div>
+
+    <section class="pidi-galerie" aria-label="Galerie">
+      <div class="gallery" data-autoplay-ms="5000">
+        <div class="gallery-viewport"
+             tabindex="0"
+             aria-roledescription="carousel"
+             aria-label="Karusel fotografií">
+          <ul class="gallery-track" id="galleryTrack" data-count="20" aria-live="off">
+            <!-- Naplní JS -->
+          </ul>
+        </div>
+        <!-- Volitelná manuální navigace (skrytá na mobilech, minimalistická) -->
+        <button class="gallery-btn prev" aria-label="Předchozí fotografie" title="Předchozí">‹</button>
+        <button class="gallery-btn next" aria-label="Další fotografie" title="Další">›</button>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+  </main>
+
+  <div id="footer-root"></div>
+
+  <!-- Skripty -->
+  <script src="/header/header.js" defer></script>
+  <script src="/footer/footer.js" defer></script>
+  <script src="/galerie/galerie.js" defer></script>
+  <!-- Pro plynulé přechody mezi sekcemi (dole doplníme galerii do loaderu) -->
+  <script src="/loading-section.js" defer></script>
+</body>
+</html>
+

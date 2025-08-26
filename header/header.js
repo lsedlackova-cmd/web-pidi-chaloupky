@@ -1,10 +1,15 @@
-// Desktop: submenu pozice + otevírání/zavírání (beze změny navigace)
+// Header: menu + přesná navigace na sekce přes PIDI.loadAndScroll
 (async function () {
   const mount = document.getElementById('header-root');
   if (!mount) return;
 
-  const res = await fetch('/header/header.html', { cache: 'no-cache' });
-  mount.innerHTML = await res.text();
+  try{
+    const res = await fetch('/header/header.html', { cache: 'no-cache' });
+    mount.innerHTML = await res.text();
+  } catch (e){
+    console.error('Načtení headeru selhalo:', e);
+    return;
+  }
 
   const header = mount.querySelector('.pidi-header');
   const inner  = mount.querySelector('.pidi-header__inner');
@@ -47,21 +52,77 @@
 
   btn.addEventListener('click', toggleMenu);
 
-  // klik na odkaz: jen zavři menu, navigaci nech defaultně proběhnout
-  drawer.querySelectorAll('a').forEach(a=>{
-    a.addEventListener('click', ()=> closeMenu());
-    a.addEventListener('pointerenter', ()=> a.classList.add('is-hover'));
-    a.addEventListener('pointerleave', ()=> a.classList.remove('is-hover'));
-    a.addEventListener('touchstart', ()=> a.classList.add('is-hover'), {passive:true});
-    ['touchend','touchcancel'].forEach(ev =>
-      a.addEventListener(ev, ()=> a.classList.remove('is-hover'), {passive:true})
-    );
+  function linkToId(a){
+    try{
+      const u = new URL(a.href, location.href);
+      const p = u.pathname.toLowerCase();
+      if (p.includes('/domu/')) return 'domu';
+      if (p.includes('/nase-pidichaloupky/')) return 'nase';
+      if (p.includes('/galerie/')) return 'galerie';
+    }catch(_){}
+    const t = (a.textContent || '').trim().toLowerCase();
+    if (t.includes('domů')) return 'domu';
+    if (t.includes('naše pidichaloupky')) return 'nase';
+    if (t.includes('galerie')) return 'galerie';
+    return null;
+  }
+
+  drawer.addEventListener('click', async (e)=>{
+    const a = e.target.closest('a[href]');
+    if (!a) return;
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button === 1) return;
+
+    const id = linkToId(a);
+    if (!id) return;
+
+    e.preventDefault();
+    requestAnimationFrame(closeMenu);
+
+    const ready = ()=> !!(window.PIDI && typeof window.PIDI.loadAndScroll === 'function');
+    const ok = await new Promise(res=>{
+      if (ready()) return res(true);
+      const t0 = performance.now();
+      const iv = setInterval(()=>{
+        if (ready() || performance.now() - t0 > 4000){ clearInterval(iv); res(ready()); }
+      }, 50);
+    });
+
+    if (ok){
+      await window.PIDI.loadAndScroll(id);
+    } else {
+      const targetPath =
+        id === 'domu'   ? '/domu/domu.html' :
+        id === 'nase'   ? '/nase-pidichaloupky/nase-pidichaloupky.html' :
+                          '/galerie/galerie.html';
+      const url = `${targetPath}?go=${encodeURIComponent(id)}`;
+      setTimeout(()=>{ window.location.assign(url); }, 0);
+    }
+  }, true);
+
+  // UX kosmetika (hover)
+  drawer.addEventListener('pointerenter', (e)=>{ const a=e.target.closest('a'); if(a) a.classList.add('is-hover'); });
+  drawer.addEventListener('pointerleave', (e)=>{ const a=e.target.closest('a'); if(a) a.classList.remove('is-hover'); });
+  drawer.addEventListener('touchstart', (e)=>{ const a=e.target.closest('a'); if(a) a.classList.add('is-hover'); }, {passive:true});
+  ['touchend','touchcancel'].forEach(ev=>{
+    drawer.addEventListener(ev, (e)=>{ const a=e.target.closest('a'); if(a) a.classList.remove('is-hover'); }, {passive:true});
   });
 
   ['resize','scroll'].forEach(ev =>
     window.addEventListener(ev, ()=>{ if (drawer.classList.contains('open')) positionDrawer(); })
   );
+
+  document.addEventListener('click', (e)=>{
+    if (!drawer.classList.contains('open')) return;
+    const inside = e.target.closest('.pidi-drawer');
+    const onBtn  = e.target.closest('.pidi-menu');
+    if (!inside && !onBtn) closeMenu();
+  });
 })();
+
+
+
+
+
 
 
 

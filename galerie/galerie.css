@@ -1,0 +1,124 @@
+:root{
+  --g-gap: 16px;
+  --g-radius: 12px;
+  --g-shadow: 0 6px 18px rgba(0,0,0,.08);
+  --g-focus: 0 0 0 3px rgba(140,110,68,.35);
+  /* Výchozí méně kusů = větší náhledy na desktopu */
+  --items-per-view: 3;
+}
+
+/* Základ sekce */
+.pidi-galerie{
+  padding: 32px var(--edge) 48px;
+  box-sizing: border-box;
+}
+
+/* VĚTŠÍ plátno na desktopu */
+.gallery{
+  max-width: clamp(320px, 96vw, 1440px);
+  margin: 0 auto;
+  position: relative;
+}
+
+/* Viewport + track */
+.gallery-viewport{
+  overflow: hidden;
+  outline: none;
+  border-radius: 16px;
+  /* DŮLEŽITÉ: neblokuj vertikální scroll při swipe */
+  touch-action: pan-y;
+}
+.gallery-viewport:focus-visible{ box-shadow: var(--g-focus); }
+
+.gallery-track{
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  gap: var(--g-gap);
+  will-change: transform;
+}
+
+/* Položky */
+.gallery-item{
+  flex: 0 0 auto;
+  width: calc((100% - (var(--items-per-view) - 1) * var(--g-gap)) / var(--items-per-view));
+}
+.gallery-item figure{
+  margin: 0;
+  border-radius: var(--g-radius);
+  overflow: hidden;
+  box-shadow: var(--g-shadow);
+  background: #eee;
+  cursor: zoom-in;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.gallery-item img{
+  display:block;
+  width:100%;
+  height:auto;
+  aspect-ratio: 4 / 3;        /* konzistentní layout bez CLS, vyšší náhledy */
+  object-fit: cover;
+  transition: transform .6s ease;
+}
+.gallery-item:hover img{ transform: scale(1.02); }
+
+/* Ovládání */
+.gallery-btn{
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(248,247,242,.9);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+  border-radius: 999px;
+  width: 44px; height: 44px;
+  display: grid; place-items: center;
+  cursor: pointer;
+  transition: background .2s ease, transform .2s ease, opacity .2s ease;
+  z-index: 2;
+}
+.gallery-btn:hover{ background:#fff; transform: translateY(-50%) scale(1.05); }
+.gallery-btn:active{ transform: translateY(-50%) scale(.98); }
+.gallery-btn.prev{ left: -6px; }
+.gallery-btn.next{ right: -6px; }
+
+/* Lightbox */
+.lb{
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.75);
+  display: none;
+  align-items: center; justify-content: center;
+  z-index: 2000;
+}
+.lb.open{ display: flex; }
+.lb__img{
+  max-width: min(92vw, 1400px);
+  max-height: 86vh;
+  border-radius: 14px;
+  box-shadow: 0 16px 40px rgba(0,0,0,.4);
+}
+.lb__close, .lb__nav{
+  position: absolute; color: #fff; border: none; background: transparent;
+  font-size: 28px; line-height: 1; cursor: pointer;
+}
+.lb__close{ top: 16px; right: 20px; }
+.lb__nav.prev{ left: 18px; top: 50%; transform: translateY(-50%); }
+.lb__nav.next{ right: 18px; top: 50%; transform: translateY(-50%); }
+
+/* Responsivita – stejné „3 úrovně“ + ultra-wide */
+@media (min-width: 1440px){
+  :root{ --items-per-view: 4; } /* ultra-wide může ukázat 4 */
+}
+@media (max-width: 1024px){
+  :root{ --items-per-view: 3; }
+}
+@media (max-width: 768px){
+  :root{ --items-per-view: 2; }
+  .gallery-btn{ display:none; } /* UI čisté na menších šířkách */
+}
+@media (max-width: 480px){
+  :root{ --items-per-view: 2; }
+}

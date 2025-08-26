@@ -1,22 +1,24 @@
 (function(){
   const ALL = [
-    { id: 'domu', html: '/domu/domu.html', css: '/domu/domu.css', js: '/domu/domu.js', selector: '.pidi-home' },
-    { id: 'nase', html: '/nase-pidichaloupky/nase-pidichaloupky.html', css: '/nase-pidichaloupky/nase-pidichaloupky.css', js: '/nase-pidichaloupky/nase-pidichaloupky.js', selector: '.pidi-section' },
+    { id: 'domu',    html: '/domu/domu.html',                               css: '/domu/domu.css',                               js: '/domu/domu.js',                               selector: '.pidi-home' },
+    { id: 'nase',    html: '/nase-pidichaloupky/nase-pidichaloupky.html',   css: '/nase-pidichaloupky/nase-pidichaloupky.css',   js: '/nase-pidichaloupky/nase-pidichaloupky.js',   selector: '.pidi-section' },
+    { id: 'galerie', html: '/galerie/galerie.html',                          css: '/galerie/galerie.css',                          js: '/galerie/galerie.js',                          selector: '.pidi-galerie' },
   ];
+  const byId = Object.fromEntries(ALL.map(s => [s.id, s]));
+  const selectors = Object.fromEntries(ALL.map(s => [s.id, s.selector]));
 
   const path = location.pathname.replace(/\/+$/, '');
   let currentId = 'index';
   if (path.includes('/domu/')) currentId = 'domu';
   else if (path.includes('/nase-pidichaloupky/')) currentId = 'nase';
+  else if (path.includes('/galerie/')) currentId = 'galerie';
 
   const ids = ALL.map(s => s.id);
-  const anchorId = (currentId === 'index') ? 'domu' : currentId; 
+  const anchorId = (currentId === 'index') ? 'domu' : currentId;
   const idx = ids.indexOf(anchorId);
 
-  const nextQueue = (idx === -1) ? ALL.slice() : ALL.slice(idx + 1);  
-  const prevQueue = (idx === -1) ? [] : ALL.slice(0, idx).reverse();  
-
-  if (nextQueue.length === 0 && prevQueue.length === 0) return;
+  const nextQueue = (idx === -1) ? ALL.slice() : ALL.slice(idx + 1);
+  const prevQueue = (idx === -1) ? [] : ALL.slice(0, idx).reverse();
 
   if (!document.getElementById('section-loader-style')) {
     const st = document.createElement('style');
@@ -73,9 +75,9 @@
   sentinelBottom.className = 'section-sentinel-bottom';
   mountBottom.appendChild(sentinelBottom);
 
-  const sentinelTop = document.createElement('div');
-  sentinelTop.className = 'section-sentinel-top';
-  mountTop.appendChild(sentinelTop);
+  const sentinelTopInitial = document.createElement('div');
+  sentinelTopInitial.className = 'section-sentinel-top';
+  mountTop.appendChild(sentinelTopInitial);
 
   const loaded = new Set();
 
@@ -129,9 +131,11 @@
       if (!entry.isIntersecting) continue;
 
       const nowY = window.scrollY;
+      const atTop = nowY <= 5;
       const scrollingUp = nowY < lastY;
       lastY = nowY;
-      if (!scrollingUp) continue;
+
+      if (!scrollingUp && !atTop) continue;
       if (!prevQueue.length) continue;
 
       const spec = prevQueue.shift();
@@ -153,49 +157,151 @@
       }
     }
   }, { rootMargin: '200px 0px 0px 0px' });
-  ioUp.observe(sentinelTop);
+  ioUp.observe(sentinelTopInitial);
 
+  // --- Programové načítání (bez skrolu) pro menu ---
+  async function loadPrevNow(){
+    if (!prevQueue.length) return false;
+    const spec = prevQueue.shift();
+    if (loaded.has(spec.id)) return true;
+
+    const sec = await loadSpec(spec);
+    if (!sec) return false;
+
+    const divider = makeDivider();
+    const wrap = wrapWithFade(sec);
+
+    const liveTop = mountTop.querySelector('.section-sentinel-top');
+    if (liveTop && liveTop.isConnected) {
+      liveTop.replaceWith(wrap, divider);
+    } else {
+      mountTop.insertBefore(wrap, mountTop.firstChild || null);
+      mountTop.insertBefore(divider, wrap.nextSibling || null);
+    }
+
+    const newTopSentinel = document.createElement('div');
+    newTopSentinel.className = 'section-sentinel-top';
+    mountTop.insertBefore(newTopSentinel, mountTop.firstChild);
+    ioUp.observe(newTopSentinel);
+
+    ensureJS(spec.js);
+    loaded.add(spec.id);
+    return true;
+  }
+
+  async function loadNextNow(){
+    if (!nextQueue.length) return false;
+    const spec = nextQueue.shift();
+    if (loaded.has(spec.id)) return true;
+
+    const sec = await loadSpec(spec);
+    if (!sec) return false;
+
+    const divider = makeDivider();
+    const wrap = wrapWithFade(sec);
+
+    const liveBottom = mountBottom.querySelector('.section-sentinel-bottom');
+    if (liveBottom && liveBottom.isConnected) {
+      liveBottom.replaceWith(divider, wrap);
+    } else {
+      mountBottom.appendChild(divider);
+      mountBottom.appendChild(wrap);
+    }
+
+    const newBottomSentinel = document.createElement('div');
+    newBottomSentinel.className = 'section-sentinel-bottom';
+    mountBottom.appendChild(newBottomSentinel);
+    ioDown.observe(newBottomSentinel);
+
+    ensureJS(spec.js);
+    loaded.add(spec.id);
+    return true;
+  }
+
+  function headerHeight(){
+    const v = getComputedStyle(document.documentElement).getPropertyValue('--header-h');
+    return parseFloat(v) || 80;
+  }
+  function scrollToEl(el){
+    if (!el) return;
+    el.scrollIntoView({ block:'start', behavior:'smooth' }); // respektuje scroll-margin-top
+  }
+
+  function getSectionElById(id){
+    const sel = selectors[id];
+    return sel ? document.querySelector(sel) : null;
+  }
+
+  async function loadSection(id){
+    if (!byId[id]) return false;
+
+    if (getSectionElById(id)) return true;
+
+    const inPrev = prevQueue.some(s => s.id === id);
+    const inNext = nextQueue.some(s => s.id === id);
+
+    if (inPrev){
+      while (!getSectionElById(id) && prevQueue.length){ await loadPrevNow(); }
+    } else if (inNext){
+      while (!getSectionElById(id) && nextQueue.length){ await loadNextNow(); }
+    } else {
+      let steps = 0;
+      while (!getSectionElById(id) && prevQueue.length && steps < 5){ await loadPrevNow(); steps++; }
+      steps = 0;
+      while (!getSectionElById(id) && nextQueue.length && steps < 5){ await loadNextNow(); steps++; }
+    }
+
+    return !!getSectionElById(id);
+  }
+
+  async function scrollToSection(id){
+    scrollToEl(getSectionElById(id));
+  }
+
+  async function loadAndScroll(id){
+    const ok = await loadSection(id);
+    if (ok) await scrollToSection(id);
+    return ok;
+  }
+
+  window.PIDI = window.PIDI || {};
+  window.PIDI.loadSection     = loadSection;
+  window.PIDI.scrollToSection = scrollToSection;
+  window.PIDI.loadAndScroll   = loadAndScroll;
+
+  // Podpora ?go=... v URL
+  try{
+    const usp = new URLSearchParams(location.search);
+    const go = usp.get('go');
+    if (go && byId[go]) {
+      setTimeout(()=> loadAndScroll(go), 50);
+    }
+  }catch(_){}
+
+  // Záložní vyvolání "nahoru" při skrolu z vršku
   function tryLoadPrevAtTop(){
     if (window.scrollY > 5) return;
     if (!prevQueue.length) return;
     if (loaded.has(prevQueue[0]?.id)) return;
-
-    window.scrollTo({ top: 0 }); 
-    (async ()=>{
-      const spec = prevQueue.shift();
-      if (!spec) return;
-      const sec = await loadSpec(spec);
-      if (!sec) return;
-
-      const divider = makeDivider();
-      const wrap = wrapWithFade(sec);
-      sentinelTop.replaceWith(wrap, divider);
-
-      const newTopSentinel = document.createElement('div');
-      newTopSentinel.className = 'section-sentinel-top';
-      mountTop.insertBefore(newTopSentinel, mountTop.firstChild);
-      ioUp.observe(newTopSentinel);
-
-      ensureJS(spec.js);
-      loaded.add(spec.id);
-    })();
+    (async ()=>{ await loadPrevNow(); })();
   }
-
   window.addEventListener('wheel', (e)=>{
     if (e.deltaY < 0) tryLoadPrevAtTop();
   }, { passive:true });
-
   let touchStartY = 0;
   window.addEventListener('touchstart', (e)=>{
     if (e.touches && e.touches.length) touchStartY = e.touches[0].clientY;
   }, { passive:true });
   window.addEventListener('touchmove', (e)=>{
     const y = e.touches && e.touches.length ? e.touches[0].clientY : touchStartY;
-    const dy = y - touchStartY; 
+    const dy = y - touchStartY;
     if (dy > 10) tryLoadPrevAtTop();
   }, { passive:true });
 
 })();
+
+
+
 
 
 
