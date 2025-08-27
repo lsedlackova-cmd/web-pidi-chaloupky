@@ -1,5 +1,3 @@
-/* ===== KNIHA – dvoustrany na desktopu, jednotná velikost i obálka/konec, bez přesahů ===== */
-
 .section-divider{ width:100%; height:1px; background:var(--accent); opacity:.7; }
 html, body { overflow-x: hidden; }
 
@@ -10,8 +8,8 @@ html, body { overflow-x: hidden; }
   box-sizing: border-box;
   scroll-margin-top: var(--header-h);
 
-  --book-h: clamp(560px, 72vh, 920px); /* výška jedné „strany“ */
-  --page-w: clamp(320px, 86vw, 920px); /* šířka jedné „strany“ */
+  --book-h: clamp(560px, 72vh, 920px); 
+  --page-w: clamp(320px, 86vw, 920px); 
   --radius: 14px;
 
   --accent: rgb(140,110,68);
@@ -26,11 +24,10 @@ html, body { overflow-x: hidden; }
   --spine-w: 28px;
   --anim-ms: 280ms;
 
-  --folio-space: 32px;   /* rezerva na folio – ať do něj nic neleze */
-  --media-min: 42%;      /* min. výška bloku s fotkami */
+  --folio-space: 32px;  
+  --media-min: 42%;     
 }
 
-/* === DESKTOP: dvoustrana === */
 .book{
   position: relative;
   display: grid;
@@ -41,15 +38,13 @@ html, body { overflow-x: hidden; }
   overflow: clip;
 }
 
-/* Režimy */
 .book.is-cover .book__spine,
 .book.is-cover .page--right{ display:none; }
 .book.is-cover .page--left{ grid-column: 1 / -1; }
 
-.book.is-last .book__nav--next{ display:none; } /* žádná šipka vpřed na posledním spreadu */
-.book.is-cover .book__nav--prev{ display:none; } /* zpět na obálce nedává smysl */
+.book.is-last .book__nav--next{ display:none; } 
+.book.is-cover .book__nav--prev{ display:none; } 
 
-/* Mobil: jedna stránka */
 @media (max-width: 768px){
   .book{
     grid-template-columns: 1fr;
@@ -59,7 +54,6 @@ html, body { overflow-x: hidden; }
   .page--left{ grid-column: 1; }
 }
 
-/* Hřbet knihy (desktop otevřená) */
 .book__spine{
   align-self: stretch;
   border-radius: 2px;
@@ -68,7 +62,6 @@ html, body { overflow-x: hidden; }
   box-shadow: inset 1px 0 0 rgba(255,255,255,.35), inset -1px 0 0 rgba(0,0,0,.06);
 }
 
-/* Šipky */
 .book__nav{
   position:absolute;
   top:50%; transform:translateY(-50%);
@@ -87,7 +80,6 @@ html, body { overflow-x: hidden; }
 .book__nav--next{ right: 8px; }
 .book__nav:disabled{ opacity:.45; cursor:not-allowed; }
 
-/* Strany */
 .page__paper{
   position: relative;
   height: var(--book-h);
@@ -103,7 +95,6 @@ html, body { overflow-x: hidden; }
   box-sizing: border-box;
 }
 
-/* Obsah stránek – místo pro folio dole (ať ho nic nepřekryje) */
 .page__content{
   height: calc(100% - var(--folio-space));
   display: grid;
@@ -115,7 +106,6 @@ html, body { overflow-x: hidden; }
   min-height: 0;
 }
 
-/* Folia (jen kde to JS nastaví) – vždy nad obsahem */
 .page__folio{
   position: absolute;
   bottom: 10px; left: 16px; right: 16px;
@@ -127,22 +117,19 @@ html, body { overflow-x: hidden; }
   z-index: 2;
 }
 
-/* Obálka/konec – centrovat obsah uvnitř papíru */
 .book.is-cover  .page--left .page__content,
 .book.is-end    .page--left .page__content,
 .book.is-end    .page--right .page__content{
   display:flex; align-items:center; justify-content:center; text-align:center;
 }
 
-/* Titul / CTA na obálce */
-.cover{ max-width: 96%; color: var(--accent); }       /* široký obsah obálky */
+.cover{ max-width: 96%; color: var(--accent); }       
 
-/* Větší rozestupy v titulku a pod ním */
 .cover__title-line--big{
-  margin-bottom: clamp(12px, 2.2vw, 28px);           /* mezera mezi „Pohádka“ a „o Pidichaloupkách“ */
+  margin-bottom: clamp(12px, 2.2vw, 28px);           
 }
 .cover__title{
-  margin-bottom: clamp(146px, 3.2vw, 42px);           /* mezera pod titulkem před tlačítkem */
+  margin-bottom: clamp(146px, 3.2vw, 42px);           
 }
 
 .cover__title-line{
@@ -156,15 +143,13 @@ html, body { overflow-x: hidden; }
 .cover__cta{
   appearance:none; border:1px solid var(--accent); background:transparent; color:var(--accent);
   border-radius: 999px; padding: 10px 18px; font: inherit; cursor:pointer;
-  margin-top: 0; /* mezera řešena přes .cover__title */
+  margin-top: 0;
 }
 
-/* Text */
 .content__text{ font: 16px/1.7 'Raleway',sans-serif; }
 .content--center .content__text{ text-align:center; }
 .content__text p{ margin: 0 0 12px; }
 
-/* Závěrečná věta */
 .final-line{
   font-family: 'Great Vibes', cursive;
   font-style: italic;
@@ -173,11 +158,10 @@ html, body { overflow-x: hidden; }
   margin-top: 10px;
 }
 
-/* Média – bez ořezu, ale ať nepřekryjí folio */
 .content__media{
   display: grid; gap: 14px; min-height: 0;
   align-content: center; align-items: center; justify-items: center;
-  padding-bottom: 6px; /* malá rezerva nad folií */
+  padding-bottom: 6px; 
 }
 .content__media--one{ grid-template-columns: 1fr; grid-auto-rows: 1fr; }
 .content__media--two{ grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; }
@@ -188,36 +172,31 @@ html, body { overflow-x: hidden; }
   object-fit: contain; border-radius: 12px; opacity: 1;
 }
 
-/* Stavový štítek pod knihou */
 .book__status{ margin-top: 8px; color: var(--accent); font-size: 14px; opacity: .9; }
 
-/* Mobil – fotky 5 & 6 pod sebe */
 @media (max-width: 768px){
   .content__media--two{ grid-template-columns: 1fr; grid-auto-rows: 1fr 1fr; }
   .page__paper{ padding: 20px; }
   .content__text{ font-size: 15px; line-height: 1.6; }
-  .pidi-section{ --media-min: 48%; } /* trochu víc místa pro fotky na malých displejích */
+  .pidi-section{ --media-min: 48%; } 
 }
 
-/* === POUZE DESKTOP: obálka jako „zavřená kniha“ + menší fotky kvůli foliím === */
 @media (min-width: 769px){
-  /* 1) Obálka – vycentrovat a DONUTIT šířku jako běžná strana */
   .book.is-cover{
     grid-template-columns: 1fr !important;
     gap: 0 !important;
     justify-items: center !important;
   }
   .book.is-cover .page--left{
-    width: min(var(--page-w), 100%) !important;   /* šířka grid-itemu = šířka strany */
+    width: min(var(--page-w), 100%) !important;   
     justify-self: center !important;
   }
   .book.is-cover .page--left .page__paper{
-    width: 100% !important;                       /* papír vyplní šířku grid-itemu */
+    width: 100% !important;                      
     isolation: isolate;
   }
 
-  /* 2) Vizuální hrana/spine obálky */
-  .book.is-cover .page__paper::before{ /* hřbet vlevo */
+  .book.is-cover .page__paper::before{ 
     content:"";
     position:absolute;
     top:-1px; bottom:-1px; left:-1px;
@@ -227,7 +206,7 @@ html, body { overflow-x: hidden; }
     box-shadow: inset -1px 0 0 rgba(255,255,255,.35);
     z-index:0;
   }
-  .book.is-cover .page__paper::after{ /* hrana „listů“ vpravo */
+  .book.is-cover .page__paper::after{ 
     content:"";
     position:absolute;
     top:4px; bottom:4px; right:4px;
@@ -237,11 +216,9 @@ html, body { overflow-x: hidden; }
     z-index:0;
   }
 
-  /* 3) Fotky na otevřených stranách malinko menší, ať nepřekrývají folio */
   .book:not(.is-cover) .photo img{ max-height: 86%; }
 }
 
-/* Animace papíru při výměně obsahu */
 .swap-out-left  { opacity:0; transform: translateX(-8px); }
 .swap-out-right { opacity:0; transform: translateX( 8px); }
 .swap-in        { opacity:0; transform: translateY(6px); }
@@ -250,20 +227,15 @@ html, body { overflow-x: hidden; }
 @media (prefers-reduced-motion: reduce){
   .photo img{ transition: none; }
 }
-/* === FOIL SHIMMER (jen obálka & závěr) =============================== */
 @keyframes pidi-foil {
   0%   { background-position: 0% 0; }
   100% { background-position: 200% 0; }
 }
 
-/* Obálka: název ("Pohádka" + "o Pidichaloupkách") */
 .book.is-cover .cover__title-line,
-/* Poslední stránka: závěrečná věta */
 .book.is-end   .final-line{
-  /* Fallback barva (když by nefungoval background-clip) */
   color: var(--accent);
 
-  /* „Zlatý” gradient pro shimmer */
   background-image: linear-gradient(
     120deg,
     #b58e3b 0%,
@@ -275,15 +247,12 @@ html, body { overflow-x: hidden; }
   );
   background-size: 200% auto;
 
-  /* Shimmer – velmi pomalý, nenápadný */
   animation: pidi-foil 9s linear infinite;
   will-change: background-position;
 
-  /* Vyříznutí do textu (support níž) */
   background-clip: text;
 }
 
-/* WebKit/Safari vyplnění textu – jen pokud je podporováno */
 @supports (-webkit-background-clip: text) {
   .book.is-cover .cover__title-line,
   .book.is-end   .final-line{
@@ -291,7 +260,6 @@ html, body { overflow-x: hidden; }
   }
 }
 
-/* Ostatní prohlížeče s background-clip:text */
 @supports (background-clip: text) {
   .book.is-cover .cover__title-line,
   .book.is-end   .final-line{
@@ -299,29 +267,25 @@ html, body { overflow-x: hidden; }
   }
 }
 
-/* Respektuj „omezit animace“ */
 @media (prefers-reduced-motion: reduce){
   .book.is-cover .cover__title-line,
   .book.is-end   .final-line{
     animation: none;
   }
 }
-/* Mobil: skrýt šipku vpravo na poslední straně */
 @media (max-width: 768px){
   .book.is-end .book__nav--next{ display: none !important; }
 }
 @media (min-width: 769px){
   .book.is-end .page--right .end-actions{
-    margin-top: 94px; /* klidně 64–96px podle oka */
+    margin-top: 94px; 
   }
 }
-/* Desktop: poslední pravá strana – posuň jen .final-line níž */
 @media (min-width: 769px){
   .book.is-end .page--right .final-line{
-    margin-top: 74px; /* klidně uprav: 40–120px podle oka */
+    margin-top: 74px; 
   }
 }
-/* Obálka: schovej šipku doprava (desktop i mobil) */
 .book.is-cover .book__nav--next{
   display: none !important;
 }

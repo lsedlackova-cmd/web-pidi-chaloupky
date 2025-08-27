@@ -30,11 +30,9 @@
 
     <section class="pidi-section" aria-label="Naše PidiChaloupky">
       <div class="book is-cover" role="group" aria-label="Kniha Pohádka o Pidichaloupkách">
-        <!-- Navigace -->
         <button class="book__nav book__nav--prev" aria-label="Předchozí" title="Předchozí (←)">‹</button>
         <button class="book__nav book__nav--next" aria-label="Další" title="Další (→)">›</button>
 
-        <!-- Levá strana -->
         <article class="page page--left">
           <div class="page__paper">
             <div class="page__content" id="leftContent"></div>
@@ -42,10 +40,8 @@
           </div>
         </article>
 
-        <!-- Hřbet -->
         <div class="book__spine" aria-hidden="true"></div>
 
-        <!-- Pravá strana -->
         <article class="page page--right">
           <div class="page__paper">
             <div class="page__content" id="rightContent"></div>
@@ -58,8 +54,6 @@
         <span id="bookLabel"></span>
       </div>
 
-      <!-- ŠABLONY -->
-      <!-- Obálka -->
       <template id="tpl-cover">
         <div class="cover">
           <div class="cover__title">
@@ -70,7 +64,6 @@
         </div>
       </template>
 
-      <!-- Konec knihy (pravá strana poslední dvoustrany / mobil strana 4) -->
       <template id="tpl-end">
         <div class="content content--center">
           <div class="content__text">
@@ -83,7 +76,6 @@
         </div>
       </template>
 
-      <!-- Strana 1 (text + foto 1) -->
       <template id="tpl-page-1">
         <div class="content">
           <div class="content__text">
@@ -98,7 +90,6 @@
         </div>
       </template>
 
-      <!-- Strana 2 (text + foto 4) -->
       <template id="tpl-page-2">
         <div class="content">
           <div class="content__text">
@@ -112,7 +103,6 @@
         </div>
       </template>
 
-      <!-- Strana 3 (text + foto 5 & 6) -->
       <template id="tpl-page-3">
         <div class="content">
           <div class="content__text">

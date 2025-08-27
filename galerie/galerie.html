@@ -8,13 +8,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes:ital,wght@1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  <!-- Sdílené styly -->
   <link rel="stylesheet" href="/header/header.css">
   <link rel="stylesheet" href="/footer/footer.css">
-  <!-- Galerie -->
   <link rel="stylesheet" href="/galerie/galerie.css">
 
-  <!-- Základ jako na indexu (proměnné + dělička) -->
   <style>
     :root{
       --bg: rgb(248,247,242);
@@ -40,10 +37,8 @@
              aria-roledescription="carousel"
              aria-label="Karusel fotografií">
           <ul class="gallery-track" id="galleryTrack" data-count="20" aria-live="off">
-            <!-- Naplní JS -->
           </ul>
         </div>
-        <!-- Volitelná manuální navigace (skrytá na mobilech, minimalistická) -->
         <button class="gallery-btn prev" aria-label="Předchozí fotografie" title="Předchozí">‹</button>
         <button class="gallery-btn next" aria-label="Další fotografie" title="Další">›</button>
       </div>
@@ -54,11 +49,9 @@
 
   <div id="footer-root"></div>
 
-  <!-- Skripty -->
   <script src="/header/header.js" defer></script>
   <script src="/footer/footer.js" defer></script>
   <script src="/galerie/galerie.js" defer></script>
-  <!-- Pro plynulé přechody mezi sekcemi (dole doplníme galerii do loaderu) -->
   <script src="/loading-section.js" defer></script>
 </body>
 </html>

@@ -1,8 +1,3 @@
-// Desktop: obálka -> Spread A (1|2) -> Spread B (3|konec).
-// Mobil: obálka -> 1 -> 2 -> 3 -> 4 -> 5 (konec).
-// Na mobilu: stránky 1,2,3,4 mají layout "text nahoře, fotka vyplní zbytek" (flex).
-// „Přečíst znovu“ vrací na obálku. Šipka vpřed skrytá na posledním stavu.
-
 (function(){
   const qs  = (s, r=document)=> r.querySelector(s);
   const byId= (id)=> document.getElementById(id);
@@ -21,7 +16,6 @@
   const btnNext     = qs('.book__nav--next', book);
   const label       = byId('bookLabel');
 
-  // Šablony (desktop a část mobilu je bere z HTML)
   const tpl = {
     cover : byId('tpl-cover'),
     end   : byId('tpl-end'),
@@ -30,7 +24,6 @@
     p3    : byId('tpl-page-3'),
   };
 
-  // ===== helpers =====
   function setFolio(el, n){
     if (!el) return;
     el.textContent = (typeof n === 'number')
@@ -73,20 +66,15 @@
     if (restartBtn) restartBtn.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); goRestart(); });
   }
 
-  // ===== Stav + responsivita =====
   const mqDesktop = window.matchMedia('(min-width: 769px)');
   let isDesktop = mqDesktop.matches;
 
-  // Desktop: 0=obálka, 1=spread A (1|2), 2=spread B (3|konec)
   let spreadIndex = 0;
 
-  // Mobil: 0=obálka, 1=1, 2=2, 3=3, 4=4, 5=5 (konec)
   let pageIndex = 0;
 
   mqDesktop.addEventListener?.('change', ()=>{ isDesktop = mqDesktop.matches; render(true); });
 
-  // ===== Mobilní stránky jako flex (text nahoře, foto vyplní zbytek) =====
-  // Strana 1 (text + foto 1)
   function mobilePage1(){
     return htmlFrag(`
       <div class="content" style="display:flex; flex-direction:column; height:100%; gap:60px;">
@@ -103,7 +91,6 @@
     `);
   }
 
-  // Strana 2 (text + foto 4)
   function mobilePage2(){
     return htmlFrag(`
       <div class="content" style="display:flex; flex-direction:column; height:100%; gap:60px;">
@@ -119,7 +106,6 @@
     `);
   }
 
-  // Strana 3 (text + JEN foto 5) – už ověřený layout
   function mobilePage3(){
     return htmlFrag(`
       <div class="content" style="display:flex; flex-direction:column; height:100%; gap:8px;">
@@ -135,7 +121,6 @@
     `);
   }
 
-  // Strana 4 (NEJDŘÍV fotka 6, pak text; foto vyplní zbytek)
   function mobilePage4(){
     return htmlFrag(`
       <div class="content" style="display:flex; flex-direction:column; height:100%; gap:130px;">
@@ -151,7 +136,6 @@
     `);
   }
 
-  // Strana 5 (text závěr + CTA)
   function mobilePage5(){
     return htmlFrag(`
       <div class="content content--center" style="display:flex; flex-direction:column; height:100%; gap:66px; justify-content:center;">
@@ -166,13 +150,10 @@
     `);
   }
 
-  // ===== Render =====
   function render(initial=false){
-    // Reset režimových tříd
     book.classList.remove('is-cover','is-last','is-end');
 
     if (isDesktop){
-      // === DESKTOP – SPREADS ===
       const s = spreadIndex;
 
       if (s === 0){
@@ -198,13 +179,12 @@
 
       const last = (s === 2);
       book.classList.toggle('is-last', last);
-      book.classList.toggle('is-end',  last);   // ← shimmer „konec“
+      book.classList.toggle('is-end',  last);   
       btnPrev.disabled = false;
       btnNext.disabled = last;
       return;
     }
 
-    // === MOBIL – JEDNA STRANA ===
     const i = pageIndex;
 
     if (i === 0){
@@ -217,7 +197,6 @@
       return;
     }
 
-    // 1..5
     let frag, folio;
     if (i === 1){ frag = mobilePage1(); folio = 1; }
     else if (i === 2){ frag = mobilePage2(); folio = 2; }
@@ -229,15 +208,12 @@
     setFolio(leftFolio, folio);
     label.textContent = '';
 
-    // Shimmer „konec“ jen na poslední straně
     book.classList.toggle('is-end', i === 5);
 
-    // Šipky
     btnPrev.disabled = (i === 0);
     btnNext.disabled = (i === 5);
   }
 
-  // Navigace
   function goPrev(){
     if (isDesktop){ if (spreadIndex > 0) spreadIndex--; }
     else { if (pageIndex > 0) pageIndex--; }
@@ -257,7 +233,6 @@
   btnPrev.addEventListener('click', (e)=>{ e.stopPropagation(); goPrev(); });
   btnNext.addEventListener('click', (e)=>{ e.stopPropagation(); goNext(); });
 
-  // Klik na okraje
   book.addEventListener('click', (e)=>{
     if (e.target.closest('button, a, input, textarea, select, [data-start], [data-restart]')) return;
     const r = book.getBoundingClientRect();
@@ -268,13 +243,11 @@
     else if (x >= rightZone) goNext();
   });
 
-  // Klávesy
   window.addEventListener('keydown', (e)=>{
     if (e.key === 'ArrowLeft')  goPrev();
     if (e.key === 'ArrowRight') goNext();
   }, { passive:true });
 
-  // Swipe (mobil)
   let tX=0, tY=0, swiping=false;
   book.addEventListener('touchstart', (e)=>{
     if (!e.touches?.length) return;
@@ -291,7 +264,6 @@
   }, {passive:true});
   book.addEventListener('touchend', ()=> swiping=false, {passive:true});
 
-  // Init
   render(true);
 })();
 

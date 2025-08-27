@@ -1,12 +1,11 @@
 (function(){
   const IMG_COUNT = 20;
-  const SRC = (i)=> `/img/galerie-${i}.jpg`; // fotky jsou v /img
+  const SRC = (i)=> `/img/galerie-${i}.jpg`; 
 
   const viewport = document.querySelector('.gallery-viewport');
   const track    = document.getElementById('galleryTrack');
   if (!viewport || !track) return;
 
-  // === Dynamická výška karuselu na celou sekci =========================
   function setGalleryHeight(){
     const sec = document.querySelector('.pidi-galerie');
     if (!sec) return;
@@ -17,10 +16,8 @@
     const padTop    = parseFloat(cs.paddingTop)    || 0;
     const padBottom = parseFloat(cs.paddingBottom) || 0;
 
-    // Celá výška viewportu − fixní header − vnitřní paddingy sekce
     const avail = window.innerHeight - headerH - padTop - padBottom;
 
-    // Bezpečný spodní limit, ať to nikdy nespadne
     const h = Math.max(320, Math.floor(avail));
     sec.style.setProperty('--gallery-h', `${h}px`);
   }
@@ -31,7 +28,6 @@
     rh = requestAnimationFrame(setGalleryHeight);
   });
 
-  // === Lightbox DOM =====================================================
   const lb = document.createElement('div');
   lb.className = 'lb';
   lb.innerHTML = `
@@ -43,60 +39,50 @@
   document.body.appendChild(lb);
   const lbImg = lb.querySelector('.lb__img');
 
-  // Ovládání
   const prevBtn = document.querySelector('.gallery-btn.prev');
   const nextBtn = document.querySelector('.gallery-btn.next');
 
-  // Konfigurace
   const autoplayMs = Math.max(1000, Number(document.querySelector('.gallery')?.dataset.autoplayMs || 5000));
 
-  // Stav
   let perView     = getPerView();
   let clonesEach  = perView + 1;
-  let logical     = Array.from({length: IMG_COUNT}, (_,i)=> i+1); // 1..20
+  let logical     = Array.from({length: IMG_COUNT}, (_,i)=> i+1); 
   let physical    = [];
-  let index       = clonesEach; // začneme na prvním reálném snímku
+  let index       = clonesEach; 
   let stepPx      = 0;
   let gapPx       = 0;
   let autoTimer   = null;
   let isPaused    = false;
   let isHover     = false;
-  let isIntersect = true; // pause, když není vidět
+  let isIntersect = true; 
 
-  // Build DOM
   rebuild();
 
-  // Interakce
   viewport.addEventListener('mouseenter', ()=>{ isHover = true; refreshAutoplay(); });
   viewport.addEventListener('mouseleave', ()=>{ isHover = false; refreshAutoplay(); });
   viewport.addEventListener('focusin',  ()=>{ isPaused = true;  refreshAutoplay(); });
   viewport.addEventListener('focusout', ()=>{ isPaused = false; refreshAutoplay(); });
 
-  // Pauza, když není v zorném poli
   const io = new IntersectionObserver((entries)=>{
     isIntersect = entries[0]?.isIntersecting ?? true;
     refreshAutoplay();
   }, {threshold: .2});
   io.observe(viewport);
 
-  // Navigace
   nextBtn?.addEventListener('click', ()=> go(+1));
   prevBtn?.addEventListener('click', ()=> go(-1));
 
-  // Klávesnice
   viewport.addEventListener('keydown', (e)=>{
     if (e.key === 'ArrowRight') { e.preventDefault(); go(+1); }
     if (e.key === 'ArrowLeft')  { e.preventDefault(); go(-1); }
   });
 
-  // Resize => přepočet (i při změně počtu položek na řádku)
   let rAf = 0;
   window.addEventListener('resize', ()=>{
     cancelAnimationFrame(rAf);
     rAf = requestAnimationFrame(()=> rebuild(true));
   });
 
-  // Swipe (neblokuje vertikální scroll; žádné pointer capture)
   let startX = 0, startY = 0, moved = false;
   viewport.addEventListener('pointerdown', (e)=>{
     startX = e.clientX;
@@ -118,15 +104,12 @@
   });
   viewport.addEventListener('pointercancel', ()=>{ refreshAutoplay(); });
 
-  // ============ Funkce ============
   function rebuild(keepNearest=false){
-    // zapamatuj aktuální reálný index (kvůli resize)
     const realBefore = toLogical(index);
 
     perView    = getPerView();
     clonesEach = perView + 1;
 
-    // naplnění fyzických snímků (clony na obou stranách)
     physical = [
       ...logical.slice(-clonesEach),
       ...logical,
@@ -137,7 +120,6 @@
     gapPx  = parseFloat(getComputedStyle(track).gap || '0') || 0;
     stepPx = track.querySelector('.gallery-item')?.getBoundingClientRect().width + gapPx || 0;
 
-    // nastavení scrollu na začátek reálné části
     index = clonesEach + (keepNearest ? nearestIndexForLogical(realBefore) : 0);
     jumpTo(index);
     refreshAutoplay();
@@ -162,7 +144,6 @@
       li.appendChild(fig);
       track.appendChild(li);
     });
-    // klik i na „mezery“ (lepší UX)
     track.querySelectorAll('.gallery-item').forEach(li=>{
       li.addEventListener('click', (e)=>{
         if (e.target.tagName.toLowerCase() !== 'img') {
@@ -184,7 +165,6 @@
   function go(dir){
     const target = index + (dir > 0 ? 1 : -1);
     smoothTo(target, ()=>{
-      // pokud jsme v clonech, reset na reálné místo beze změny vzhledu
       if (target >= physical.length - clonesEach) {
         index = clonesEach;
         jumpTo(index);
@@ -199,7 +179,7 @@
     index = targetIndex;
     viewport.scrollTo({ left: index * stepPx, behavior: 'smooth' });
     clearTimeout(scrollEdgeTmr);
-    scrollEdgeTmr = setTimeout(after, 420); // přibližná délka smooth scrollu
+    scrollEdgeTmr = setTimeout(after, 420); 
   }
   let scrollEdgeTmr = 0;
 
@@ -216,7 +196,6 @@
     autoTimer = setInterval(()=> go(+1), autoplayMs);
   }
 
-  // ------ Lightbox ------
   let currentLB = 1;
   function openLB(logicalIndex){
     currentLB = clampLogical(logicalIndex);
@@ -244,15 +223,13 @@
     if (e.key === 'ArrowRight') nextLB();
   });
 
-  // ------ Helpers ------
   function toLogical(physicalIndex){
     const realIdx = (physicalIndex - clonesEach);
-    const n = ((realIdx % logical.length) + logical.length) % logical.length; // 0..len-1
+    const n = ((realIdx % logical.length) + logical.length) % logical.length; 
     return logical[n];
   }
   function nearestIndexForLogical(logicalN){
-    // vyber index reálné části co nejblíž současné pozici
-    const base = clonesEach; // začátek reálné části
+    const base = clonesEach; 
     const offset = logical.indexOf(logicalN);
     return base + (offset >= 0 ? offset : 0);
   }
