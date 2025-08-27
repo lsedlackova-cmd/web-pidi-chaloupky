@@ -1,6 +1,6 @@
 // Desktop: obálka -> Spread A (1|2) -> Spread B (3|konec).
 // Mobil: obálka -> 1 -> 2 -> 3 -> 4 -> 5 (konec).
-// Folia: mobil 1–5; konec bez folia. Stavový štítek na mobilu neukazujeme.
+// Na mobilu: stránky 1,2,3,4 mají layout "text nahoře, fotka vyplní zbytek" (flex).
 // „Přečíst znovu“ vrací na obálku. Šipka vpřed skrytá na posledním stavu.
 
 (function(){
@@ -21,7 +21,7 @@
   const btnNext     = qs('.book__nav--next', book);
   const label       = byId('bookLabel');
 
-  // Šablony (HTML už je má)
+  // Šablony (desktop a část mobilu je bere z HTML)
   const tpl = {
     cover : byId('tpl-cover'),
     end   : byId('tpl-end'),
@@ -30,7 +30,7 @@
     p3    : byId('tpl-page-3'),
   };
 
-  // ===== helpery =====
+  // ===== helpers =====
   function setFolio(el, n){
     if (!el) return;
     el.textContent = (typeof n === 'number')
@@ -85,52 +85,80 @@
 
   mqDesktop.addEventListener?.('change', ()=>{ isDesktop = mqDesktop.matches; render(true); });
 
-  // ===== Mobilní stránky 3–5 jako fragmenty (bez zásahu do HTML) =====
-
-  // Strana 3 (text + JEN foto 5) – výrazně větší a trochu blíž k textu, bez ořezu
- function mobilePage3(){
-  return htmlFrag(`
-    <div class="content"
-         style="display:flex; flex-direction:column; height:100%; gap:8px;">
-      <div class="content__text">
-        <p>Kdo si je postavil na poličku, ten brzy zjistil, že PidiChaloupka není jen hračka. Byl to malý kousek kouzla, připomínka, že radost se schovává v maličkostech, v otevřeném okénku, v dřevěné stoličce, nebo v malovaném srdíčku nad dveřmi.</p>
-      </div>
-      <div class="content__media content__media--one"
-           style="flex:1 1 auto; min-height:0; margin-top:0;">
-        <figure class="photo">
-          <img src="/img/nase-pidichaloupky-5.jpg"
-               alt="Detail miniaturních doplňků chaloupek"
-               loading="lazy" decoding="async">
-        </figure>
-      </div>
-    </div>
-  `);
-}
-
-  // Strana 4 (NEJDŘÍV fotka 6 úplně nahoře, pak text; posun celé dvojice výš, mezera mezi nimi zachována)
-  function mobilePage4(){
+  // ===== Mobilní stránky jako flex (text nahoře, foto vyplní zbytek) =====
+  // Strana 1 (text + foto 1)
+  function mobilePage1(){
     return htmlFrag(`
-      <div class="content" style="gap:10px; margin-top:-30px;">
-        <div class="content__media content__media--one" style="min-height:46vh;">
+      <div class="content" style="display:flex; flex-direction:column; height:100%; gap:60px;">
+        <div class="content__text">
+          <p>Bylo, nebylo . . .</p>
+          <p>Za lesem, na kraji malé vesničky, stávala chaloupka jako z pohádky. V té chaloupce žili dědeček Míra a babička Ivča. Nebyla to obyčejná chaloupka, sami si ji před pár lety postavili, prkno po prknu, hřebík po hřebíku. Když byla hotová, usadili se v ní a hned cítili, že našli svůj domov.</p>
+        </div>
+        <div class="content__media content__media--one" style="flex:1 1 auto; min-height:0;">
           <figure class="photo">
-            <img src="/img/nase-pidichaloupky-6.jpg" alt="Malé radosti – okénko, stolička, srdíčko nad dveřmi" loading="lazy" decoding="async">
+            <img src="/img/nase-pidichaloupky-1.jpg" alt="Pidichaloupka – ručně vyráběná mini chaloupka" loading="lazy" decoding="async">
           </figure>
         </div>
+      </div>
+    `);
+  }
+
+  // Strana 2 (text + foto 4)
+  function mobilePage2(){
+    return htmlFrag(`
+      <div class="content" style="display:flex; flex-direction:column; height:100%; gap:60px;">
         <div class="content__text">
+          <p>Nebyla to země na mapě, ale kouzelný svět ukrytý v jejich dílně. Tam, mezi šuplíky plnými hřebíčků a poličkami plnými barevných kelímků, vznikaly malé chaloupky. Každá z nich byla ručně vyrobená, jedinečná, a když jste k ní přivoněli, cítili jste vůni lesa i lásku, s jakou byla vytvořena.</p>
+        </div>
+        <div class="content__media content__media--one" style="flex:1 1 auto; min-height:0;">
+          <figure class="photo">
+            <img src="/img/nase-pidichaloupky-4.jpg" alt="Dílna – kde vznikají malé chaloupky" loading="lazy" decoding="async">
+          </figure>
+        </div>
+      </div>
+    `);
+  }
+
+  // Strana 3 (text + JEN foto 5) – už ověřený layout
+  function mobilePage3(){
+    return htmlFrag(`
+      <div class="content" style="display:flex; flex-direction:column; height:100%; gap:8px;">
+        <div class="content__text">
+          <p>Kdo si je postavil na poličku, ten brzy zjistil, že PidiChaloupka není jen hračka. Byl to malý kousek kouzla, připomínka, že radost se schovává v maličkostech, v otevřeném okénku, v dřevěné stoličce, nebo v malovaném srdíčku nad dveřmi.</p>
+        </div>
+        <div class="content__media content__media--one" style="flex:1 1 auto; min-height:0;">
+          <figure class="photo">
+            <img src="/img/nase-pidichaloupky-5.jpg" alt="Detail miniaturních doplňků chaloupek" loading="lazy" decoding="async">
+          </figure>
+        </div>
+      </div>
+    `);
+  }
+
+  // Strana 4 (NEJDŘÍV fotka 6, pak text; foto vyplní zbytek)
+  function mobilePage4(){
+    return htmlFrag(`
+      <div class="content" style="display:flex; flex-direction:column; height:100%; gap:130px;">
+        <div class="content__media content__media--one" style="flex:1 1 auto; min-height:0;">
+          <figure class="photo">
+            <img style="border-radius:12px;" src="/img/nase-pidichaloupky-6.jpg" alt="Malé radosti – okénko, stolička, srdíčko nad dveřmi" loading="lazy" decoding="async">
+          </figure>
+        </div>
+        <div class="content__text" style="flex:0 0 auto;">
           <p>A tak se stalo, že dědeček Míra s babičkou Ivčou rozdávali radost dál a dál. Jejich chaloupky se dostaly do mnoha domovů, a kdo je uviděl, ten si nemohl pomoct a musel se pousmát.</p>
         </div>
       </div>
     `);
   }
 
-  // Strana 5 (jen text „Protože… nový příběh začít…“ + tlačítko; folio = 5)
+  // Strana 5 (text závěr + CTA)
   function mobilePage5(){
     return htmlFrag(`
-      <div class="content content--center" style="gap:16px;">
+      <div class="content content--center" style="display:flex; flex-direction:column; height:100%; gap:66px; justify-content:center;">
         <div class="content__text">
           <p>Protože PidiChaloupka není jen o domečcích. Je to připomínka, že štěstí se někdy ukrývá v tom nejmenším. A jestli někdy půjdeš kolem té vesničky a ucítíš vůni dřeva, možná uslyšíš i ťukání kladívka. To zrovna dědeček Míra s babičkou Ivčou staví další chaloupku, aby mohl . . .</p>
-          <p class="final-line" style="margin-top:18px; text-align:center;">. . . začít nový příběh . . .</p>
-          <div class="end-actions" style="margin-top:24px; text-align:center;">
+          <p class="final-line" style="margin-top:18px; text-align:center;">. . . začít nový příběh. . .</p>
+          <div class="end-actions" style="margin-top:144px; text-align:center;">
             <button class="cover__cta" data-restart>Přečíst znovu</button>
           </div>
         </div>
@@ -138,54 +166,13 @@
     `);
   }
 
-  // Po vložení obsahu jemně doladíme rozestupy na mobilu pro stranu 1 a 2 (posun fotky dolů)
-// Po vložení obsahu jemně doladíme rozestupy na mobilu (1,2) a přizpůsobíme fotku na 3
-function tuneMobilePage(i){
-  if (isDesktop) return;
-  const paper = paperLeft;
-  if (!paper) return;
-
-  // Posun jen bloku s fotkou na 1 a 2 (text zůstává)
-  const media = paper.querySelector('.content__media');
-  if (media && i === 1){
-    media.style.marginTop = '12px';
-  } else if (media && i === 2){
-    media.style.marginTop = '28px';
-  }
-
-  // === STRANA 3: dopočítej zbylou výšku a nastav ji jako výšku pro fotku ===
-  if (i === 3){
-    const content = paper.querySelector('.page__content');
-    const text    = content?.querySelector('.content__text');
-    const media3  = content?.querySelector('.content__media');
-
-    if (content && text && media3){
-      // zmenši rezervu na folio jen pro tuto stránku, ať je víc místa pro fotku
-      paper.style.setProperty('--folio-space', '22px');
-
-      // odečti výšku textu + mezeru řádků gridu a zbytek dej fotce
-      const cs   = getComputedStyle(content);
-      const gap  = parseFloat(cs.rowGap || '0');
-      const avail = content.clientHeight - text.offsetHeight - gap;
-
-      media3.style.marginTop  = '0';          // přisunout k textu
-      media3.style.minHeight  = '0';          // zrušíme původní min-height
-      media3.style.height     = Math.max(avail, 0) + 'px'; // fotka přesně vyplní zbytek
-      // Obrázek už v CSS má object-fit: contain; max-width/height:100% => celý se vejde
-    }
-  } else {
-    // pro ostatní strany vrať folio-space na výchozí
-    paper.style.removeProperty('--folio-space');
-  }
-}
-
   // ===== Render =====
   function render(initial=false){
     // Reset režimových tříd
     book.classList.remove('is-cover','is-last','is-end');
 
     if (isDesktop){
-      // === DESKTOP – SPREADS (BEZE ZMĚN OBSAHU) ===
+      // === DESKTOP – SPREADS ===
       const s = spreadIndex;
 
       if (s === 0){
@@ -216,7 +203,7 @@ function tuneMobilePage(i){
       return;
     }
 
-    // === MOBIL – JEDNA STRANA (PO UPRAVĚ) ===
+    // === MOBIL – JEDNA STRANA ===
     const i = pageIndex;
 
     if (i === 0){
@@ -229,20 +216,17 @@ function tuneMobilePage(i){
       return;
     }
 
-    // 1,2,3,4,5 (konec) – upravené 3–5; 1 a 2 doladíme tuneMobilePage
+    // 1..5
     let frag, folio;
-    if (i === 1){ frag = useTemplate(tpl.p1); folio = 1; }
-    else if (i === 2){ frag = useTemplate(tpl.p2); folio = 2; }
-    else if (i === 3){ frag = mobilePage3();      folio = 3; }   // větší foto 5
-    else if (i === 4){ frag = mobilePage4();      folio = 4; }   // fotka nahoře + text
-    else              { frag = mobilePage5();      folio = 5; }   // závěr s CTA
+    if (i === 1){ frag = mobilePage1(); folio = 1; }
+    else if (i === 2){ frag = mobilePage2(); folio = 2; }
+    else if (i === 3){ frag = mobilePage3(); folio = 3; }
+    else if (i === 4){ frag = mobilePage4(); folio = 4; }
+    else              { frag = mobilePage5(); folio = 5; }
 
     swapInto(paperLeft, leftHost, frag, true, initial);
     setFolio(leftFolio, folio);
     label.textContent = '';
-
-    // jemné doladění rozestupů na str. 1 a 2 (posun fotky níž)
-    setTimeout(()=> tuneMobilePage(i), 0);
 
     // Šipky
     btnPrev.disabled = (i === 0);
