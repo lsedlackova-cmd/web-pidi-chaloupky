@@ -4,10 +4,34 @@
 
   const viewport = document.querySelector('.gallery-viewport');
   const track    = document.getElementById('galleryTrack');
-  const root     = document.documentElement;
   if (!viewport || !track) return;
 
-  // Lightbox DOM
+  // === Dynamická výška karuselu na celou sekci =========================
+  function setGalleryHeight(){
+    const sec = document.querySelector('.pidi-galerie');
+    if (!sec) return;
+    const rs = getComputedStyle(document.documentElement);
+    const headerH = parseFloat(rs.getPropertyValue('--header-h')) || 80;
+
+    const cs = getComputedStyle(sec);
+    const padTop    = parseFloat(cs.paddingTop)    || 0;
+    const padBottom = parseFloat(cs.paddingBottom) || 0;
+
+    // Celá výška viewportu − fixní header − vnitřní paddingy sekce
+    const avail = window.innerHeight - headerH - padTop - padBottom;
+
+    // Bezpečný spodní limit, ať to nikdy nespadne
+    const h = Math.max(320, Math.floor(avail));
+    sec.style.setProperty('--gallery-h', `${h}px`);
+  }
+  setGalleryHeight();
+  let rh = 0;
+  window.addEventListener('resize', ()=>{
+    cancelAnimationFrame(rh);
+    rh = requestAnimationFrame(setGalleryHeight);
+  });
+
+  // === Lightbox DOM =====================================================
   const lb = document.createElement('div');
   lb.className = 'lb';
   lb.innerHTML = `
@@ -65,7 +89,7 @@
     if (e.key === 'ArrowLeft')  { e.preventDefault(); go(-1); }
   });
 
-  // Resize => přepočet
+  // Resize => přepočet (i při změně počtu položek na řádku)
   let rAf = 0;
   window.addEventListener('resize', ()=>{
     cancelAnimationFrame(rAf);
@@ -152,7 +176,7 @@
   function getPerView(){
     const w = window.innerWidth;
     if (w >= 1440) return 4;
-    if (w <= 768)  return 2;
+    if (w <= 768)  return 1;
     if (w <= 1024) return 3;
     return 3;
   }
@@ -238,4 +262,5 @@
     return n;
   }
 })();
+
 

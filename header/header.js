@@ -118,6 +118,28 @@
     if (!inside && !onBtn) closeMenu();
   });
 })();
+// --- PIDI: přesměrování v rámci single-page (mobil i desktop) ---
+document.addEventListener('click', (e)=>{
+  const a = e.target.closest('a[href]');
+  if (!a) return;
+
+  // Mapuj na ID sekce
+  const href = a.getAttribute('href') || '';
+  let id = null;
+  if (href.includes('/galerie/')) id = 'galerie';
+  else if (href.includes('/nase-pidichaloupky/')) id = 'nase';
+  else if (href.includes('/domu/')) id = 'domu';
+
+  // Použij pouze na indexu (kde existuje sections-root) + jen pokud je dostupné PIDI API
+  const onIndex = !!document.getElementById('sections-root');
+  if (!id || !onIndex || !window.PIDI?.loadAndScroll) return;
+
+  e.preventDefault();
+  // zavři menu (pokud je otevřené)
+  document.querySelector('.pidi-menu')?.click();
+  // načti a posuň
+  window.PIDI.loadAndScroll(id);
+});
 
 
 

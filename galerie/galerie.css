@@ -11,6 +11,9 @@
 .pidi-galerie{
   padding: 32px var(--edge) 48px;
   box-sizing: border-box;
+
+  /* Fallback výška karuselu; JS ji přepíše na přesnou výšku */
+  --gallery-h: clamp(320px, 60vh, 860px);
 }
 
 /* VĚTŠÍ plátno na desktopu */
@@ -22,27 +25,57 @@
 
 /* Viewport + track */
 .gallery-viewport{
+  position: relative;             /* kvůli fade okrajům */
   overflow: hidden;
   outline: none;
   border-radius: 16px;
   /* DŮLEŽITÉ: neblokuj vertikální scroll při swipe */
   touch-action: pan-y;
+
+  /* VÝŠKA: karusel přes celou výšku sekce */
+  height: var(--gallery-h);
 }
+
+/* Šeřící (fade) okraje – jemné vinětování vlevo/vpravo */
+.gallery-viewport::before,
+.gallery-viewport::after{
+  content:"";
+  position:absolute;
+  top:0; bottom:0;
+  width: clamp(24px, 6vw, 64px);
+  pointer-events: none;
+  z-index: 1; /* pod šipkami, nad obrázky */
+}
+.gallery-viewport::before{
+  left:0;
+  background: linear-gradient(to right, var(--bg, #f8f7f2), rgba(248,247,242,0));
+}
+.gallery-viewport::after{
+  right:0;
+  background: linear-gradient(to left, var(--bg, #f8f7f2), rgba(248,247,242,0));
+}
+
 .gallery-viewport:focus-visible{ box-shadow: var(--g-focus); }
 
 .gallery-track{
   list-style: none;
   padding: 0;
   margin: 0;
+
   display: flex;
   gap: var(--g-gap);
   will-change: transform;
+
+  /* Ať položky mohou vyplnit výšku */
+  height: 100%;
+  align-items: stretch;
 }
 
 /* Položky */
 .gallery-item{
   flex: 0 0 auto;
   width: calc((100% - (var(--items-per-view) - 1) * var(--g-gap)) / var(--items-per-view));
+  height: 100%; /* DŮLEŽITÉ: položka má výšku viewportu */
 }
 .gallery-item figure{
   margin: 0;
@@ -54,13 +87,16 @@
   -webkit-user-select: none;
   user-select: none;
   -webkit-user-drag: none;
+
+  height: 100%; /* vyplní položku */
+  display: grid;
+  place-items: center;
 }
 .gallery-item img{
   display:block;
   width:100%;
-  height:auto;
-  aspect-ratio: 4 / 3;        /* konzistentní layout bez CLS, vyšší náhledy */
-  object-fit: cover;
+  height:100%;             /* vyplní výšku figure */
+  object-fit: cover;       /* hezké vykrytí bez „schodů“ */
   transition: transform .6s ease;
 }
 .gallery-item:hover img{ transform: scale(1.02); }
@@ -78,7 +114,7 @@
   display: grid; place-items: center;
   cursor: pointer;
   transition: background .2s ease, transform .2s ease, opacity .2s ease;
-  z-index: 2;
+  z-index: 2; /* nad fades */
 }
 .gallery-btn:hover{ background:#fff; transform: translateY(-50%) scale(1.05); }
 .gallery-btn:active{ transform: translateY(-50%) scale(.98); }
@@ -116,9 +152,9 @@
   :root{ --items-per-view: 3; }
 }
 @media (max-width: 768px){
-  :root{ --items-per-view: 2; }
+  :root{ --items-per-view: 1; }
   .gallery-btn{ display:none; } /* UI čisté na menších šířkách */
 }
 @media (max-width: 480px){
-  :root{ --items-per-view: 2; }
+  :root{ --items-per-view: 1; }
 }
