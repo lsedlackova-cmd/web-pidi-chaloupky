@@ -3,6 +3,7 @@
     { id: 'domu',    html: '/domu/domu.html',                               css: '/domu/domu.css',                               js: '/domu/domu.js',                               selector: '.pidi-home' },
     { id: 'nase',    html: '/nase-pidichaloupky/nase-pidichaloupky.html',   css: '/nase-pidichaloupky/nase-pidichaloupky.css',   js: '/nase-pidichaloupky/nase-pidichaloupky.js',   selector: '.pidi-section' },
     { id: 'galerie', html: '/galerie/galerie.html',                          css: '/galerie/galerie.css',                          js: '/galerie/galerie.js',                          selector: '.pidi-galerie' },
+    { id: 'spokojeni', html: '/spokojeni-pidilidi/spokojeni-pidilidi.html',  css: '/spokojeni-pidilidi/spokojeni-pidilidi.css',  js: '/spokojeni-pidilidi/spokojeni-pidilidi.js',  selector: '.pidi-spokojeni' },
   ];
   const byId = Object.fromEntries(ALL.map(s => [s.id, s]));
   const selectors = Object.fromEntries(ALL.map(s => [s.id, s.selector]));
@@ -12,6 +13,7 @@
   if (path.includes('/domu/')) currentId = 'domu';
   else if (path.includes('/nase-pidichaloupky/')) currentId = 'nase';
   else if (path.includes('/galerie/')) currentId = 'galerie';
+  else if (path.includes('/spokojeni-pidilidi/')) currentId = 'spokojeni'; // ← doplněno
 
   const ids = ALL.map(s => s.id);
   const anchorId = (currentId === 'index') ? 'domu' : currentId;

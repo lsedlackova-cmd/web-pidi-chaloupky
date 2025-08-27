@@ -59,11 +59,13 @@
       if (p.includes('/domu/')) return 'domu';
       if (p.includes('/nase-pidichaloupky/')) return 'nase';
       if (p.includes('/galerie/')) return 'galerie';
+      if (p.includes('/spokojeni-pidilidi/')) return 'spokojeni'; // NOVÉ (1)
     }catch(_){}
     const t = (a.textContent || '').trim().toLowerCase();
     if (t.includes('domů')) return 'domu';
     if (t.includes('naše pidichaloupky')) return 'nase';
     if (t.includes('galerie')) return 'galerie';
+    if (t.includes('spokojení pidilidi') || t.includes('spokojeni pidilidi')) return 'spokojeni'; // NOVÉ (1)
     return null;
   }
 
@@ -90,10 +92,12 @@
     if (ok){
       await window.PIDI.loadAndScroll(id);
     } else {
+      // NOVÉ (2) – doplněná cesta pro 'spokojeni'
       const targetPath =
-        id === 'domu'   ? '/domu/domu.html' :
-        id === 'nase'   ? '/nase-pidichaloupky/nase-pidichaloupky.html' :
-                          '/galerie/galerie.html';
+        id === 'domu'      ? '/domu/domu.html' :
+        id === 'nase'      ? '/nase-pidichaloupky/nase-pidichaloupky.html' :
+        id === 'spokojeni' ? '/spokojeni-pidilidi/spokojeni-pidilidi.html' :
+                             '/galerie/galerie.html';
       const url = `${targetPath}?go=${encodeURIComponent(id)}`;
       setTimeout(()=>{ window.location.assign(url); }, 0);
     }
@@ -118,6 +122,7 @@
     if (!inside && !onBtn) closeMenu();
   });
 })();
+
 // --- PIDI: přesměrování v rámci single-page (mobil i desktop) ---
 document.addEventListener('click', (e)=>{
   const a = e.target.closest('a[href]');
@@ -128,6 +133,7 @@ document.addEventListener('click', (e)=>{
   let id = null;
   if (href.includes('/galerie/')) id = 'galerie';
   else if (href.includes('/nase-pidichaloupky/')) id = 'nase';
+  else if (href.includes('/spokojeni-pidilidi/')) id = 'spokojeni'; // NOVÉ (3)
   else if (href.includes('/domu/')) id = 'domu';
 
   // Použij pouze na indexu (kde existuje sections-root) + jen pokud je dostupné PIDI API

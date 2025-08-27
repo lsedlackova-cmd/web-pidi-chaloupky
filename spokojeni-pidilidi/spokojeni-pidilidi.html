@@ -3,17 +3,14 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Pidichaloupky – Malý svět, velká radost</title>
+  <title>Spokojení Pidilidi – Pidichaloupky</title>
 
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes:ital,wght@1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="/header/header.css">
   <link rel="stylesheet" href="/footer/footer.css">
-  <link rel="stylesheet" href="/domu/domu.css">
-  <link rel="prefetch" href="/galerie/galerie.html">
-  <link rel="prefetch" href="/spokojeni-pidilidi/spokojeni-pidilidi.html">
-
+  <link rel="stylesheet" href="/spokojeni-pidilidi/spokojeni-pidilidi.css">
 
   <style>
     :root{
@@ -23,10 +20,6 @@
       --header-h: 80px;
     }
     body{ margin:0; background:var(--bg); font-family:'Raleway',sans-serif; }
-    main{ min-height:60vh; }
-
-    .section-wrap{ opacity: 0; transform: translateY(12px); transition: opacity .45s ease, transform .45s ease; }
-    .section-wrap.reveal{ opacity: 1; transform: none; }
     .section-divider{ width:100%; height:1px; background:var(--accent); opacity:.7; }
   </style>
 </head>
@@ -36,49 +29,39 @@
   <main>
     <div class="section-divider"></div>
 
-    <section class="pidi-home" aria-label="Úvodní video">
-      <div class="video-frame">
-        <video id="pidiVideo"
-               src="/img/PidiChaloupky.mp4"
-               autoplay
-               muted
-               loop
-               playsinline
-               preload="metadata">
-          Váš prohlížeč nepodporuje HTML5 video.
-        </video>
+    <!-- POZN.: kořenová třída změněna na .pidi-spokojeni, aby ji loader našel -->
+    <section class="pidi-spokojeni" aria-label="Spokojení Pidilidi">
+      <div class="reviews-intro" aria-describedby="reviewsLead">
+        <p id="reviewsLead">Co o nás říkají naši Pidilidi?</p>
+        <p>Našli všichni ukrytá překvapení?</p>
+        <p>Přinesly jim domečky klid a radost, tak jak jsme si přáli?</p>
+        <p>Podívejte se, co prozradili…</p>
+      </div>
 
-        <button id="soundToggle"
-                class="sound-toggle"
-                aria-pressed="false"
-                aria-label="Zapnout zvuk"
-                title="Zapnout zvuk">🔇</button>
+      <div class="reviews" data-autoplay-ms="5500">
+        <div class="reviews-viewport"
+             tabindex="0"
+             aria-roledescription="carousel"
+             aria-label="Hodnocení zákazníků">
+          <ul class="reviews-track" id="reviewsTrack" aria-live="off">
+            <!-- Plní JS -->
+          </ul>
+        </div>
+
+        <button class="reviews-btn prev" aria-label="Předchozí hodnocení" title="Předchozí">‹</button>
+        <button class="reviews-btn next" aria-label="Další hodnocení" title="Další">›</button>
       </div>
     </section>
 
     <div class="section-divider"></div>
-    <div id="sections-root"></div>
   </main>
 
   <div id="footer-root"></div>
 
   <script src="/header/header.js" defer></script>
   <script src="/footer/footer.js" defer></script>
-  <script src="/domu/domu.js" defer></script>
   <script src="/spokojeni-pidilidi/spokojeni-pidilidi.js" defer></script>
   <script src="/loading-section.js" defer></script>
-
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
 
