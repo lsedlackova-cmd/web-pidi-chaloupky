@@ -120,7 +120,7 @@ html, body { overflow-x: hidden; }
   position: absolute;
   bottom: 10px; left: 16px; right: 16px;
   text-align: left;
-  font-size: 12px;
+  font-size: 10px;
   font-style: italic;
   color: rgba(140,110,68,.85);
   pointer-events: none;
@@ -142,7 +142,7 @@ html, body { overflow-x: hidden; }
   margin-bottom: clamp(12px, 2.2vw, 28px);           /* mezera mezi „Pohádka“ a „o Pidichaloupkách“ */
 }
 .cover__title{
-  margin-bottom: clamp(26px, 3.2vw, 42px);           /* mezera pod titulkem před tlačítkem */
+  margin-bottom: clamp(146px, 3.2vw, 42px);           /* mezera pod titulkem před tlačítkem */
 }
 
 .cover__title-line{
@@ -250,7 +250,81 @@ html, body { overflow-x: hidden; }
 @media (prefers-reduced-motion: reduce){
   .photo img{ transition: none; }
 }
+/* === FOIL SHIMMER (jen obálka & závěr) =============================== */
+@keyframes pidi-foil {
+  0%   { background-position: 0% 0; }
+  100% { background-position: 200% 0; }
+}
 
+/* Obálka: název ("Pohádka" + "o Pidichaloupkách") */
+.book.is-cover .cover__title-line,
+/* Poslední stránka: závěrečná věta */
+.book.is-end   .final-line{
+  /* Fallback barva (když by nefungoval background-clip) */
+  color: var(--accent);
+
+  /* „Zlatý” gradient pro shimmer */
+  background-image: linear-gradient(
+    120deg,
+    #b58e3b 0%,
+    #d1ae63 20%,
+    #ffffff 35%,
+    #d1ae63 50%,
+    #b58e3b 70%,
+    #b58e3b 100%
+  );
+  background-size: 200% auto;
+
+  /* Shimmer – velmi pomalý, nenápadný */
+  animation: pidi-foil 9s linear infinite;
+  will-change: background-position;
+
+  /* Vyříznutí do textu (support níž) */
+  background-clip: text;
+}
+
+/* WebKit/Safari vyplnění textu – jen pokud je podporováno */
+@supports (-webkit-background-clip: text) {
+  .book.is-cover .cover__title-line,
+  .book.is-end   .final-line{
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+/* Ostatní prohlížeče s background-clip:text */
+@supports (background-clip: text) {
+  .book.is-cover .cover__title-line,
+  .book.is-end   .final-line{
+    color: transparent;
+  }
+}
+
+/* Respektuj „omezit animace“ */
+@media (prefers-reduced-motion: reduce){
+  .book.is-cover .cover__title-line,
+  .book.is-end   .final-line{
+    animation: none;
+  }
+}
+/* Mobil: skrýt šipku vpravo na poslední straně */
+@media (max-width: 768px){
+  .book.is-end .book__nav--next{ display: none !important; }
+}
+@media (min-width: 769px){
+  .book.is-end .page--right .end-actions{
+    margin-top: 94px; /* klidně 64–96px podle oka */
+  }
+}
+/* Desktop: poslední pravá strana – posuň jen .final-line níž */
+@media (min-width: 769px){
+  .book.is-end .page--right .final-line{
+    margin-top: 74px; /* klidně uprav: 40–120px podle oka */
+  }
+}
+/* Obálka: schovej šipku doprava (desktop i mobil) */
+.book.is-cover .book__nav--next{
+  display: none !important;
+}
 
 
 

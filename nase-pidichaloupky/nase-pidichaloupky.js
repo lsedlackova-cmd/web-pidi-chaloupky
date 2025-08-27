@@ -157,8 +157,8 @@
       <div class="content content--center" style="display:flex; flex-direction:column; height:100%; gap:66px; justify-content:center;">
         <div class="content__text">
           <p>Protože PidiChaloupka není jen o domečcích. Je to připomínka, že štěstí se někdy ukrývá v tom nejmenším. A jestli někdy půjdeš kolem té vesničky a ucítíš vůni dřeva, možná uslyšíš i ťukání kladívka. To zrovna dědeček Míra s babičkou Ivčou staví další chaloupku, aby mohl . . .</p>
-          <p class="final-line" style="margin-top:18px; text-align:center;">. . . začít nový příběh. . .</p>
-          <div class="end-actions" style="margin-top:144px; text-align:center;">
+          <p class="final-line" style="margin-top:128px; text-align:center;">. . . začít nový příběh. . .</p>
+          <div class="end-actions" style="margin-top:84px; text-align:center;">
             <button class="cover__cta" data-restart>Přečíst znovu</button>
           </div>
         </div>
@@ -198,6 +198,7 @@
 
       const last = (s === 2);
       book.classList.toggle('is-last', last);
+      book.classList.toggle('is-end',  last);   // ← shimmer „konec“
       btnPrev.disabled = false;
       btnNext.disabled = last;
       return;
@@ -227,6 +228,9 @@
     swapInto(paperLeft, leftHost, frag, true, initial);
     setFolio(leftFolio, folio);
     label.textContent = '';
+
+    // Shimmer „konec“ jen na poslední straně
+    book.classList.toggle('is-end', i === 5);
 
     // Šipky
     btnPrev.disabled = (i === 0);
@@ -290,6 +294,7 @@
   // Init
   render(true);
 })();
+
 
 
 
