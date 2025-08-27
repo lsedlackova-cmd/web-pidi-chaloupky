@@ -1,6 +1,6 @@
 // Desktop: obálka -> Spread A (1|2) -> Spread B (3|konec).
 // Mobil: obálka -> 1 -> 2 -> 3 -> konec.
-// Folia: jen 1–3; konec bez folia. Stavový štítek: desktop „Strany 1–2/4“, „Strany 3–4/4“; mobil „1/4 … 4/4“.
+// Folia: jen 1–3; konec bez folia. Stavový štítek: desktop skrytý, mobil „1/4 … 4/4“.
 // „Přečíst znovu“ vrací na obálku. Šipka vpřed skrytá na posledním spreadu/stavu.
 
 (function(){
@@ -83,7 +83,7 @@
   }
 
   function render(initial=false){
-    // Reset tříd režimu
+    // Reset režimových tříd
     book.classList.remove('is-cover','is-last','is-end');
 
     if (isDesktop){
@@ -112,8 +112,8 @@
       if (s === 1){ setFolio(leftFolio, 1); setFolio(rightFolio, 2); }
       else         { setFolio(leftFolio, 3); setFolio(rightFolio, null); }
 
-      // Stavový štítek
-      label.textContent = (s === 1) ? 'Strany 1–2 / 4' : 'Strany 3–4 / 4';
+      // DESKTOP: status/štítek NEZOBRAZUJEME
+      label.textContent = '';
 
       // Šipky: poslední spread skryje „vpřed“
       const last = (s === 2);
@@ -126,7 +126,6 @@
     // === MOBIL – JEDNA STRANA ===
     const i = pageIndex;
 
-    // Vždy levá strana, pravou schovává CSS
     if (i === 0){
       book.classList.add('is-cover');
       swapInto(paperLeft, leftHost, useTemplate(tpl.cover), true, initial);
@@ -212,6 +211,7 @@
   // Init
   render(true);
 })();
+
 
 
 
