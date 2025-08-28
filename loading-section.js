@@ -1,19 +1,19 @@
 (function(){
   const ALL = [
-    { id: 'domu',    html: '/domu/domu.html',                               css: '/domu/domu.css',                               js: '/domu/domu.js',                               selector: '.pidi-home' },
-    { id: 'nase',    html: '/nase-pidichaloupky/nase-pidichaloupky.html',   css: '/nase-pidichaloupky/nase-pidichaloupky.css',   js: '/nase-pidichaloupky/nase-pidichaloupky.js',   selector: '.pidi-section' },
-    { id: 'galerie', html: '/galerie/galerie.html',                          css: '/galerie/galerie.css',                          js: '/galerie/galerie.js',                          selector: '.pidi-galerie' },
-    { id: 'spokojeni', html: '/spokojeni-pidilidi/spokojeni-pidilidi.html',  css: '/spokojeni-pidilidi/spokojeni-pidilidi.css',  js: '/spokojeni-pidilidi/spokojeni-pidilidi.js',  selector: '.pidi-spokojeni' },
+    { id: 'domu',      html: '/domu/domu.html',                               css: '/domu/domu.css',                               js: '/domu/domu.js',                               selector: '.pidi-home' },
+    { id: 'nase',      html: '/nase-pidichaloupky/nase-pidichaloupky.html',   css: '/nase-pidichaloupky/nase-pidichaloupky.css',   js: '/nase-pidichaloupky/nase-pidichaloupky.js',   selector: '.pidi-section' },
+    { id: 'galerie',   html: '/galerie/galerie.html',                          css: '/galerie/galerie.css',                          js: '/galerie/galerie.js',                          selector: '.pidi-galerie' },
+   { id: 'spokojeni', html: '/spokojeni-pidilidi/spokojeni-pidilidi.html',  css: '/spokojeni-pidilidi/spokojeni-pidilidi.css', js: '/spokojeni-pidilidi/spokojeni-pidilidi.js', selector: '.pidi-spokojeni, .pidi-reviews' },
   ];
   const byId = Object.fromEntries(ALL.map(s => [s.id, s]));
   const selectors = Object.fromEntries(ALL.map(s => [s.id, s.selector]));
 
-  const path = location.pathname.replace(/\/+$/, '');
+  const path = location.pathname.replace(/\/+$/, '').toLowerCase();
   let currentId = 'index';
   if (path.includes('/domu/')) currentId = 'domu';
   else if (path.includes('/nase-pidichaloupky/')) currentId = 'nase';
   else if (path.includes('/galerie/')) currentId = 'galerie';
-  else if (path.includes('/spokojeni-pidilidi/')) currentId = 'spokojeni'; // ← doplněno
+  else if (path.includes('/spokojeni-pidilidi/')) currentId = 'spokojeni';
 
   const ids = ALL.map(s => s.id);
   const anchorId = (currentId === 'index') ? 'domu' : currentId;
@@ -161,6 +161,7 @@
   }, { rootMargin: '200px 0px 0px 0px' });
   ioUp.observe(sentinelTopInitial);
 
+  // --- Programové načítání (bez skrolu) pro menu ---
   async function loadPrevNow(){
     if (!prevQueue.length) return false;
     const spec = prevQueue.shift();
@@ -223,9 +224,12 @@
     const v = getComputedStyle(document.documentElement).getPropertyValue('--header-h');
     return parseFloat(v) || 80;
   }
+
+  // Bezpečný scroll pod fixní header (ignoruje scroll-margin-top)
   function scrollToEl(el){
     if (!el) return;
-    el.scrollIntoView({ block:'start', behavior:'smooth' });
+    const top = el.getBoundingClientRect().top + window.scrollY - headerHeight() - 8; // + malá rezerva
+    window.scrollTo({ top, behavior:'smooth' });
   }
 
   function getSectionElById(id){
@@ -270,6 +274,7 @@
   window.PIDI.scrollToSection = scrollToSection;
   window.PIDI.loadAndScroll   = loadAndScroll;
 
+  // Podpora ?go=... v URL
   try{
     const usp = new URLSearchParams(location.search);
     const go = usp.get('go');
@@ -278,6 +283,7 @@
     }
   }catch(_){}
 
+  // Záložní vyvolání "nahoru" při skrolu z vršku
   function tryLoadPrevAtTop(){
     if (window.scrollY > 5) return;
     if (!prevQueue.length) return;
@@ -298,6 +304,7 @@
   }, { passive:true });
 
 })();
+
 
 
 

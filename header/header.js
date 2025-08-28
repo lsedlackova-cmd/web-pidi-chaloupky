@@ -52,6 +52,7 @@
 
   btn.addEventListener('click', toggleMenu);
 
+  // Mapování odkazu na ID sekce (včetně Spokojení Pidilidi)
   function linkToId(a){
     try{
       const u = new URL(a.href, location.href);
@@ -59,16 +60,17 @@
       if (p.includes('/domu/')) return 'domu';
       if (p.includes('/nase-pidichaloupky/')) return 'nase';
       if (p.includes('/galerie/')) return 'galerie';
-      if (p.includes('/spokojeni-pidilidi/')) return 'spokojeni'; // NOVÉ (1)
+      if (p.includes('/spokojeni-pidilidi/')) return 'spokojeni';
     }catch(_){}
     const t = (a.textContent || '').trim().toLowerCase();
     if (t.includes('domů')) return 'domu';
     if (t.includes('naše pidichaloupky')) return 'nase';
     if (t.includes('galerie')) return 'galerie';
-    if (t.includes('spokojení pidilidi') || t.includes('spokojeni pidilidi')) return 'spokojeni'; // NOVÉ (1)
+    if (t.includes('spokojení pidilidi') || t.includes('spokojeni pidilidi')) return 'spokojeni';
     return null;
   }
 
+  // Klik v draweru – SPA scroll, jinak fallback redirect s ?go=
   drawer.addEventListener('click', async (e)=>{
     const a = e.target.closest('a[href]');
     if (!a) return;
@@ -92,7 +94,6 @@
     if (ok){
       await window.PIDI.loadAndScroll(id);
     } else {
-      // NOVÉ (2) – doplněná cesta pro 'spokojeni'
       const targetPath =
         id === 'domu'      ? '/domu/domu.html' :
         id === 'nase'      ? '/nase-pidichaloupky/nase-pidichaloupky.html' :
@@ -133,7 +134,7 @@ document.addEventListener('click', (e)=>{
   let id = null;
   if (href.includes('/galerie/')) id = 'galerie';
   else if (href.includes('/nase-pidichaloupky/')) id = 'nase';
-  else if (href.includes('/spokojeni-pidilidi/')) id = 'spokojeni'; // NOVÉ (3)
+  else if (href.includes('/spokojeni-pidilidi/')) id = 'spokojeni';
   else if (href.includes('/domu/')) id = 'domu';
 
   // Použij pouze na indexu (kde existuje sections-root) + jen pokud je dostupné PIDI API
