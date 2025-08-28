@@ -211,9 +211,11 @@
   }
 }
 
-/* Sjednocené orámování karty už platí globálně:
-.pidi-spokojeni .review-card{ border:1px solid var(--accent); border-radius:12px; background:var(--bg); }
-*/
+/* Větší mezera nad větou „Podívejte se, co prozradili…“ (mobil i desktop) */
+.pidi-spokojeni .reviews-intro p:last-child{
+  margin-top: clamp(25px, 1.6vw, 20px);
+}
+
 
 
 
