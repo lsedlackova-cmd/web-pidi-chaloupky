@@ -119,12 +119,14 @@ body{
 }
 .pidi-home,
 .pidi-section,
-.pidi-galerie {
+.pidi-galerie,
+.pidi-ozvete {
   scroll-margin-top: var(--header-h);
 }
 .pidi-home,
 .pidi-section,
-.pidi-galerie {
+.pidi-galerie,
+.pidi-ozvete {
   scroll-margin-top: var(--header-h);
 }
 
