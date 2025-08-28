@@ -3,19 +3,17 @@
   --r-radius: 12px;
   --r-shadow: 0 6px 18px rgba(0,0,0,.08);
   --r-focus: 0 0 0 3px rgba(140,110,68,.35);
-  --items-per-view: 3; /* desktop: 3 karty, mobil dole přepíšem na 1 */
+  --items-per-view: 3; 
 }
 
-/* Sekce – stejná šířka, odsazení a dělící čáry jako Galerie */
 .pidi-spokojeni{
   max-width: clamp(320px, 96vw, 1440px);
   margin: 0 auto;
   padding: 32px var(--edge) 48px;
   box-sizing: border-box;
-  scroll-margin-top: var(--header-h); /* aby nadpis nelezl pod header */
+  scroll-margin-top: var(--header-h); 
 }
 
-/* Úvodní text „jako motto“ */
 .pidi-spokojeni .reviews-intro{
   text-align: center;
   color: var(--accent);
@@ -23,18 +21,15 @@
   font-style: italic;
   line-height: 1.25;
   font-size: clamp(18px, 2.6vw, 28px);
-  /* VĚTŠÍ odstup pod posledním řádkem (desktop i mobil) */
   margin: 10px 0 40px;
 }
 .pidi-spokojeni .reviews-intro p{ margin: .3em 0; }
 
-/* Kontejner karuselu */
 .pidi-spokojeni .reviews{
   position: relative;
   width: 100%;
 }
 
-/* Viewport + track */
 .pidi-spokojeni .reviews-viewport{
   overflow: hidden;
   outline: none;
@@ -50,35 +45,29 @@
   display: flex;
   gap: var(--r-gap);
   will-change: transform;
-  /* ===== stejná výška karet (desktop) ===== */
   align-items: stretch;
 }
 
-/* Položka */
 .pidi-spokojeni .review-item{
   flex: 0 0 auto;
   width: calc((100% - (var(--items-per-view) - 1) * var(--r-gap)) / var(--items-per-view));
-  /* aby se karta mohla roztáhnout na výšku nejvyšší položky */
   display: flex;
 }
 
-/* Karta hodnocení */
 .pidi-spokojeni .review-card{
   margin: 0;
-  background: #f6f3ec;               /* jemně teplejší než čistá bílá */
+  background: #f6f3ec;               
   border: 1px solid rgba(140,110,68,.28);
   border-radius: var(--r-radius);
   box-shadow: var(--r-shadow);
   padding: 16px 18px;
   color: #3a3328;
 
-  /* ===== vyrovnání výšek – karta vyplní výšku položky ===== */
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
-/* Texty uvnitř karty */
 .pidi-spokojeni .review-text{ 
   font: 15px/1.6 'Raleway', sans-serif;
   margin: 0 0 14px;
@@ -93,7 +82,6 @@
   margin: 0 0 10px;
 }
 
-/* Řádek s mincemi */
 .pidi-spokojeni .review-rating{
   display: flex;
   gap: 8px;
@@ -130,7 +118,6 @@
 .pidi-spokojeni .reviews-btn.prev{ left: -6px; }
 .pidi-spokojeni .reviews-btn.next{ right: -6px; }
 
-/* Responsivita: desktop 3 karty, tablet 2, mobil 1 */
 @media (max-width: 1024px){
   :root{ --items-per-view: 2; }
 }
@@ -138,80 +125,65 @@
   :root{ --items-per-view: 1; }
   .pidi-spokojeni{ padding: 28px var(--edge) 40px; }
   .pidi-spokojeni .review-card{ padding: 14px 16px; }
-  .pidi-spokojeni .reviews-btn{ display:none; } /* čistší UI v mobilu */
+  .pidi-spokojeni .reviews-btn{ display:none; } 
 }
-/* desktop: šipky pryč */
 @media (min-width: 769px){
   .pidi-spokojeni .reviews-btn{ display: none !important; }
 }
 
-/* Neuseknout spodní okraj karty + opticky posunout výš */
 .pidi-spokojeni .reviews-viewport{
   box-sizing: border-box;
-  padding-bottom: 16px;   /* prostor pro spodní hranu/radius/stín */
+  padding-bottom: 16px;   
 }
 
 @media (max-width: 768px){
   .pidi-spokojeni .reviews-viewport{
-    padding-bottom: 20px; /* mobil o chlup víc místa */
+    padding-bottom: 20px; 
   }
 }
-/* Sjednocení barvy textu v kartách s webovým akcentem */
 .pidi-spokojeni .review-card{
-  color: var(--accent);       /* rgb(140,110,68) z :root */
+  color: var(--accent);       
 }
 
-/* Pro jistotu i vnořený text/metadatové řádky */
 .pidi-spokojeni .review-card p,
 .pidi-spokojeni .review-card .meta,
 .pidi-spokojeni .review-card .name,
 .pidi-spokojeni .review-card .date{
   color: inherit;
 }
-/* === A) Desktop: víc místa pod karuselem, aby se neusekl spodek karet === */
+
 @media (min-width: 769px){
   .pidi-spokojeni .reviews-viewport{
     box-sizing: border-box;
-    padding-bottom: 28px; /* klidně zvedni na 32px, pokud máš větší stín/radius */
+    padding-bottom: 28px; 
   }
-  /* malá rezerva i uvnitř tracku – pomůže, když karty sedí úplně na dně */
   .pidi-spokojeni .reviews-track{
     padding-bottom: 10px;
   }
 }
 
-/* === B) Rámeček karty – stejné, zřetelné orámování na všech stranách === */
 .pidi-spokojeni .review-card{
   position: relative;
-  border: 1px solid var(--accent) !important; /* stejná barva jako jinde na webu */
-  border-radius: 12px;                         /* držíme vizuální styl */
-  background: var(--bg);                       /* výplň jako pozadí webu */
-  box-shadow: 0 6px 18px rgba(0,0,0,.08);      /* jemný stín (nepovinné) */
+  border: 1px solid var(--accent) !important; 
+  border-radius: 12px;                         
+  background: var(--bg);                       
+  box-shadow: 0 6px 18px rgba(0,0,0,.08);      
 }
 
-/* jistota: kdyby uvnitř něco „lepilo“ na spodek, dejme kartě i vnitřní rezervu */
 .pidi-spokojeni .review-card > *{
-  /* pokud už máš vlastní .card-body/.inner, dej padding tam a tohle vynech */
   padding-bottom: 12px;
 }
 
-/* Pokud jsi dřív měla extra pseudo-čáru jen dole, vypneme ji,
-   ať nás nepřebarvuje – ponech jen pokud víš, že ji používáš. */
-/*
-.pidi-spokojeni .review-card::after{ display:none !important; }
-*/
-/* === Mobil: víc místa pod karuselem + jistota spodní hrany karet === */
 @media (max-width: 768px){
   .pidi-spokojeni .reviews-viewport{
     box-sizing: border-box;
-    padding-bottom: 24px; /* můžeš klidně zvednout na 28–32px podle oka */
+    padding-bottom: 24px; 
   }
   .pidi-spokojeni .reviews-track{
-    padding-bottom: 10px; /* malá rezerva proti ořezu spodního borderu */
+    padding-bottom: 10px; /
   }
 }
 
-/* Větší mezera nad větou „Podívejte se, co prozradili…“ (mobil i desktop) */
 .pidi-spokojeni .reviews-intro p:last-child{
   margin-top: clamp(25px, 1.6vw, 20px);
 }

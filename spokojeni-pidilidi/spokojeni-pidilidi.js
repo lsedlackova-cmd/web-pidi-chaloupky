@@ -7,7 +7,6 @@
   const btnNext   = document.querySelector('.pidi-spokojeni .reviews-btn.next');
   if (!section || !viewport || !track) return;
 
-  // --- Data (4 reference) ---
   const DATA = [
     {
       text: `Domeček jsme umístili na polici v obýváku a působí jako malý svět plný kouzel. Každý večer se těšíme, až ho rozsvítíme, a ta atmosféra nám přináší klid a radost po celém dni. Byli jsme překvapeni i ukrytou mincí, kterou jsme našli. Takové maličkosti dělají tenhle kousek výjimečným.`,
@@ -37,23 +36,20 @@
 
   const autoplayMs = Math.max(1000, Number(section.querySelector('.reviews')?.dataset.autoplayMs || 5500));
 
-  // --- Stav karuselu ---
-  let perView     = getPerView();          // čteme z CSS --rv-per (fallback: 3/1)
-  let clonesEach  = perView + 1;           // kvůli plynulému cyklu
-  let logical     = DATA.map((_, i) => i + 1); // [1..N]
-  let physical    = [];                    // s klony
-  let index       = clonesEach;            // začátek reálné části
-  let stepPx      = 0;                     // šířka jedné položky + mezera
+  let perView     = getPerView();          
+  let clonesEach  = perView + 1;           
+  let logical     = DATA.map((_, i) => i + 1); 
+  let physical    = [];                  
+  let index       = clonesEach;          
+  let stepPx      = 0;                     
   let gapPx       = 0;
   let autoTimer   = null;
   let isHover     = false;
   let isPaused    = false;
   let isIntersect = true;
 
-  // --- Sestavení karuselu ---
   rebuild();
 
-  // Interakce
   btnNext?.addEventListener('click', ()=> go(+1));
   btnPrev?.addEventListener('click', ()=> go(-1));
 
@@ -73,7 +69,6 @@
   }, { threshold: .2 });
   io.observe(viewport);
 
-  // Swipe (dotyk)
   let sx = 0, sy = 0, moved = false;
   viewport.addEventListener('pointerdown', (e)=>{ sx = e.clientX; sy = e.clientY; moved=false; stopAutoplay(); });
   viewport.addEventListener('pointermove', (e)=>{
@@ -87,24 +82,21 @@
   });
   viewport.addEventListener('pointercancel', ()=> refreshAutoplay());
 
-  // Resize → přepočet, ale zachovat nejbližší reálnou pozici
   let rAF = 0;
   window.addEventListener('resize', ()=>{
     cancelAnimationFrame(rAF);
     rAF = requestAnimationFrame(()=> rebuild(true));
   });
 
-  // ===== Funkce =====
   function getPerView(){
     const cs = getComputedStyle(section);
     const v  = parseFloat(cs.getPropertyValue('--rv-per'));
     if (Number.isFinite(v) && v > 0) return Math.round(v);
-    // fallback, kdyby proměnná nebyla v CSS:
     return window.innerWidth <= 768 ? 1 : 3;
   }
 
   function rebuild(keepNearest=false){
-    const prevLogical = toLogical(index); // zapamatuj, ať po přepočtu "neskočíme"
+    const prevLogical = toLogical(index); 
     perView    = getPerView();
     clonesEach = perView + 1;
 
@@ -115,7 +107,6 @@
     ];
     renderPhysical();
 
-    // spočítat krok = šířka položky + gap
     const csTrack = getComputedStyle(track);
     gapPx  = parseFloat(csTrack.columnGap || csTrack.gap || '0') || 0;
     const firstItem = track.querySelector('.review-item');
@@ -185,7 +176,6 @@
     autoTimer = setInterval(()=> go(+1), autoplayMs);
   }
 
-  // --- Pomocné převody indexů ---
   function toLogical(physicalIndex){
     const realIdx = (physicalIndex - clonesEach);
     const n = ((realIdx % logical.length) + logical.length) % logical.length; // 0..len-1
@@ -197,7 +187,6 @@
     return base + (offset >= 0 ? offset : 0);
   }
 
-  // --- Bezpečné HTML ---
   function escapeHTML(str){
     return String(str || '').replace(/[&<>"']/g, m => ({
       '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'

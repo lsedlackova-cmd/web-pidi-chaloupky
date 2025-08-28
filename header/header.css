@@ -117,13 +117,11 @@ body{
     margin-bottom: calc((125px - var(--header-h)) / -2);
   }
 }
-/* Zarovnání sekcí při scrollIntoView pod pevnou hlavičku */
 .pidi-home,
 .pidi-section,
 .pidi-galerie {
   scroll-margin-top: var(--header-h);
 }
-/* Zarovnání sekcí pod pevnou hlavičku při scrollIntoView */
 .pidi-home,
 .pidi-section,
 .pidi-galerie {

@@ -161,7 +161,6 @@
   }, { rootMargin: '200px 0px 0px 0px' });
   ioUp.observe(sentinelTopInitial);
 
-  // --- Programové načítání (bez skrolu) pro menu ---
   async function loadPrevNow(){
     if (!prevQueue.length) return false;
     const spec = prevQueue.shift();
@@ -225,7 +224,6 @@
     return parseFloat(v) || 80;
   }
 
-  // Bezpečný scroll pod fixní header (ignoruje scroll-margin-top)
   function scrollToEl(el){
     if (!el) return;
     const top = el.getBoundingClientRect().top + window.scrollY - headerHeight() - 8; // + malá rezerva
@@ -274,7 +272,6 @@
   window.PIDI.scrollToSection = scrollToSection;
   window.PIDI.loadAndScroll   = loadAndScroll;
 
-  // Podpora ?go=... v URL
   try{
     const usp = new URLSearchParams(location.search);
     const go = usp.get('go');
@@ -283,7 +280,6 @@
     }
   }catch(_){}
 
-  // Záložní vyvolání "nahoru" při skrolu z vršku
   function tryLoadPrevAtTop(){
     if (window.scrollY > 5) return;
     if (!prevQueue.length) return;

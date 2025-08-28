@@ -1,4 +1,3 @@
-// Header: menu + přesná navigace na sekce přes PIDI.loadAndScroll
 (async function () {
   const mount = document.getElementById('header-root');
   if (!mount) return;
@@ -52,7 +51,6 @@
 
   btn.addEventListener('click', toggleMenu);
 
-  // Mapování odkazu na ID sekce (včetně Spokojení Pidilidi)
   function linkToId(a){
     try{
       const u = new URL(a.href, location.href);
@@ -70,7 +68,6 @@
     return null;
   }
 
-  // Klik v draweru – SPA scroll, jinak fallback redirect s ?go=
   drawer.addEventListener('click', async (e)=>{
     const a = e.target.closest('a[href]');
     if (!a) return;
@@ -104,7 +101,6 @@
     }
   }, true);
 
-  // UX kosmetika (hover)
   drawer.addEventListener('pointerenter', (e)=>{ const a=e.target.closest('a'); if(a) a.classList.add('is-hover'); });
   drawer.addEventListener('pointerleave', (e)=>{ const a=e.target.closest('a'); if(a) a.classList.remove('is-hover'); });
   drawer.addEventListener('touchstart', (e)=>{ const a=e.target.closest('a'); if(a) a.classList.add('is-hover'); }, {passive:true});
@@ -124,12 +120,10 @@
   });
 })();
 
-// --- PIDI: přesměrování v rámci single-page (mobil i desktop) ---
 document.addEventListener('click', (e)=>{
   const a = e.target.closest('a[href]');
   if (!a) return;
 
-  // Mapuj na ID sekce
   const href = a.getAttribute('href') || '';
   let id = null;
   if (href.includes('/galerie/')) id = 'galerie';
@@ -137,14 +131,11 @@ document.addEventListener('click', (e)=>{
   else if (href.includes('/spokojeni-pidilidi/')) id = 'spokojeni';
   else if (href.includes('/domu/')) id = 'domu';
 
-  // Použij pouze na indexu (kde existuje sections-root) + jen pokud je dostupné PIDI API
   const onIndex = !!document.getElementById('sections-root');
   if (!id || !onIndex || !window.PIDI?.loadAndScroll) return;
 
   e.preventDefault();
-  // zavři menu (pokud je otevřené)
   document.querySelector('.pidi-menu')?.click();
-  // načti a posuň
   window.PIDI.loadAndScroll(id);
 });
 
