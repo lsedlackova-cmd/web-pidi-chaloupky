@@ -3,8 +3,8 @@
     { id: 'domu',      html: '/domu/domu.html',                               css: '/domu/domu.css',                               js: '/domu/domu.js',                               selector: '.pidi-home' },
     { id: 'nase',      html: '/nase-pidichaloupky/nase-pidichaloupky.html',   css: '/nase-pidichaloupky/nase-pidichaloupky.css',   js: '/nase-pidichaloupky/nase-pidichaloupky.js',   selector: '.pidi-section' },
     { id: 'galerie',   html: '/galerie/galerie.html',                          css: '/galerie/galerie.css',                          js: '/galerie/galerie.js',                          selector: '.pidi-galerie' },
-    { id: 'spokojeni', html: '/spokojeni-pidilidi/spokojeni-pidilidi.html',  css: '/spokojeni-pidilidi/spokojeni-pidilidi.css', js: '/spokojeni-pidilidi/spokojeni-pidilidi.js', selector: '.pidi-spokojeni, .pidi-reviews' },
-    { id: 'ozvete', html: '/ozvete-se-nam/ozvete-se-nam.html',  css: '/ozvete-se-nam/ozvete-se-nam.css', js: '/ozvete-se-nam/ozvete-se-nam.js', selector: '.pidi-ozvete' },   
+    { id: 'spokojeni', html: '/spokojeni-pidilidi/spokojeni-pidilidi.html',    css: '/spokojeni-pidilidi/spokojeni-pidilidi.css',    js: '/spokojeni-pidilidi/spokojeni-pidilidi.js',    selector: '.pidi-spokojeni, .pidi-reviews' },
+    { id: 'ozvete',    html: '/ozvete-se-nam/ozvete-se-nam.html',              css: '/ozvete-se-nam/ozvete-se-nam.css',              js: '/ozvete-se-nam/ozvete-se-nam.js',              selector: '.pidi-kontakt, .pidi-ozvete' },
   ];
   const byId = Object.fromEntries(ALL.map(s => [s.id, s]));
   const selectors = Object.fromEntries(ALL.map(s => [s.id, s.selector]));
@@ -228,7 +228,7 @@
 
   function scrollToEl(el){
     if (!el) return;
-    const top = el.getBoundingClientRect().top + window.scrollY - headerHeight() - 8; // + malá rezerva
+    const top = el.getBoundingClientRect().top + window.scrollY - headerHeight() - 8;
     window.scrollTo({ top, behavior:'smooth' });
   }
 
@@ -302,6 +302,7 @@
   }, { passive:true });
 
 })();
+
 
 
 

@@ -1,10 +1,9 @@
-// Ozvěte se nám – skript je záměrně minimalistický.
-// (Necháváme prostor do budoucna např. pro kopírování tel/emailu apod.)
+// Ozvěte se nám – minimalistický skript + drobné zvýraznění po kliku
 (function(){
-  const root = document.querySelector('.pidi-ozvete');
+  const root = document.querySelector('.pidi-kontakt, .pidi-ozvete');
   if (!root) return;
 
-  // Malý UX detail: při kliku na kontakt přidáme krátké zvýraznění.
+  // Krátké zvýraznění řádku po kliku (UX detail)
   root.querySelectorAll('.contact-row').forEach(row=>{
     row.addEventListener('click', ()=>{
       row.classList.add('is-active');
@@ -12,3 +11,4 @@
     });
   });
 })();
+

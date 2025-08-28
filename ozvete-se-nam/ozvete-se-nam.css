@@ -1,152 +1,122 @@
-/* Stejný pocit jako ostatní sekce */
-.pidi-ozvete{
+/* Sekce na celou výšku „stránky“, stejné okraje jako jinde */
+.pidi-kontakt{
   max-width: clamp(320px, 96vw, 1440px);
   margin: 0 auto;
   padding: 32px var(--edge) 48px;
   box-sizing: border-box;
-
-  /* celostránková výška (respektuje fixní header díky paddingu těla a offsetu v loaderu) */
-  min-height: 100vh;
-
-  /* jistota posunu pod header i mimo SPA offset */
+  color: var(--accent);
   scroll-margin-top: var(--header-h);
 }
+.pidi-kontakt .section-divider{ width:100%; height:1px; background:var(--accent); opacity:.7; }
 
-.ozvete{
-  /* svislé centrování obsahu v sekci */
-  min-height: calc(100vh - 32px - 48px);
-  display: grid;
-  grid-template-rows: auto auto 1fr;
-  align-items: start;
-  gap: 24px;
-  color: var(--accent);
+.contact-inner{
+  position: relative;
+  min-height: calc(100vh - var(--header-h) - 2px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-bottom: 42px; /* rezerva pro malou poznámku v rohu */
 }
 
-/* „Mottový“ lead – stejné písmo/styl jako motto v headeru */
-.ozvete-lead{
+/* Úvod – jako motto (stejný font/barva, mírně menší na mobilech) */
+.contact-lead{
   text-align: center;
-  color: var(--accent);
+  max-width: 920px;
 }
-.lead-line{
+.contact-lead .line{
   font-family: 'Great Vibes', cursive;
   font-style: italic;
-  line-height: 1.08;
-  font-size: clamp(22px, 4.2vw, 36px);
-  margin: 0;
+  color: var(--accent);
+  font-size: clamp(22px, 4.8vw, 28px);
+  line-height: 1.15;
+  margin: 0 0 6px;
 }
-.lead-line + .lead-line{ margin-top: 6px; }
-/* větší mezera po druhé větě */
-.lead-line:nth-child(2){ margin-bottom: clamp(12px, 2.2vw, 20px); }
+.contact-lead .line--gap{      /* větší odsazení za druhou větou */
+  margin-bottom: clamp(14px, 3.2vw, 22px);
+}
+.contact-lead .line--accent{   /* „Ozvěte se nám.“ má mít ještě větší odstup */
+  margin-top: clamp(12px, 3vw, 20px);
+}
+.fairy-icon{ display:inline-flex; vertical-align: middle; margin-left: 6px; opacity:.85; }
 
-.lead-line--accent{
-  display: inline-flex;
+/* Kontakty – vždy svisle pod sebou (mobil i desktop) */
+.contact-body{
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: clamp(14px, 3.2vw, 22px);
+  margin-top: clamp(22px, 5vw, 36px); /* větší mezera nad rámečky kontaktů */
 }
-.lead-icon svg{ display:block; }
-
-/* Kontakty + podpis */
-.ozvete-contact{
+.contact-item{
   display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 18px 28px;
-  align-items: end;
+  grid-template-rows: auto auto;
+  grid-template-columns: 1fr;
+  justify-items: center;
+  text-align: center;
 }
-
-/* řádky kontaktů – standardní písmo jako v kartičkách Spokojení Pidilidi */
-.contact-row{
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  font: 16px/1.7 'Raleway', sans-serif;
+.contact-icon{
+  font-size: 0; /* jen SVG */
   color: var(--accent);
+  opacity: .95;
+  margin-bottom: 6px;
+}
+.contact-link{
+  font-family: 'Raleway', sans-serif;
+  font-weight: 500;
   text-decoration: none;
-}
-.contact-row:hover .contact-text{ text-decoration: underline; }
-.contact-ico{
-  display:inline-grid; place-items:center;
-  width: 34px; height: 34px;
-  border-radius: 50%;
-  border: 1px solid var(--accent);
-  background: var(--bg);
-  box-shadow: 0 6px 16px rgba(0,0,0,.06);
-}
-.contact-ico svg{
-  width: 22px; height: 22px;
   color: var(--accent);
+  font-size: clamp(17px, 2.6vw, 22px);
 }
 
-/* „Podpis“ se zlatým shimmerem (jemný) */
-.ozvete-signature{
-  justify-self: end;
-  display: flex; align-items: baseline; gap: 10px;
-  white-space: nowrap;
-}
-.sig-and{
-  font-family: 'Great Vibes', cursive;
-  font-size: clamp(20px, 3.2vw, 28px);
-  color: var(--accent);
-}
-.sig-foil{
+/* Podpis – výrazně níž, se „zlatým“ shimmerem */
+.contact-sign{
+  margin-top: clamp(36px, 8vh, 80px);
   font-family: 'Great Vibes', cursive;
   font-style: italic;
-  font-size: clamp(24px, 4.4vw, 40px);
-  line-height: 1.1;
-  color: var(--accent);            /* fallback */
-  background-image: linear-gradient(
-    120deg,
-    #b58e3b 0%,
-    #d1ae63 20%,
-    #ffffff 35%,
-    #d1ae63 50%,
-    #b58e3b 70%,
-    #b58e3b 100%
-  );
+  font-size: clamp(24px, 5.2vw, 34px);
+  text-align: center;
+}
+
+/* Malá poznámka vpravo dole */
+.contact-note{
+  position: absolute;
+  right: var(--edge);
+  bottom: 12px;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+  max-width: 600px;
+  opacity: .85;
+  text-align: right;
+}
+
+/* Desktop – ikonky a text o kousek větší */
+@media (min-width: 1025px){
+  .contact-icon svg{ width:32px; height:32px; }
+  .contact-link{ font-size: 22px; }
+}
+
+/* „foiled shimmer“ – stejné jako na obálce knihy */
+@keyframes pidi-foil {
+  0%   { background-position: 0% 0; }
+  100% { background-position: 200% 0; }
+}
+.foil-shimmer{
+  color: var(--accent);
+  background-image: linear-gradient(120deg,#b58e3b 0%,#d1ae63 20%,#ffffff 35%,#d1ae63 50%,#b58e3b 70%,#b58e3b 100%);
   background-size: 200% auto;
   animation: pidi-foil 9s linear infinite;
+  will-change: background-position;
   background-clip: text;
 }
-@keyframes pidi-foil {
-  0% { background-position: 0% 0; }
-  100%{ background-position: 200% 0; }
+@supports (-webkit-background-clip: text){
+  .foil-shimmer{
+    -webkit-text-fill-color: transparent;
+  }
 }
-@supports (-webkit-background-clip: text) {
-  .sig-foil{ -webkit-text-fill-color: transparent; }
-}
-@supports (background-clip: text) {
-  .sig-foil{ color: transparent; }
+@supports (background-clip: text){
+  .foil-shimmer{ color: transparent; }
 }
 @media (prefers-reduced-motion: reduce){
-  .sig-foil{ animation: none; }
-}
-
-/* mini právní věta dole */
-.ozvete-legal{
-  align-self: end;
-  justify-self: end;
-  margin: 0;
-  font: 12px/1.6 'Raleway', sans-serif;
-  color: rgba(140,110,68,.9);
-  opacity: .9;
-}
-
-/* RESPONSIVITA */
-@media (max-width: 1024px){
-  .ozvete-contact{
-    grid-template-columns: 1fr;
-    align-items: start;
-  }
-  .ozvete-signature{ justify-self: start; }
-}
-
-@media (max-width: 768px){
-  .ozvete{ gap: 20px; }
-  .contact-row{ font-size: 15px; }
-  .contact-ico{ width: 32px; height: 32px; }
-  .contact-ico svg{ width: 20px; height: 20px; }
-}
-
-@media (max-width: 480px){
-  .lead-line{ font-size: clamp(22px, 7vw, 30px); }
-  .ozvete-legal{ font-size: 11.5px; }
+  .foil-shimmer{ animation: none; }
 }
