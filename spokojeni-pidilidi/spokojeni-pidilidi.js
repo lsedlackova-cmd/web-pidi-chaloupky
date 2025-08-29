@@ -178,7 +178,7 @@
 
   function toLogical(physicalIndex){
     const realIdx = (physicalIndex - clonesEach);
-    const n = ((realIdx % logical.length) + logical.length) % logical.length; // 0..len-1
+    const n = ((realIdx % logical.length) + logical.length) % logical.length; 
     return logical[n];
   }
   function nearestIndexForLogical(logicalN){

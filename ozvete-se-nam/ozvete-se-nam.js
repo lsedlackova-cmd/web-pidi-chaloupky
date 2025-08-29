@@ -1,4 +1,3 @@
-// Ozvěte se nám – malinké UX: klik na řádek kontaktu krátce „blikne“
 (function(){
   const root = document.querySelector('.pidi-ozvete');
   if (!root) return;

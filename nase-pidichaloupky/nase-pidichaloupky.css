@@ -353,6 +353,12 @@ html, body { overflow-x: hidden; }
 @media (max-width: 768px){
   .book__nav{ display: none !important; }
 }
+@media (max-width: 768px){
+  .cover__cta{
+    font-size: 11px;
+    padding: 7px 12px;
+  }
+}
 
 
 
