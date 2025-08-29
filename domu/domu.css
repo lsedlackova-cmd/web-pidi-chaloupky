@@ -101,8 +101,31 @@
   .video-frame::before{ left:0;  border-radius: 12px 0 0 12px; }
   .video-frame::after { right:0; border-radius: 0 12px 12px 0; }
 }
+@media (max-width: 768px){
+  main > .section-divider:first-child{
+    margin-bottom: 30px;
+  }
+}
+.pidi-home + .section-divider { margin-top: 30px; }
 
 
+@media (max-width: 768px){
+  .section-divider + .pidi-home { margin-top: 12px; }
+  .pidi-home + .section-divider { margin-top: 20px; }
+}
+.section-divider{
+  height: 1px;
+  background: var(--accent);
+  opacity: .7;
+}
+
+#sections-root > .section-divider:first-child{
+  display: none;
+}
+
+.pidi-header + main > .section-divider:first-child{
+  display: none;
+}
 
 
 

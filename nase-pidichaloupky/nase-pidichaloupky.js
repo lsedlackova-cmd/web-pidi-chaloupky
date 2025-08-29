@@ -19,7 +19,6 @@
   const btnNext     = qs('.book__nav--next', book);
   const label       = byId('bookLabel');
 
-  // Obrázkové stránky
   const imgsDesktop = [
     '/img/nase-pidichaloupky-desktop-1.png',
     '/img/nase-pidichaloupky-desktop-2.png',
@@ -39,28 +38,23 @@
     '/img/nase-pidichaloupky-mobil-7.png',
   ];
 
-  // Přednačtení
   [...imgsDesktop, ...imgsMobile].forEach(src => { const i=new Image(); i.src = src; });
 
-  // Media query
   const mqDesktop = window.matchMedia('(min-width: 769px)');
   let isDesktop = mqDesktop.matches;
-
-  // Index aktuální stránky
   let idx = 0;
 
   function enterSingleColumn(){
     if (pageRightEl) pageRightEl.style.display = 'none';
     if (spineEl)     spineEl.style.display     = 'none';
     book.style.gridTemplateColumns = '1fr';
-    book.classList.add('is-photo'); // režim fotostrany (bez rámečku)
+    book.classList.add('is-photo'); 
   }
 
   function setFolio(el, n){ if (el) el.textContent = (typeof n==='number') ? `Pohádka o Pidichaloupkách — strana ${n}` : ''; }
   function clear(el){ el.innerHTML = ''; }
   function htmlFrag(str){ const t=document.createElement('template'); t.innerHTML=str.trim(); return t.content; }
 
-  // Animovaný swap
   function swapInto(paper, host, frag, initial){
     const dur = 280;
     if (initial){
@@ -82,7 +76,6 @@
     }, dur);
   }
 
-  // Po dosazení navěsíme akce CTA
   function afterSwap(scope){
     const startBtn   = scope.querySelector('[data-start]');
     const restartBtn = scope.querySelector('[data-restart]');
@@ -90,7 +83,6 @@
     if (restartBtn) restartBtn.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); goRestart(); });
   }
 
-  // Vytvoř stránku s obrázkem a volitelným CTA + třídy first/last
   function pageImage(src, { withStart=false, withRestart=false, isFirst=false, isLast=false } = {}){
     const classes = ['photo'];
     if (isFirst) classes.push('photo--first');
@@ -110,7 +102,6 @@
 
   function currentImgs(){ return isDesktop ? imgsDesktop : imgsMobile; }
 
-  // Render stránky
   function render(initial=false){
     enterSingleColumn();
 
@@ -137,7 +128,6 @@
     btnNext.disabled = isLast;
   }
 
-  // Ovládání
   function goPrev(){ if (idx > 0){ idx--; render(); } }
   function goNext(){ if (idx < currentImgs().length - 1){ idx++; render(); } }
   function goRestart(){ idx = 0; render(); }
@@ -145,7 +135,6 @@
   btnPrev.addEventListener('click', (e)=>{ e.stopPropagation(); goPrev(); });
   btnNext.addEventListener('click', (e)=>{ e.stopPropagation(); goNext(); });
 
-  // Klik-zóny
   book.addEventListener('click', (e)=>{
     if (e.target.closest('button, a, input, textarea, select, [data-start], [data-restart]')) return;
     const r = book.getBoundingClientRect();
@@ -156,13 +145,11 @@
     else if (x >= rightZone) goNext();
   });
 
-  // Klávesy
   window.addEventListener('keydown', (e)=>{
     if (e.key === 'ArrowLeft')  goPrev();
     if (e.key === 'ArrowRight') goNext();
   }, { passive:true });
 
-  // Swipe
   let tX=0, tY=0, swiping=false;
   book.addEventListener('touchstart', (e)=>{
     if (!e.touches?.length) return;
@@ -179,12 +166,10 @@
   }, {passive:true});
   book.addEventListener('touchend', ()=> swiping=false, {passive:true});
 
-  // Reakce na změnu šířky
   const onMQ = ()=>{ isDesktop = mqDesktop.matches; render(true); };
   if (mqDesktop.addEventListener) mqDesktop.addEventListener('change', onMQ);
   else if (mqDesktop.addListener) mqDesktop.addListener(onMQ);
 
-  // Start
   render(true);
 })();
 

@@ -1,9 +1,6 @@
 .section-divider{ width:100%; height:1px; background:var(--accent); opacity:.7; }
 html, body { overflow-x: hidden; }
 
-/* =========================
-   ZÁKLAD SEKCE / DESKTOP
-   ========================= */
 .pidi-section{
   max-width: clamp(320px, 96vw, 1440px);
   margin: 0 auto;
@@ -11,7 +8,6 @@ html, body { overflow-x: hidden; }
   box-sizing: border-box;
   scroll-margin-top: var(--header-h);
 
-  /* sjednocená výška/šířka stránky pro DESKTOP */
   --book-h: 98vh;
   --page-w: min(1200px, 96vw);
   --radius: 14px;
@@ -30,29 +26,24 @@ html, body { overflow-x: hidden; }
 
   --folio-space: 32px;
   --media-min: 42%;
-
-  /* jemné dorovnání prvního/posledního obrázku na DESKTOPU */
   --first-nudge-x: 7%;
   --last-nudge-x: 7.5%;
 }
 
-/* Jednosloupcová „kniha“ vycentrovaná v sekci */
 .book{
   position: relative;
   display: grid;
   grid-template-columns: 1fr;
-  place-items: center;          /* horizontálně i vertikálně na střed */
+  place-items: center;         
   gap: 0;
   align-items: center;
   justify-items: center;
   width: 100%;
 }
 
-/* Hřbet + pravá stránka nepotřebujeme */
 .book__spine,
 .page--right{ display: none !important; }
 
-/* Navigační šipky */
 .book__nav{
   position:absolute;
   top:50%; transform:translateY(-50%);
@@ -71,7 +62,6 @@ html, body { overflow-x: hidden; }
 .book__nav--next{ right: 8px; }
 .book__nav:disabled{ opacity:.45; cursor:not-allowed; }
 
-/* „Papír“ (výchozí vzhled stránky) */
 .page__paper{
   position: relative;
   height: var(--book-h);
@@ -86,10 +76,9 @@ html, body { overflow-x: hidden; }
   overflow: hidden;
   box-sizing: border-box;
   margin-left: auto;
-  margin-right: auto; /* samotný „papír“ na střed */
+  margin-right: auto; 
 }
 
-/* Režim „fotostrany“ – čisté plátno, aby fotka vyplnila vše */
 .book.is-photo .page__paper{
   padding: 0 !important;
   border: 0 !important;
@@ -101,7 +90,6 @@ html, body { overflow-x: hidden; }
   overflow: hidden;
 }
 
-/* Host pro obsah fotostrany */
 .book.is-photo .page__content{
   height: 100%;
   width: 100%;
@@ -124,16 +112,14 @@ html, body { overflow-x: hidden; }
   max-width: 100%;
   width: auto;
   object-fit: contain;
-  transition: transform .2s ease; /* pro jemné dorovnání */
+  transition: transform .2s ease; 
 }
 
-/* jemné dorovnání (DESKTOP) prvního/posledního, když mají nerovné okraje */
 @media (min-width: 769px){
   .photo--first img{  transform: translateX(var(--first-nudge-x)); }
   .photo--last  img{  transform: translateX(var(--last-nudge-x));  }
 }
 
-/* CTA na fotce – pozice */
 .cover__cta{
   appearance:none;
   border:1px solid var(--accent);
@@ -153,7 +139,6 @@ html, body { overflow-x: hidden; }
   .photo .cta--center-center{ left: 50%; top: 50%; transform: translate(-50%, -50%); }
 }
 
-/* Foliová poznámka (zůstává, i když ji na fotostraně nepoužíváme) */
 .page__folio{
   position: absolute;
   bottom: 10px; left: 16px; right: 16px;
@@ -165,10 +150,8 @@ html, body { overflow-x: hidden; }
   z-index: 2;
 }
 
-/* Stavový text pod knihou */
 .book__status{ margin-top: 8px; color: var(--accent); font-size: 14px; opacity: .9; }
 
-/* Animace výměny obsahu (swap) */
 .swap-in{
   opacity: 0;
   transform: translateY(6px);
@@ -184,23 +167,18 @@ html, body { overflow-x: hidden; }
   transition: opacity var(--anim-ms) ease, transform var(--anim-ms) ease;
 }
 
-/* =========================
-   MOBIL: VĚTŠÍ KNIHA + MÉNĚ VZDUCHU
-   ========================= */
 @media (max-width: 768px){
-  /* menší vnější odsazení + nižší plátno, ať je kniha větší */
   .pidi-section{
     padding: 8px var(--edge) 16px;
-    --book-h: 72vh;            /* klidně 68–78vh dle chuti */
+    --book-h: 72vh;            
     --page-w: 96vw;
   }
 
-  /* stránka bez rámu, maximum prostoru pro fotku, vše vycentrované */
   .book{ justify-items: center; }
   .page--left{ justify-self: center; }
 
   .page__paper{
-    width: 100%;               /* pozor: ne 100vw, ať nic „neujíždí“ doprava */
+    width: 100%;               
     height: var(--book-h);
     padding: 0;
     background: transparent;
@@ -224,19 +202,16 @@ html, body { overflow-x: hidden; }
     justify-content: center;
   }
 
-  /* TADY zvětšujeme knihu a centrování opravujeme */
   .photo img{
     position: relative;
     left: 50%;
     transform: translateX(-50%);
-    width: 150%;        /* klidně 150% pokud chceš ještě větší */
+    width: 150%;        
     max-width: none;
     height: auto;
     max-height: 100%;
     object-fit: contain;
   }
-
-  /* CTA tlačítka na fotce */
   .photo .cover__cta{ position: absolute; z-index: 2; }
   .photo .cta--center-bottom{
     left: 50%;
@@ -249,16 +224,13 @@ html, body { overflow-x: hidden; }
     transform: translate(-50%, -50%);
   }
 }
-/* ===== MOBIL – pevné centrování a snadná výška ===== */
 @media (max-width: 768px){
-  /* TADY si kdykoli upravíš výšku sekce (knihy) */
   .pidi-section{
-    --book-h: 40vh;         /* ↓ změň třeba na 68vh / 64vh podle chuti */
-    --mobile-book-shift: 17%;/* globální doladění centrování (− posun doleva, + doprava) */
+    --book-h: 40vh;        
+    --mobile-book-shift: 17%;
     padding: 8px var(--edge) 16px;
   }
 
-  /* stránka bez rámu, vše na střed */
   .page__paper{
     width: 100%;
     height: var(--book-h);
@@ -280,19 +252,17 @@ html, body { overflow-x: hidden; }
     justify-content: center;
   }
 
-  /* Obrázek širší než viewport, ale VŽDY precizně uprostřed */
   .photo img{
     position: relative;
     left: 50%;
     transform: translateX(calc(-50% + var(--mobile-book-shift)));
-    width: 150%;          /* už sis nastavila 150% — klidně změň */
+    width: 150%;          
     max-width: none;
     height: auto;
     max-height: 100%;
     object-fit: contain;
   }
 
-  /* CTA zůstává „na fotce“ */
   .photo .cover__cta{ position: absolute; z-index: 2; }
   .photo .cta--center-bottom{
     left: 50%;
@@ -305,34 +275,26 @@ html, body { overflow-x: hidden; }
     transform: translate(-50%, -50%);
   }
 }
-/* ===== MOBIL – jemné centrování + individuální posuny 1. a 7. stránky ===== */
 @media (max-width: 768px){
-  /* Globální posun, který už používáš – nechávám beze změny.
-     KDYŽ chceš, upravíš jen tady: */
   .pidi-section{
-    /* příklad: už máš 50vh a 17% */
     --book-h: 40vh;
     --mobile-book-shift: 17%;
   }
 
-  /* Obrázek – centrování s možností připočíst slide-specifický posun */
   .photo img{
     position: relative;
     left: 50%;
     transform: translateX(calc(-50% + var(--mobile-book-shift, 0%) + var(--mobile-slide-shift, 0%)));
-    width: 150%;        /* co už používáš; můžeš měnit podle chuti */
+    width: 150%;        
     max-width: none;
     height: auto;
     max-height: 100%;
     object-fit: contain;
   }
 
-  /* PRVNÍ a POSLEDNÍ stránka – nastav si přesně, kolik chceš.
-     ZÁPORNÁ hodnota = víc doleva, KLADNÁ = doprava. */
-  .photo--first { --mobile-slide-shift: 8%; }  /* např. -4% apod. */
-  .photo--last  { --mobile-slide-shift: 8%; }  /* např. +6% apod. */
+  .photo--first { --mobile-slide-shift: 8%; }  
+  .photo--last  { --mobile-slide-shift: 8%; } 
 
-  /* Šipky do spodních rohů, mimo knihu */
   .book__nav{
     top: auto;
     bottom: clamp(12px, 6vh, 28px);
@@ -345,7 +307,7 @@ html, body { overflow-x: hidden; }
 }
 @media (max-width: 768px){
   .book__nav{
-    bottom: calc(env(safe-area-inset-bottom, 0px) + 2px); /* ↓ zmenši třeba na 4px / 2px */
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 2px); 
   }
   .book__nav--prev{ left: 12px; }
   .book__nav--next{ right: 12px; }
@@ -357,6 +319,17 @@ html, body { overflow-x: hidden; }
   .cover__cta{
     font-size: 11px;
     padding: 7px 12px;
+  }
+}
+.pidi-section{
+  margin-top: 10px;     
+  margin-bottom: 10px;  
+}
+
+@media (max-width: 768px){
+  .pidi-section{
+    margin-top: 2px;
+    margin-bottom: 10px;
   }
 }
 

@@ -9,7 +9,7 @@
 .pidi-galerie{
   padding: 32px var(--edge) 48px;
   box-sizing: border-box;
-
+  margin-top: 16px;
   --gallery-h: clamp(320px, 60vh, 860px);
 }
 
