@@ -3,17 +3,22 @@
   --r-radius: 12px;
   --r-shadow: 0 6px 18px rgba(0,0,0,.08);
   --r-focus: 0 0 0 3px rgba(140,110,68,.35);
-  --items-per-view: 3; 
+  --items-per-view: 3;
+
+  /* světlejší „papír“ karet */
+  --review-paper: #f6f5f1;
 }
 
+/* Sekce */
 .pidi-spokojeni{
   max-width: clamp(320px, 96vw, 1440px);
   margin: 0 auto;
   padding: 32px var(--edge) 48px;
   box-sizing: border-box;
-  scroll-margin-top: var(--header-h); 
+  scroll-margin-top: var(--header-h);
 }
 
+/* Úvod nad karuselem (jako motto, jen o chlup menší) */
 .pidi-spokojeni .reviews-intro{
   text-align: center;
   color: var(--accent);
@@ -21,20 +26,27 @@
   font-style: italic;
   line-height: 1.25;
   font-size: clamp(18px, 2.6vw, 28px);
-  margin: 10px 0 40px;
+  margin: 10px 0 clamp(44px, 4.5vw, 64px); /* větší odstup pod textem */
 }
 .pidi-spokojeni .reviews-intro p{ margin: .3em 0; }
+.pidi-spokojeni .reviews-intro p:last-child{
+  margin-top: clamp(14px, 2.4vw, 28px);
+}
 
+/* Karusel */
 .pidi-spokojeni .reviews{
   position: relative;
   width: 100%;
 }
-
 .pidi-spokojeni .reviews-viewport{
   overflow: hidden;
   outline: none;
   border-radius: 16px;
   touch-action: pan-y;
+  box-sizing: border-box;
+
+  /* VĚTŠÍ REZERVA, ať je vždy vidět spodní hrana karet */
+  padding-bottom: 36px;
 }
 .pidi-spokojeni .reviews-viewport:focus-visible{ box-shadow: var(--r-focus); }
 
@@ -45,29 +57,85 @@
   display: flex;
   gap: var(--r-gap);
   will-change: transform;
-  align-items: stretch;
+  align-items: stretch;         /* stejné výšky */
+  padding-bottom: 18px;         /* rezerva pro spodní „ožeh“ */
 }
 
 .pidi-spokojeni .review-item{
   flex: 0 0 auto;
   width: calc((100% - (var(--items-per-view) - 1) * var(--r-gap)) / var(--items-per-view));
-  display: flex;
+  display: flex; /* aby karta mohla vyrůst na plnou výšku */
 }
 
+/* === PERGAMENOVÝ SKIN KARTIČEK ===================================== */
 .pidi-spokojeni .review-card{
-  margin: 0;
-  background: #f6f3ec;               
-  border: 1px solid rgba(140,110,68,.28);
-  border-radius: var(--r-radius);
-  box-shadow: var(--r-shadow);
-  padding: 16px 18px;
-  color: #3a3328;
+  --burn: rgba(140,110,68,.45); /* lehčí obrys */
+  --smoke: rgba(120,90,55,.13); /* jemné očouzení */
 
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
+  min-height: 260px;
+
+  padding: 18px 18px 44px; /* dole místo na mince */
+  color: var(--accent);
+
+  /* SVĚTLEJŠÍ „PAPÍR“ */
+  background:
+    radial-gradient(38px 34px at 12px 12px, rgba(120,90,55,.10), transparent 62%),
+    radial-gradient(38px 34px at calc(100% - 12px) 12px, rgba(120,90,55,.10), transparent 62%),
+    radial-gradient(34px 30px at 12px calc(100% - 12px), rgba(120,90,55,.08), transparent 60%),
+    radial-gradient(34px 30px at calc(100% - 12px) calc(100% - 12px), rgba(120,90,55,.08), transparent 60%),
+    linear-gradient(180deg, var(--review-paper), #efe6d2);
+  border: 1.5px solid var(--burn);
+  border-radius: var(--r-radius);
+  box-shadow: 0 10px 22px rgba(0,0,0,.08);
+  isolation: isolate;
 }
 
+/* Jemné „začouzení“ podél hran – uvnitř karty (nevyjíždí z boxu) */
+.pidi-spokojeni .review-card::before{
+  content: "";
+  position: absolute;
+  inset: 6px;                  /* vzdálenost „kouře“ od okraje */
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    linear-gradient(to bottom, var(--smoke), rgba(120,90,55,0)) top/100% 8px no-repeat,
+    linear-gradient(to top,    var(--smoke), rgba(120,90,55,0)) bottom/100% 10px no-repeat,
+    linear-gradient(to right,  rgba(120,90,55,.10), rgba(120,90,55,0)) left/8px 100%   no-repeat,
+    linear-gradient(to left,   rgba(120,90,55,.10), rgba(120,90,55,0)) right/8px 100%  no-repeat;
+  opacity: .95;
+}
+
+/* Ožehnuté rohy + spodní pásek – vše UVNITŘ karty (neklipuje se) */
+.pidi-spokojeni .review-card::after{
+  content:"";
+  position: absolute;
+  inset: 3px 3px 3px 3px;  /* 3px dovnitř, ať je vidět i ve viewportu */
+  border-radius: calc(var(--r-radius) - 3px);
+  pointer-events: none;
+  z-index: 0;
+  background:
+    /* rohy */
+    radial-gradient(22px 18px at 14px 14px,
+      rgba(120,90,55,.28), rgba(120,90,55,.08) 58%, transparent 72%),
+    radial-gradient(22px 18px at calc(100% - 14px) 14px,
+      rgba(120,90,55,.28), rgba(120,90,55,.08) 58%, transparent 72%),
+    radial-gradient(20px 16px at 14px calc(100% - 14px),
+      rgba(120,90,55,.26), rgba(120,90,55,.08) 58%, transparent 72%),
+    radial-gradient(20px 16px at calc(100% - 14px) calc(100% - 14px),
+      rgba(120,90,55,.26), rgba(120,90,55,.08) 58%, transparent 72%),
+    /* výraznější spodní „ožehnutý“ pás uvnitř boxu */
+    linear-gradient(to top, rgba(120,90,55,.22), rgba(120,90,55,0)) bottom/100% 12px no-repeat;
+}
+
+/* Obsah karty nad dekorací */
+.pidi-spokojeni .review-card > *{ position: relative; z-index: 1; }
+
+/* Typografie uvnitř karty */
 .pidi-spokojeni .review-text{ 
   font: 15px/1.6 'Raleway', sans-serif;
   margin: 0 0 14px;
@@ -75,13 +143,16 @@
 .pidi-spokojeni .review-author{
   font-weight: 600;
   margin: 0 0 2px;
+  color: var(--accent);
 }
 .pidi-spokojeni .review-meta{
   font-size: 12px;
-  opacity: .75;
+  opacity: .85;
   margin: 0 0 10px;
+  color: inherit;
 }
 
+/* „Mince“ (zlaté) */
 .pidi-spokojeni .review-rating{
   display: flex;
   gap: 8px;
@@ -94,11 +165,10 @@
   background:
     radial-gradient(60% 60% at 35% 35%, #fff8d8 0%, #ffe9a8 40%, rgba(255,255,255,0) 65%),
     linear-gradient(120deg, #b58e3b 0%, #d1ae63 30%, #fff3c1 55%, #d1ae63 75%, #b58e3b 100%);
-  box-shadow: inset 0 0 0 1px rgba(110,85,45,.35),
-              0 1px 2px rgba(0,0,0,.08);
+  box-shadow: inset 0 0 0 1px rgba(110,85,45,.35), 0 1px 2px rgba(0,0,0,.08);
 }
 
-/* Ovládací šipky */
+/* Šipky – skryté */
 .pidi-spokojeni .reviews-btn{
   position: absolute;
   top: 50%;
@@ -108,85 +178,33 @@
   color: var(--accent);
   border-radius: 999px;
   width: 44px; height: 44px;
-  display: grid; place-items: center;
+  display: none;
+  place-items: center;
   cursor: pointer;
   transition: background .2s ease, transform .2s ease, opacity .2s ease;
   z-index: 2;
 }
-.pidi-spokojeni .reviews-btn:hover{ background:#fff; transform: translateY(-50%) scale(1.05); }
-.pidi-spokojeni .reviews-btn:active{ transform: translateY(-50%) scale(.98); }
 .pidi-spokojeni .reviews-btn.prev{ left: -6px; }
 .pidi-spokojeni .reviews-btn.next{ right: -6px; }
 
+/* Responsivita */
 @media (max-width: 1024px){
   :root{ --items-per-view: 2; }
 }
 @media (max-width: 768px){
   :root{ --items-per-view: 1; }
   .pidi-spokojeni{ padding: 28px var(--edge) 40px; }
-  .pidi-spokojeni .review-card{ padding: 14px 16px; }
-  .pidi-spokojeni .reviews-btn{ display:none; } 
+  .pidi-spokojeni .review-card{ padding: 16px 16px 40px; min-height: 220px; }
+  .pidi-spokojeni .reviews-viewport{ padding-bottom: 32px; } /* větší rezerva i na mobilu */
+  .pidi-spokojeni .reviews-track{ padding-bottom: 16px; }
 }
+
+/* Desktop – rezerva pod trackem, aby byl vidět spodek rámu */
 @media (min-width: 769px){
-  .pidi-spokojeni .reviews-btn{ display: none !important; }
+  .pidi-spokojeni .reviews-viewport{ padding-bottom: 40px; }
+  .pidi-spokojeni .reviews-track{ padding-bottom: 22px; }
 }
 
-.pidi-spokojeni .reviews-viewport{
-  box-sizing: border-box;
-  padding-bottom: 16px;   
-}
-
-@media (max-width: 768px){
-  .pidi-spokojeni .reviews-viewport{
-    padding-bottom: 20px; 
-  }
-}
-.pidi-spokojeni .review-card{
-  color: var(--accent);       
-}
-
-.pidi-spokojeni .review-card p,
-.pidi-spokojeni .review-card .meta,
-.pidi-spokojeni .review-card .name,
-.pidi-spokojeni .review-card .date{
-  color: inherit;
-}
-
-@media (min-width: 769px){
-  .pidi-spokojeni .reviews-viewport{
-    box-sizing: border-box;
-    padding-bottom: 28px; 
-  }
-  .pidi-spokojeni .reviews-track{
-    padding-bottom: 10px;
-  }
-}
-
-.pidi-spokojeni .review-card{
-  position: relative;
-  border: 1px solid var(--accent) !important; 
-  border-radius: 12px;                         
-  background: var(--bg);                       
-  box-shadow: 0 6px 18px rgba(0,0,0,.08);      
-}
-
-.pidi-spokojeni .review-card > *{
-  padding-bottom: 12px;
-}
-
-@media (max-width: 768px){
-  .pidi-spokojeni .reviews-viewport{
-    box-sizing: border-box;
-    padding-bottom: 24px; 
-  }
-  .pidi-spokojeni .reviews-track{
-    padding-bottom: 10px; /
-  }
-}
-
-.pidi-spokojeni .reviews-intro p:last-child{
-  margin-top: clamp(25px, 1.6vw, 20px);
-}
 
 
 

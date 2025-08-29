@@ -10,26 +10,26 @@
   const DATA = [
     {
       text: `Domeček jsme umístili na polici v obýváku a působí jako malý svět plný kouzel. Každý večer se těšíme, až ho rozsvítíme, a ta atmosféra nám přináší klid a radost po celém dni. Byli jsme překvapeni i ukrytou mincí, kterou jsme našli. Takové maličkosti dělají tenhle kousek výjimečným.`,
-      author: 'Lucie S.',
-      date: 'únor 2025 – Praha',
+      author: 'Lucie S. (kamarádka)',
+      date: 'červenec 2025 – Liberec',
       rating: 5
     },
     {
       text: `Děti si domeček postavily na noční stolek a pokaždé, když ho rozsvítí, mají pocit, že u nich opravdu bydlí malí Pidilidi. Objevili i malou zlatou minci uvnitř a měli z ní obrovskou radost. Teď si vymýšlejí příběhy, co tam jejich Pidilidi dělají.`,
       author: 'Martin K.',
-      date: 'leden 2025 – Kytlice (burza)',
+      date: 'srpen 2025 – Kytlice (burza)',
       rating: 5
     },
     {
       text: `Můj domeček stojí v pracovně a pokaždé, když se cítím unavená, stačí se na něj podívat a hned se mi vybaví klid a teplo domova. Rozsvícené okénko navozuje pocit, že tam někdo opravdu bydlí. Je to kouzelné a hrozně osobní.`,
-      author: 'Petra L.',
-      date: 'prosinec 2024 – sousedka',
+      author: 'Petra L. (kolegyně)',
+      date: 'srpen 2025 – Liberec',
       rating: 5
     },
     {
-      text: `Dali jsme domeček na poličku v kuchyni a působí jako malý rituál – když se setmí, rozsvítíme ho a máme pocit, že jsme v pohádce. Našli jsme i schovaný malý klíček a bavíme se tím, co asi otevírá. Je to skvělé, jak takový detail dokáže udělat radost celé rodině.`,
-      author: 'Andrea V.',
-      date: 'únor 2025 – kamarádka',
+      text: `Dali jsme domeček na poličku v kuchyni a působí jako malý rituál. Když se setmí, rozsvítíme ho a máme pocit, že jsme v pohádce. Našli jsme i schovaný malý klíček a bavíme se tím, co asi otevírá. Je to skvělé, jak takový detail dokáže udělat radost celé rodině.`,
+      author: 'Pavlína M. (dcera)',
+      date: 'srpen 2025 – Praha',
       rating: 5
     },
   ];
