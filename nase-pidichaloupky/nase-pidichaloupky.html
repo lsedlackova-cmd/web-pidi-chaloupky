@@ -30,7 +30,7 @@
     <div class="section-divider"></div>
 
     <section class="pidi-section" aria-label="Naše PidiChaloupky">
-      <!-- „Kniha“ – jednosloupcová, používáme jen levou „stránku“ -->
+      <!-- Jednosloupcová „kniha“ s levou stránkou -->
       <div class="book" role="group" aria-label="Pohádka o Pidichaloupkách">
         <button class="book__nav book__nav--prev" aria-label="Předchozí" title="Předchozí (←)">‹</button>
         <button class="book__nav book__nav--next" aria-label="Další" title="Další (→)">›</button>
@@ -42,9 +42,8 @@
           </div>
         </article>
 
-        <!-- Skrytý hřbet a pravá stránka (ponecháno kvůli původnímu layoutu) -->
+        <!-- Skrytý hřbet a pravá stránka – držíme kvůli kompatibilitě -->
         <div class="book__spine" aria-hidden="true"></div>
-
         <article class="page page--right" aria-hidden="true">
           <div class="page__paper">
             <div class="page__content" id="rightContent"></div>
@@ -69,6 +68,8 @@
   <script src="/loading-section.js" defer></script>
 </body>
 </html>
+
+
 
 
 

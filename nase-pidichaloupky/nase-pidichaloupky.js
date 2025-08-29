@@ -53,6 +53,7 @@
     if (pageRightEl) pageRightEl.style.display = 'none';
     if (spineEl)     spineEl.style.display     = 'none';
     book.style.gridTemplateColumns = '1fr';
+    book.classList.add('is-photo'); // režim fotostrany (bez rámečku)
   }
 
   function setFolio(el, n){ if (el) el.textContent = (typeof n==='number') ? `Pohádka o Pidichaloupkách — strana ${n}` : ''; }
@@ -89,19 +90,17 @@
     if (restartBtn) restartBtn.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); goRestart(); });
   }
 
-  // Vytvoř stránku s obrázkem a volitelným CTA
-  function pageImage(src, withStart=false, withRestart=false){
-    // CTA zarovnání (desktop řeší CSS třídami; na mobil doladíme později)
-    const startBtn = withStart ? `
-      <button class="cover__cta cta--center-bottom" data-start>Vstupte</button>
-    ` : ``;
+  // Vytvoř stránku s obrázkem a volitelným CTA + třídy first/last
+  function pageImage(src, { withStart=false, withRestart=false, isFirst=false, isLast=false } = {}){
+    const classes = ['photo'];
+    if (isFirst) classes.push('photo--first');
+    if (isLast)  classes.push('photo--last');
 
-    const restartBtn = withRestart ? `
-      <button class="cover__cta cta--center-center" data-restart>Přečíst znovu</button>
-    ` : ``;
+    const startBtn = withStart ? `<button class="cover__cta cta--center-bottom" data-start>Vstupte</button>` : ``;
+    const restartBtn = withRestart ? `<button class="cover__cta cta--center-center" data-restart>Přečíst znovu</button>` : ``;
 
     return htmlFrag(`
-      <figure class="photo" style="position:relative;">
+      <figure class="${classes.join(' ')}">
         <img src="${src}" alt="" loading="lazy" decoding="async" />
         ${startBtn}
         ${restartBtn}
@@ -126,7 +125,12 @@
     const isFirst = (idx === 0);
     const isLast  = (idx === imgs.length - 1);
 
-    const frag = pageImage(imgs[idx], isFirst, isLast);
+    const frag = pageImage(imgs[idx], {
+      withStart:   isFirst,
+      withRestart: isLast,
+      isFirst,
+      isLast
+    });
     swapInto(paperLeft, leftHost, frag, initial);
 
     btnPrev.disabled = isFirst;
@@ -138,8 +142,8 @@
   function goNext(){ if (idx < currentImgs().length - 1){ idx++; render(); } }
   function goRestart(){ idx = 0; render(); }
 
-  qs('.book__nav--prev', book).addEventListener('click', (e)=>{ e.stopPropagation(); goPrev(); });
-  qs('.book__nav--next', book).addEventListener('click', (e)=>{ e.stopPropagation(); goNext(); });
+  btnPrev.addEventListener('click', (e)=>{ e.stopPropagation(); goPrev(); });
+  btnNext.addEventListener('click', (e)=>{ e.stopPropagation(); goNext(); });
 
   // Klik-zóny
   book.addEventListener('click', (e)=>{
@@ -183,6 +187,9 @@
   // Start
   render(true);
 })();
+
+
+
 
 
 

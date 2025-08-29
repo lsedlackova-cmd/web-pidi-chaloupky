@@ -55,7 +55,7 @@
   .video-frame video{
     width: 100%;
     height: auto;
-    max-height: 76vh;              
+    max-height: 75vh;              
     object-fit: contain;          
     background: var(--bg);
   }
@@ -74,7 +74,6 @@
 }
 @media (min-width: 1025px){
   .video-frame .sound-toggle{ z-index: 2; }
-
   .video-frame::before,
   .video-frame::after{
     content:"";

@@ -1,7 +1,9 @@
 .section-divider{ width:100%; height:1px; background:var(--accent); opacity:.7; }
 html, body { overflow-x: hidden; }
 
-/* Sekce */
+/* =========================
+   ZÁKLAD SEKCE / DESKTOP
+   ========================= */
 .pidi-section{
   max-width: clamp(320px, 96vw, 1440px);
   margin: 0 auto;
@@ -9,41 +11,52 @@ html, body { overflow-x: hidden; }
   box-sizing: border-box;
   scroll-margin-top: var(--header-h);
 
-  /* základní rozměry */
-  --book-h: clamp(560px, 72vh, 920px);
-  --page-w: clamp(320px, 96vw, 1280px);
+  /* sjednocená výška/šířka stránky pro DESKTOP */
+  --book-h: 98vh;
+  --page-w: min(1200px, 96vw);
   --radius: 14px;
 
   --accent: rgb(140,110,68);
   --paper: rgb(242,239,232);
 
+  --edge-ink: rgba(140,110,68,.24);
   --shadow: 0 12px 26px rgba(0,0,0,.07);
+  --paper-inset: inset 0 0 0 1px var(--edge-ink),
+                 inset 0 24px 30px rgba(255,255,255,.25),
+                 inset 0 -16px 18px rgba(0,0,0,.03);
+
+  --spine-w: 28px;
+  --anim-ms: 280ms;
+
+  --folio-space: 32px;
+  --media-min: 42%;
+
+  /* jemné dorovnání prvního/posledního obrázku na DESKTOPU */
+  --first-nudge-x: 7%;
+  --last-nudge-x: 7.5%;
 }
 
-/* Desktop: zajisti, že se fotka vejde celá do jedné „strany“ (o něco menší) */
-@media (min-width: 769px){
-  .pidi-section{
-    /* výška = výška okna − header − svislé vnitřní okraje sekce − malá rezerva */
-    --book-h: calc(100vh - var(--header-h) - 2 * var(--edge) - 16px);
-  }
-}
-
-/* Kniha – jednosloupcová (používáme jen levou "stranu") */
+/* Jednosloupcová „kniha“ vycentrovaná v sekci */
 .book{
   position: relative;
   display: grid;
   grid-template-columns: 1fr;
+  place-items: center;          /* horizontálně i vertikálně na střed */
   gap: 0;
-  align-items: start;
+  align-items: center;
   justify-items: center;
-  overflow: clip;
+  width: 100%;
 }
 
-/* Šipky */
+/* Hřbet + pravá stránka nepotřebujeme */
+.book__spine,
+.page--right{ display: none !important; }
+
+/* Navigační šipky */
 .book__nav{
   position:absolute;
   top:50%; transform:translateY(-50%);
-  z-index:2;
+  z-index:5;
   width:44px; height:44px;
   border-radius:50%;
   border:1px solid var(--accent);
@@ -58,44 +71,69 @@ html, body { overflow-x: hidden; }
 .book__nav--next{ right: 8px; }
 .book__nav:disabled{ opacity:.45; cursor:not-allowed; }
 
-/* Stránka / plátno pro fotku */
+/* „Papír“ (výchozí vzhled stránky) */
 .page__paper{
   position: relative;
   height: var(--book-h);
   width: min(var(--page-w), 100%);
-  background: transparent;
-  border: 0;
+  background:
+    radial-gradient(120% 100% at 50% 0%, rgba(255,255,255,.6), rgba(255,255,255,0)) no-repeat,
+    var(--paper);
+  border: 1px solid var(--accent);
   border-radius: var(--radius);
-  box-shadow: none;
-  padding: 0;
+  box-shadow: var(--shadow), var(--paper-inset);
+  padding: 24px;
   overflow: hidden;
   box-sizing: border-box;
+  margin-left: auto;
+  margin-right: auto; /* samotný „papír“ na střed */
 }
 
-/* Obsah – středíme */
-.page__content{
+/* Režim „fotostrany“ – čisté plátno, aby fotka vyplnila vše */
+.book.is-photo .page__paper{
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  height: var(--book-h) !important;
+  width: min(var(--page-w), 100%) !important;
+  margin: 0 auto !important;
+  overflow: hidden;
+}
+
+/* Host pro obsah fotostrany */
+.book.is-photo .page__content{
   height: 100%;
+  width: 100%;
   display: grid;
   place-items: center;
-  color: var(--accent);
+}
+
+.page{ display:grid; justify-items:center; }
+.photo{
   position: relative;
-  overflow: hidden;
-  min-height: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
-/* Fotostrana */
-.photo{ margin:0; width:100%; height:100%; display:grid; place-items:center; min-height:0; }
 .photo img{
+  display: block;
+  height: 100%;
   max-width: 100%;
-  max-height: 100%;
   width: auto;
-  height: auto;
   object-fit: contain;
-  border-radius: 12px;
-  filter: drop-shadow(0 20px 38px rgba(0,0,0,.20));
+  transition: transform .2s ease; /* pro jemné dorovnání */
 }
 
-/* CTA tlačítka (vkládá je JS jen na 1. a 7. stránce) */
+/* jemné dorovnání (DESKTOP) prvního/posledního, když mají nerovné okraje */
+@media (min-width: 769px){
+  .photo--first img{  transform: translateX(var(--first-nudge-x)); }
+  .photo--last  img{  transform: translateX(var(--last-nudge-x));  }
+}
+
+/* CTA na fotce – pozice */
 .cover__cta{
   appearance:none;
   border:1px solid var(--accent);
@@ -105,36 +143,217 @@ html, body { overflow-x: hidden; }
   padding: 10px 18px;
   font: inherit;
   cursor:pointer;
+  position: absolute;
+  z-index: 10;
   backdrop-filter: blur(2px);
-  position: absolute; /* vždy absolutně vůči .photo */
+}
+@media (min-width: 769px){
+  .photo .cover__cta{ position: absolute; z-index: 2; }
+  .photo .cta--center-bottom{ left: 50%; bottom: 8%; transform: translateX(-50%); }
+  .photo .cta--center-center{ left: 50%; top: 50%; transform: translate(-50%, -50%); }
 }
 
-/* Desktop rozmisťování CTA */
-@media (min-width: 769px){
-  /* 1. stránka – uprostřed dole */
-  .cta--center-bottom{
-    left: 50%;
-    bottom: clamp(16px, 6vh, 56px);
-    transform: translateX(-50%);
-    right: auto; top: auto;
+/* Foliová poznámka (zůstává, i když ji na fotostraně nepoužíváme) */
+.page__folio{
+  position: absolute;
+  bottom: 10px; left: 16px; right: 16px;
+  text-align: left;
+  font-size: 10px;
+  font-style: italic;
+  color: rgba(140,110,68,.85);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Stavový text pod knihou */
+.book__status{ margin-top: 8px; color: var(--accent); font-size: 14px; opacity: .9; }
+
+/* Animace výměny obsahu (swap) */
+.swap-in{
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity var(--anim-ms) ease, transform var(--anim-ms) ease;
+}
+.swap-in.active{
+  opacity: 1;
+  transform: none;
+}
+.swap-out-right{
+  opacity: 0;
+  transform: translateX(8px);
+  transition: opacity var(--anim-ms) ease, transform var(--anim-ms) ease;
+}
+
+/* =========================
+   MOBIL: VĚTŠÍ KNIHA + MÉNĚ VZDUCHU
+   ========================= */
+@media (max-width: 768px){
+  /* menší vnější odsazení + nižší plátno, ať je kniha větší */
+  .pidi-section{
+    padding: 8px var(--edge) 16px;
+    --book-h: 72vh;            /* klidně 68–78vh dle chuti */
+    --page-w: 96vw;
   }
-  /* 7. stránka – přesně doprostřed */
-  .cta--center-center{
+
+  /* stránka bez rámu, maximum prostoru pro fotku, vše vycentrované */
+  .book{ justify-items: center; }
+  .page--left{ justify-self: center; }
+
+  .page__paper{
+    width: 100%;               /* pozor: ne 100vw, ať nic „neujíždí“ doprava */
+    height: var(--book-h);
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    overflow: hidden;
+    margin: 0 auto;
+  }
+
+  .page__content{
+    display: block;
+    height: 100%;
+  }
+
+  .photo{
+    position: relative;
+    width: 100%;
+    height: var(--book-h);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* TADY zvětšujeme knihu a centrování opravujeme */
+  .photo img{
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 150%;        /* klidně 150% pokud chceš ještě větší */
+    max-width: none;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  /* CTA tlačítka na fotce */
+  .photo .cover__cta{ position: absolute; z-index: 2; }
+  .photo .cta--center-bottom{
+    left: 50%;
+    bottom: clamp(16px, 8vh, 44px);
+    transform: translateX(-50%);
+  }
+  .photo .cta--center-center{
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
-    right: auto; bottom: auto;
   }
 }
+/* ===== MOBIL – pevné centrování a snadná výška ===== */
+@media (max-width: 768px){
+  /* TADY si kdykoli upravíš výšku sekce (knihy) */
+  .pidi-section{
+    --book-h: 40vh;         /* ↓ změň třeba na 68vh / 64vh podle chuti */
+    --mobile-book-shift: 17%;/* globální doladění centrování (− posun doleva, + doprava) */
+    padding: 8px var(--edge) 16px;
+  }
 
-/* Status pod knihou */
-.book__status{ margin-top: 8px; color: var(--accent); font-size: 14px; opacity: .9; }
+  /* stránka bez rámu, vše na střed */
+  .page__paper{
+    width: 100%;
+    height: var(--book-h);
+    padding: 0;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    overflow: hidden;
+    margin: 0 auto;
+  }
+  .page__content{ height: 100%; }
 
-/* Jemná animace „listování“ */
-.swap-out-left  { opacity:0; transform: translateX(-8px); transition: opacity .28s ease, transform .28s ease; }
-.swap-out-right { opacity:0; transform: translateX( 8px); transition: opacity .28s ease, transform .28s ease; }
-.swap-in        { opacity:0; transform: translateY(6px);   transition: opacity .28s ease, transform .28s ease; }
-.swap-in.active { opacity:1; transform:none; }
+  .photo{
+    position: relative;
+    width: 100%;
+    height: var(--book-h);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Obrázek širší než viewport, ale VŽDY precizně uprostřed */
+  .photo img{
+    position: relative;
+    left: 50%;
+    transform: translateX(calc(-50% + var(--mobile-book-shift)));
+    width: 150%;          /* už sis nastavila 150% — klidně změň */
+    max-width: none;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  /* CTA zůstává „na fotce“ */
+  .photo .cover__cta{ position: absolute; z-index: 2; }
+  .photo .cta--center-bottom{
+    left: 50%;
+    bottom: clamp(16px, 8vh, 44px);
+    transform: translateX(-50%);
+  }
+  .photo .cta--center-center{
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+/* ===== MOBIL – jemné centrování + individuální posuny 1. a 7. stránky ===== */
+@media (max-width: 768px){
+  /* Globální posun, který už používáš – nechávám beze změny.
+     KDYŽ chceš, upravíš jen tady: */
+  .pidi-section{
+    /* příklad: už máš 50vh a 17% */
+    --book-h: 40vh;
+    --mobile-book-shift: 17%;
+  }
+
+  /* Obrázek – centrování s možností připočíst slide-specifický posun */
+  .photo img{
+    position: relative;
+    left: 50%;
+    transform: translateX(calc(-50% + var(--mobile-book-shift, 0%) + var(--mobile-slide-shift, 0%)));
+    width: 150%;        /* co už používáš; můžeš měnit podle chuti */
+    max-width: none;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  /* PRVNÍ a POSLEDNÍ stránka – nastav si přesně, kolik chceš.
+     ZÁPORNÁ hodnota = víc doleva, KLADNÁ = doprava. */
+  .photo--first { --mobile-slide-shift: 8%; }  /* např. -4% apod. */
+  .photo--last  { --mobile-slide-shift: 8%; }  /* např. +6% apod. */
+
+  /* Šipky do spodních rohů, mimo knihu */
+  .book__nav{
+    top: auto;
+    bottom: clamp(12px, 6vh, 28px);
+    transform: none;
+    z-index: 3;
+    opacity: .95;
+  }
+  .book__nav--prev{ left: 12px; }
+  .book__nav--next{ right: 12px; }
+}
+@media (max-width: 768px){
+  .book__nav{
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 2px); /* ↓ zmenši třeba na 4px / 2px */
+  }
+  .book__nav--prev{ left: 12px; }
+  .book__nav--next{ right: 12px; }
+}
+@media (max-width: 768px){
+  .book__nav{ display: none !important; }
+}
+
 
 
 
