@@ -3,12 +3,19 @@
   margin: 0 auto;
   padding: 32px var(--edge) 48px;
   box-sizing: border-box;
-  min-height: 90vh;                 
+  min-height: 90vh;
   display: grid;
-  grid-template-rows: auto 1fr auto auto; 
+  grid-template-rows: auto auto auto;
   gap: 18px;
   scroll-margin-top: var(--header-h);
   color: var(--accent);
+
+  position: relative;
+  padding-bottom: calc(0.5cm + 8px);
+
+  --raise-ill:      24px;   
+  --raise-contacts: 24px;   
+  --raise-sign:     18px;   
 }
 
 .contact-intro{
@@ -25,10 +32,10 @@
 }
 .intro-line--spaced{
   margin-top: clamp(6px, 2.5vw, 14px);
-  margin-bottom: clamp(10px, 3.6vw, 18px); 
+  margin-bottom: clamp(10px, 3.6vw, 18px);
 }
 .intro-line--cta{
-  margin-top: clamp(8px, 3.8vw, 22px);    
+  margin-top: clamp(8px, 3.8vw, 22px);
 }
 
 .ozvete-grid{
@@ -38,7 +45,33 @@
   gap: clamp(18px, 4vw, 40px);
 }
 
-.ozvete-ill{ display: grid; place-items: center; }
+.ozvete-ill{
+  display: grid; place-items: center;
+  margin-top: calc(-1 * var(--raise-ill));
+}
+.ozvete-contacts{
+  width: 100%;
+  margin-top: calc(-1 * var(--raise-contacts));
+}
+.contact-sign{
+  text-align: center;
+  margin: calc(-1 * var(--raise-sign)) auto 0;
+  font-family: 'Great Vibes', cursive;
+  font-style: italic;
+  font-size: clamp(26px, 4.4vw, 40px);
+  color: var(--accent);
+  background-image: linear-gradient(120deg,#b58e3b 0%,#d1ae63 20%,#ffffff 35%,#d1ae63 50%,#b58e3b 70%,#b58e3b 100%);
+  background-size: 200% auto;
+  animation: pidi-foil 9s linear infinite;
+  background-clip: text;
+}
+@supports (-webkit-background-clip: text){
+  .contact-sign{ -webkit-text-fill-color: transparent; }
+}
+@supports (background-clip: text){
+  .contact-sign{ color: transparent; }
+}
+
 .ill-svg{
   width: min(92%, 620px);
   height: auto;
@@ -46,11 +79,8 @@
   filter: drop-shadow(0 12px 28px rgba(0,0,0,.10));
 }
 .pen{ animation: ill-float 5.5s ease-in-out infinite; transform-origin: 85% 70%; }
-.ribbon.shimmer{
-  animation: pidi-foil 9s linear infinite;
-}
+.ribbon.shimmer{ animation: pidi-foil 9s linear infinite; }
 
-.ozvete-contacts{ width: 100%; }
 .contact-block{
   display: grid;
   gap: clamp(14px, 2.6vw, 20px);
@@ -69,7 +99,6 @@
   box-shadow: 0 6px 18px rgba(0,0,0,.06);
 }
 .contact-row--spaced{ margin-top: clamp(12px, 3vw, 20px); }
-
 .contact-row .ico{
   width: clamp(26px, 3.2vw, 36px);
   height: clamp(26px, 3.2vw, 36px);
@@ -77,7 +106,6 @@
   display: grid; place-items: center;
 }
 .contact-row .ico svg{ width: 100%; height: 100%; display: block; }
-
 .contact-link{
   font: 500 18px/1.5 'Raleway', sans-serif;
   color: var(--accent);
@@ -89,27 +117,12 @@
   outline-offset: 3px;
 }
 
-.contact-sign{
-  text-align: center;
-  margin: clamp(10px, 4vw, 36px) auto 0;
-  font-family: 'Great Vibes', cursive;
-  font-style: italic;
-  font-size: clamp(26px, 4.4vw, 40px);
-  color: var(--accent);
-  background-image: linear-gradient(120deg,#b58e3b 0%,#d1ae63 20%,#ffffff 35%,#d1ae63 50%,#b58e3b 70%,#b58e3b 100%);
-  background-size: 200% auto;
-  animation: pidi-foil 9s linear infinite;
-  background-clip: text;
-}
-@supports (-webkit-background-clip: text){
-  .contact-sign{ -webkit-text-fill-color: transparent; }
-}
-@supports (background-clip: text){
-  .contact-sign{ color: transparent; }
-}
-
 .contact-note{
-  margin: clamp(12px, 3vw, 18px) 0 0;
+  position: absolute !important;
+  left: var(--edge);
+  right: var(--edge);
+  bottom: 0.5cm;     
+  margin: 0 !important;
   font-size: 8px;
   line-height: 1.5;
   color: rgba(140,110,68,.85);
@@ -125,6 +138,12 @@
   .ozvete-ill{ justify-self: start; }
   .ozvete-contacts{ justify-self: stretch; }
   .contact-link{ font-size: 20px; }
+
+  .pidi-ozvete{
+    --raise-ill:      20px;
+    --raise-contacts: 20px;
+    --raise-sign:     14px;
+  }
 }
 
 @keyframes ill-float{
@@ -139,34 +158,7 @@
   .pen{ animation: none; }
   .ribbon.shimmer, .contact-sign{ animation: none; }
 }
-.ozv-grid{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(20px, 4vw, 40px);
-  align-items:center;
-}
-.ozv-figure{ margin:0; }
-.oz-illu{
-  width: clamp(220px, 30vw, 360px);
-  height:auto;
-  display:block;
-  filter: drop-shadow(0 14px 28px rgba(0,0,0,.10));
-  user-select:none;
-  -webkit-user-drag:none;
-}
 
-@media (max-width: 768px){
-  .ozv-grid{ grid-template-columns: 1fr; }
-  .ozv-figure{ justify-self:center; }
-  .oz-illu{ width: clamp(200px, 64vw, 320px); }
-}
-
-.ozvete-ill{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 8px 0;
-}
 .ozvete-ill img{
   max-width: min(520px, 100%);
   height: auto;
@@ -174,16 +166,56 @@
   object-fit: contain;
   filter: drop-shadow(0 12px 26px rgba(0,0,0,.12));
 }
-
 @media (min-width: 1025px){
-  .ozvete-ill img{
-    max-width: 560px;
-  }
+  .ozvete-ill img{ max-width: 560px; }
 }
+
 @media (max-width: 480px){
   .pidi-ozvete .contact-row a[href^="mailto:"]{
-    font-size: 16px;   
-    line-height: 1.2;  /
+    font-size: 16px;
+    line-height: 1.2;
+  }
+
+  .pidi-ozvete{
+    --raise-ill:      28px;
+    --raise-contacts: 28px;
+    --raise-sign:     20px;
   }
 }
+.pidi-ozvete{
+  --ill-up-desktop:      60px;  
+  --contacts-up-desktop: 40px;  
+  --sign-up-desktop:     40px;  
+
+  --ill-up-mobile:       70px;
+  --contacts-up-mobile:  40px;
+  --sign-up-mobile:      20px;
+}
+
+.pidi-ozvete .ozvete-grid > .ozvete-ill{
+  transform: translateY(calc(-1 * var(--ill-up-desktop))) !important;
+  transition: transform .2s ease;
+}
+.pidi-ozvete .ozvete-grid > .ozvete-contacts{
+  transform: translateY(calc(-1 * var(--contacts-up-desktop))) !important;
+  transition: transform .2s ease;
+}
+.pidi-ozvete .contact-sign{
+  transform: translateY(calc(-1 * var(--sign-up-desktop))) !important;
+  transition: transform .2s ease;
+}
+
+@media (max-width: 768px){
+  .pidi-ozvete .ozvete-grid > .ozvete-ill{
+    transform: translateY(calc(-1 * var(--ill-up-mobile))) !important;
+  }
+  .pidi-ozvete .ozvete-grid > .ozvete-contacts{
+    transform: translateY(calc(-1 * var(--contacts-up-mobile))) !important;
+  }
+  .pidi-ozvete .contact-sign{
+    transform: translateY(calc(-1 * var(--sign-up-mobile))) !important;
+  }
+}
+
+
 
