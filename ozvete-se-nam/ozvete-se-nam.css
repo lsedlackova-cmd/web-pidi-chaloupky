@@ -1,122 +1,206 @@
-/* Sekce na celou výšku „stránky“, stejné okraje jako jinde */
-.pidi-kontakt{
+/* ===== OZVĚTE SE NÁM – rozvržení na celou výšku sekce, mobil i desktop ===== */
+
+.pidi-ozvete{
   max-width: clamp(320px, 96vw, 1440px);
   margin: 0 auto;
   padding: 32px var(--edge) 48px;
   box-sizing: border-box;
-  color: var(--accent);
-  scroll-margin-top: var(--header-h);
-}
-.pidi-kontakt .section-divider{ width:100%; height:1px; background:var(--accent); opacity:.7; }
-
-.contact-inner{
-  position: relative;
-  min-height: calc(100vh - var(--header-h) - 2px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-bottom: 42px; /* rezerva pro malou poznámku v rohu */
-}
-
-/* Úvod – jako motto (stejný font/barva, mírně menší na mobilech) */
-.contact-lead{
-  text-align: center;
-  max-width: 920px;
-}
-.contact-lead .line{
-  font-family: 'Great Vibes', cursive;
-  font-style: italic;
-  color: var(--accent);
-  font-size: clamp(22px, 4.8vw, 28px);
-  line-height: 1.15;
-  margin: 0 0 6px;
-}
-.contact-lead .line--gap{      /* větší odsazení za druhou větou */
-  margin-bottom: clamp(14px, 3.2vw, 22px);
-}
-.contact-lead .line--accent{   /* „Ozvěte se nám.“ má mít ještě větší odstup */
-  margin-top: clamp(12px, 3vw, 20px);
-}
-.fairy-icon{ display:inline-flex; vertical-align: middle; margin-left: 6px; opacity:.85; }
-
-/* Kontakty – vždy svisle pod sebou (mobil i desktop) */
-.contact-body{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: clamp(14px, 3.2vw, 22px);
-  margin-top: clamp(22px, 5vw, 36px); /* větší mezera nad rámečky kontaktů */
-}
-.contact-item{
+  min-height: 90vh;                 /* skoro celá obrazovka */
   display: grid;
-  grid-template-rows: auto auto;
-  grid-template-columns: 1fr;
-  justify-items: center;
-  text-align: center;
-}
-.contact-icon{
-  font-size: 0; /* jen SVG */
+  grid-template-rows: auto 1fr auto auto; /* intro | grid | sign | note */
+  gap: 18px;
+  scroll-margin-top: var(--header-h);
   color: var(--accent);
-  opacity: .95;
-  margin-bottom: 6px;
-}
-.contact-link{
-  font-family: 'Raleway', sans-serif;
-  font-weight: 500;
-  text-decoration: none;
-  color: var(--accent);
-  font-size: clamp(17px, 2.6vw, 22px);
 }
 
-/* Podpis – výrazně níž, se „zlatým“ shimmerem */
-.contact-sign{
-  margin-top: clamp(36px, 8vh, 80px);
+/* Intro (font a barva jako motto) */
+.contact-intro{
+  text-align: center;
+  margin-bottom: clamp(10px, 3vw, 20px);
+}
+.intro-line{
+  margin: 0;
   font-family: 'Great Vibes', cursive;
   font-style: italic;
-  font-size: clamp(24px, 5.2vw, 34px);
+  color: var(--accent);
+  line-height: 1.06;
+  font-size: clamp(26px, 4.4vw, 42px);
+}
+.intro-line--spaced{
+  margin-top: clamp(6px, 2.5vw, 14px);
+  margin-bottom: clamp(10px, 3.6vw, 18px); /* větší mezera za 2. větou */
+}
+.intro-line--cta{
+  margin-top: clamp(8px, 3.8vw, 22px);     /* „Ozvěte se nám.“ víc odsazené */
+}
+
+/* Dvou-sloupec na desktopu, stack na mobilu */
+.ozvete-grid{
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  gap: clamp(18px, 4vw, 40px);
+}
+
+/* Ilustrace */
+.ozvete-ill{ display: grid; place-items: center; }
+.ill-svg{
+  width: min(92%, 620px);
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 12px 28px rgba(0,0,0,.10));
+}
+.pen{ animation: ill-float 5.5s ease-in-out infinite; transform-origin: 85% 70%; }
+.ribbon.shimmer{
+  animation: pidi-foil 9s linear infinite;
+}
+
+/* Kontakty */
+.ozvete-contacts{ width: 100%; }
+.contact-block{
+  display: grid;
+  gap: clamp(14px, 2.6vw, 20px);
+  max-width: 620px;
+  margin: 0 auto;
+}
+.contact-row{
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(140,110,68,.45);
+  border-radius: 12px;
+  background: #faf8f2;
+  box-shadow: 0 6px 18px rgba(0,0,0,.06);
+}
+.contact-row--spaced{ margin-top: clamp(12px, 3vw, 20px); }
+
+.contact-row .ico{
+  width: clamp(26px, 3.2vw, 36px);
+  height: clamp(26px, 3.2vw, 36px);
+  color: var(--accent);
+  display: grid; place-items: center;
+}
+.contact-row .ico svg{ width: 100%; height: 100%; display: block; }
+
+.contact-link{
+  font: 500 18px/1.5 'Raleway', sans-serif;
+  color: var(--accent);
+  text-decoration: none;
+  word-break: break-word;
+}
+.contact-link:focus-visible{
+  outline: 2px dashed var(--accent);
+  outline-offset: 3px;
+}
+
+/* Podpis – zlatavý shimmer jako na obálce */
+.contact-sign{
   text-align: center;
-}
-
-/* Malá poznámka vpravo dole */
-.contact-note{
-  position: absolute;
-  right: var(--edge);
-  bottom: 12px;
-  margin: 0;
-  font-size: 12px;
-  line-height: 1.4;
-  max-width: 600px;
-  opacity: .85;
-  text-align: right;
-}
-
-/* Desktop – ikonky a text o kousek větší */
-@media (min-width: 1025px){
-  .contact-icon svg{ width:32px; height:32px; }
-  .contact-link{ font-size: 22px; }
-}
-
-/* „foiled shimmer“ – stejné jako na obálce knihy */
-@keyframes pidi-foil {
-  0%   { background-position: 0% 0; }
-  100% { background-position: 200% 0; }
-}
-.foil-shimmer{
+  margin: clamp(10px, 4vw, 36px) auto 0;
+  font-family: 'Great Vibes', cursive;
+  font-style: italic;
+  font-size: clamp(26px, 4.4vw, 40px);
+  /* Fallback barva */
   color: var(--accent);
   background-image: linear-gradient(120deg,#b58e3b 0%,#d1ae63 20%,#ffffff 35%,#d1ae63 50%,#b58e3b 70%,#b58e3b 100%);
   background-size: 200% auto;
   animation: pidi-foil 9s linear infinite;
-  will-change: background-position;
   background-clip: text;
 }
 @supports (-webkit-background-clip: text){
-  .foil-shimmer{
-    -webkit-text-fill-color: transparent;
-  }
+  .contact-sign{ -webkit-text-fill-color: transparent; }
 }
 @supports (background-clip: text){
-  .foil-shimmer{ color: transparent; }
+  .contact-sign{ color: transparent; }
+}
+
+/* Drobné upozornění v rohu */
+.contact-note{
+  margin: clamp(12px, 3vw, 18px) 0 0;
+  font-size: 8px;
+  line-height: 1.5;
+  color: rgba(140,110,68,.85);
+  text-align: left;
+}
+
+/* Desktop layout */
+@media (min-width: 1025px){
+  .ozvete-grid{
+    grid-template-columns: 1.1fr 1fr;
+    align-items: center;
+    gap: clamp(24px, 6vw, 80px);
+  }
+  .ozvete-ill{ justify-self: start; }
+  .ozvete-contacts{ justify-self: stretch; }
+  .contact-link{ font-size: 20px; }
+}
+
+/* Animace + accessibility */
+@keyframes ill-float{
+  0%,100%{ transform: translateY(0) rotate(0deg); }
+  50%    { transform: translateY(-4px) rotate(-3deg); }
+}
+@keyframes pidi-foil{
+  0%   { background-position: 0% 0; }
+  100% { background-position: 200% 0; }
 }
 @media (prefers-reduced-motion: reduce){
-  .foil-shimmer{ animation: none; }
+  .pen{ animation: none; }
+  .ribbon.shimmer, .contact-sign{ animation: none; }
+}
+/* Ilustrace pera + pergamenu (motiv A) */
+.ozv-grid{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(20px, 4vw, 40px);
+  align-items:center;
+}
+.ozv-figure{ margin:0; }
+.oz-illu{
+  width: clamp(220px, 30vw, 360px);
+  height:auto;
+  display:block;
+  filter: drop-shadow(0 14px 28px rgba(0,0,0,.10));
+  user-select:none;
+  -webkit-user-drag:none;
+}
+
+/* Mobile: ilustrace nad kontakty, centrovaná */
+@media (max-width: 768px){
+  .ozv-grid{ grid-template-columns: 1fr; }
+  .ozv-figure{ justify-self:center; }
+  .oz-illu{ width: clamp(200px, 64vw, 320px); }
+}
+
+/* Ilustrace – výměna za bitmapu */
+.ozvete-ill{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 0;
+}
+.ozvete-ill img{
+  max-width: min(520px, 100%);
+  height: auto;
+  /* drž hrubý poměr, ať se layout nehýbe */
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  /* jemný stín jako dřív */
+  filter: drop-shadow(0 12px 26px rgba(0,0,0,.12));
+}
+
+/* Desktop může mít ilustraci o chlup větší */
+@media (min-width: 1025px){
+  .ozvete-ill img{
+    max-width: 560px;
+  }
+}
+/* Menší e-mail jen na mobilu */
+@media (max-width: 480px){
+  .pidi-ozvete .contact-row a[href^="mailto:"]{
+    font-size: 16px;   /* klidně uprav na 13–15px podle oka */
+    line-height: 1.2;  /* drobně zhutní řádek */
+  }
 }

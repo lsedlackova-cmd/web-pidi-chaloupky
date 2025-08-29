@@ -11,6 +11,17 @@
   <link rel="stylesheet" href="/header/header.css">
   <link rel="stylesheet" href="/footer/footer.css">
   <link rel="stylesheet" href="/ozvete-se-nam/ozvete-se-nam.css">
+
+  <style>
+    :root{
+      --bg: rgb(248,247,242);
+      --accent: rgb(140,110,68);
+      --edge: 16px;
+      --header-h: 80px;
+    }
+    body{ margin:0; background:var(--bg); font-family:'Raleway',sans-serif; }
+    .section-divider{ width:100%; height:1px; background:var(--accent); opacity:.7; }
+  </style>
 </head>
 <body>
   <div id="header-root"></div>
@@ -18,56 +29,53 @@
   <main>
     <div class="section-divider"></div>
 
-    <section class="pidi-kontakt" aria-label="Ozvěte se nám">
-      <div class="contact-inner">
-        <!-- Úvodní 3 věty ve stylu motta -->
-        <div class="contact-lead" aria-describedby="cl-1 cl-2 cl-3">
-          <p id="cl-1" class="line">Zajímá vás něco?</p>
-          <p id="cl-2" class="line line--gap">Chcete nám něco sdělit?</p>
-          <p id="cl-3" class="line line--accent">
-            Ozvěte se nám.
-            <span class="fairy-icon" aria-hidden="true">
-              <!-- jemná „pohádková“ hvězdička -->
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" focusable="false" aria-hidden="true">
-                <path d="M12 2l1.6 3.9L18 7.6l-3.4 2.8.9 4.4L12 12.9 8.5 14.8l.9-4.4L6 7.6l4.4-1.7L12 2zm7 3l.8 1.9L22 7.7l-1.7 1.4.5 2.2L19 10.3l-1.8 1 .5-2.2L16 7.7l2.2-.8L19 5zM4 5l.8 1.9L7 7.7 5.3 9.1l.5 2.2L4 10.3l-1.8 1 .5-2.2L1 7.7l2.2-.8L4 5z"/>
-              </svg>
-            </span>
-          </p>
-        </div>
-
-        <!-- Kontakty: vždy nadpis/ikona a POD ní obsah -->
-        <div class="contact-body">
-          <div class="contact-item">
-            <div class="contact-icon" aria-hidden="true">
-              <!-- „pohádkovější“ sluchátko -->
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" focusable="false" aria-hidden="true">
-                <path d="M6.6 10.8a15.7 15.7 0 006.6 6.6l2.2-2.2c.3-.3.7-.4 1.1-.3 1.2.4 2.6.6 3.9.6.6 0 1 .4 1 1v3.6c0 .6-.4 1-1 1C11.6 21.1 2.9 12.4 2.9 1.6c0-.6.4-1 1-1h3.6c.6 0 1 .4 1 1 0 1.3.2 2.7.6 3.9.1.4 0 .8-.3 1.1l-2.2 2.2z"/>
-              </svg>
-            </div>
-            <a class="contact-link" href="tel:+420111222333" aria-label="Telefon: +420 111 222 333">+420&nbsp;111&nbsp;222&nbsp;333</a>
-          </div>
-
-          <div class="contact-item">
-            <div class="contact-icon" aria-hidden="true">
-              <!-- obálka -->
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" focusable="false" aria-hidden="true">
-                <path d="M20 4H4c-1.1 0-2 .9-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/>
-              </svg>
-            </div>
-            <a class="contact-link" href="mailto:pidichaloupky@pidichaloupky.cz" aria-label="E-mail: pidichaloupky@pidichaloupky.cz">
-              pidichaloupky@pidichaloupky.cz
-            </a>
-          </div>
-        </div>
-
-        <!-- „podpis“ se shimmerem -->
-        <div class="contact-sign foil-shimmer">Babička Ivča a Děda Míra</div>
-
-        <!-- malá poznámka v rohu -->
-        <p class="contact-note">
-          Berte prosím na vědomí, že jde o náš volnočasový koníček. Nejsme podnikatelé a nemáme e-shop.
-        </p>
+    <section class="pidi-ozvete" aria-label="Ozvěte se nám">
+      <!-- Úvodní 3 věty (styling jako motto) -->
+      <div class="contact-intro" aria-describedby="intro1 intro2 intro3">
+        <p id="intro1" class="intro-line">Zajímá vás něco?</p>
+        <p id="intro2" class="intro-line intro-line--spaced">Chcete nám něco sdělit?</p>
+        <p id="intro3" class="intro-line intro-line--cta">Ozvěte se nám.</p>
       </div>
+
+      <!-- Layout: ilustrace + kontakty -->
+      <div class="ozvete-grid">
+  <!-- Ilustrace (pero + pergamen) – varianta A, inline SVG -->
+<div class="ozvete-ill" aria-hidden="true">
+  <img
+    src="/img/ozvete-ill.png?v=2"
+    alt=""
+    decoding="async"
+    loading="lazy"
+    width="640"
+    height="360"
+  >
+</div>
+
+        <!-- Kontakty -->
+        <div class="ozvete-contacts">
+          <div class="contact-block">
+            <div class="contact-row">
+              <span class="ico ico--phone" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M6.6 10.8c1.2 2.3 3.1 4.2 5.4 5.4l2-2c.3-.3.8-.4 1.2-.3c1 .3 2 .5 3.1.5c.7 0 1.2.5 1.2 1.2v3.7c0 .7-.5 1.2-1.2 1.2C10.8 20.5 3.5 13.2 3.5 4.7c0-.7.5-1.2 1.2-1.2H8.4c.7 0 1.2.5 1.2 1.2c0 1.1.2 2.1.5 3.1c.1.4 0 .9-.3 1.2l-2 2z" fill="currentColor"/></svg>
+              </span>
+              <a class="contact-link" href="tel:+420111222333" aria-label="Zavolat na +420 724 061 282">+420&nbsp;724&nbsp;061&nbsp;282</a>
+            </div>
+
+            <div class="contact-row contact-row--spaced">
+              <span class="ico ico--mail" aria-hidden="true">
+                <svg viewBox="0 0 24 24"><path d="M4 6h16a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2zm0 2v.2l8 5.3l8-5.3V8H4zm0 2.1V16h16v-5.9l-8 5.3l-8-5.3z" fill="currentColor"/></svg>
+              </span>
+              <a class="contact-link" href="mailto:pidichaloupky@pidichaloupky.cz" aria-label="Napsat e-mail na pidichaloupky@pidichaloupky.cz">pidichaloupky@pidichaloupky.cz</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Podpis se shimmerem -->
+      <div class="contact-sign">Babička Ivča a Dědeček Míra</div>
+
+      <!-- Drobné upozornění -->
+      <p class="contact-note">Berte prosím na vědomí, že jde o náš volnočasový koníček. Nejsme podnikatelé a nemáme e-shop.</p>
     </section>
 
     <div class="section-divider"></div>
@@ -78,6 +86,9 @@
   <script src="/header/header.js" defer></script>
   <script src="/footer/footer.js" defer></script>
   <script src="/ozvete-se-nam/ozvete-se-nam.js" defer></script>
+  <script src="/loading-section.js" defer></script>
 </body>
 </html>
+
+
 

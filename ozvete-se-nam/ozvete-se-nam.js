@@ -1,9 +1,8 @@
-// Ozvěte se nám – minimalistický skript + drobné zvýraznění po kliku
+// Ozvěte se nám – malinké UX: klik na řádek kontaktu krátce „blikne“
 (function(){
-  const root = document.querySelector('.pidi-kontakt, .pidi-ozvete');
+  const root = document.querySelector('.pidi-ozvete');
   if (!root) return;
 
-  // Krátké zvýraznění řádku po kliku (UX detail)
   root.querySelectorAll('.contact-row').forEach(row=>{
     row.addEventListener('click', ()=>{
       row.classList.add('is-active');
@@ -11,4 +10,5 @@
     });
   });
 })();
+
 
