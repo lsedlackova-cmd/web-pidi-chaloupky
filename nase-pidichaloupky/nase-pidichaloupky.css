@@ -1,6 +1,7 @@
 .section-divider{ width:100%; height:1px; background:var(--accent); opacity:.7; }
 html, body { overflow-x: hidden; }
 
+/* Sekce */
 .pidi-section{
   max-width: clamp(320px, 96vw, 1440px);
   margin: 0 auto;
@@ -8,60 +9,37 @@ html, body { overflow-x: hidden; }
   box-sizing: border-box;
   scroll-margin-top: var(--header-h);
 
-  --book-h: clamp(560px, 72vh, 920px); 
-  --page-w: clamp(320px, 86vw, 920px); 
+  /* základní rozměry */
+  --book-h: clamp(560px, 72vh, 920px);
+  --page-w: clamp(320px, 96vw, 1280px);
   --radius: 14px;
 
   --accent: rgb(140,110,68);
   --paper: rgb(242,239,232);
 
-  --edge-ink: rgba(140,110,68,.24);
   --shadow: 0 12px 26px rgba(0,0,0,.07);
-  --paper-inset: inset 0 0 0 1px var(--edge-ink),
-                 inset 0 24px 30px rgba(255,255,255,.25),
-                 inset 0 -16px 18px rgba(0,0,0,.03);
-
-  --spine-w: 28px;
-  --anim-ms: 280ms;
-
-  --folio-space: 32px;  
-  --media-min: 42%;     
 }
 
+/* Desktop: zajisti, že se fotka vejde celá do jedné „strany“ (o něco menší) */
+@media (min-width: 769px){
+  .pidi-section{
+    /* výška = výška okna − header − svislé vnitřní okraje sekce − malá rezerva */
+    --book-h: calc(100vh - var(--header-h) - 2 * var(--edge) - 16px);
+  }
+}
+
+/* Kniha – jednosloupcová (používáme jen levou "stranu") */
 .book{
   position: relative;
   display: grid;
-  grid-template-columns: 1fr var(--spine-w) 1fr;
-  gap: 0 16px;
+  grid-template-columns: 1fr;
+  gap: 0;
   align-items: start;
-  justify-items: stretch;
+  justify-items: center;
   overflow: clip;
 }
 
-.book.is-cover .book__spine,
-.book.is-cover .page--right{ display:none; }
-.book.is-cover .page--left{ grid-column: 1 / -1; }
-
-.book.is-last .book__nav--next{ display:none; } 
-.book.is-cover .book__nav--prev{ display:none; } 
-
-@media (max-width: 768px){
-  .book{
-    grid-template-columns: 1fr;
-    gap: 16px;
-  }
-  .book__spine, .page--right{ display:none !important; }
-  .page--left{ grid-column: 1; }
-}
-
-.book__spine{
-  align-self: stretch;
-  border-radius: 2px;
-  background:
-    linear-gradient(to right, rgba(0,0,0,0.05), rgba(0,0,0,0.09) 50%, rgba(0,0,0,0.05));
-  box-shadow: inset 1px 0 0 rgba(255,255,255,.35), inset -1px 0 0 rgba(0,0,0,.06);
-}
-
+/* Šipky */
 .book__nav{
   position:absolute;
   top:50%; transform:translateY(-50%);
@@ -80,215 +58,86 @@ html, body { overflow-x: hidden; }
 .book__nav--next{ right: 8px; }
 .book__nav:disabled{ opacity:.45; cursor:not-allowed; }
 
+/* Stránka / plátno pro fotku */
 .page__paper{
   position: relative;
   height: var(--book-h);
   width: min(var(--page-w), 100%);
-  background:
-    radial-gradient(120% 100% at 50% 0%, rgba(255,255,255,.6), rgba(255,255,255,0)) no-repeat,
-    var(--paper);
-  border: 1px solid var(--accent);
+  background: transparent;
+  border: 0;
   border-radius: var(--radius);
-  box-shadow: var(--shadow), var(--paper-inset);
-  padding: 24px;
+  box-shadow: none;
+  padding: 0;
   overflow: hidden;
   box-sizing: border-box;
 }
 
+/* Obsah – středíme */
 .page__content{
-  height: calc(100% - var(--folio-space));
+  height: 100%;
   display: grid;
-  grid-template-rows: auto minmax(var(--media-min), 1fr);
-  gap: 14px;
+  place-items: center;
   color: var(--accent);
   position: relative;
   overflow: hidden;
   min-height: 0;
 }
 
-.page__folio{
-  position: absolute;
-  bottom: 10px; left: 16px; right: 16px;
-  text-align: left;
-  font-size: 10px;
-  font-style: italic;
-  color: rgba(140,110,68,.85);
-  pointer-events: none;
-  z-index: 2;
-}
-
-.book.is-cover  .page--left .page__content,
-.book.is-end    .page--left .page__content,
-.book.is-end    .page--right .page__content{
-  display:flex; align-items:center; justify-content:center; text-align:center;
-}
-
-.cover{ max-width: 96%; color: var(--accent); }       
-
-.cover__title-line--big{
-  margin-bottom: clamp(12px, 2.2vw, 28px);           
-}
-.cover__title{
-  margin-bottom: clamp(146px, 3.2vw, 42px);           
-}
-
-.cover__title-line{
-  display:block;
-  font-family: 'Great Vibes', cursive;
-  font-style: italic;
-  line-height: 1.05;
-}
-.cover__title-line--big{   font-size: clamp(34px, 5vw, 56px); }
-.cover__title-line--small{ font-size: clamp(26px, 4vw, 38px); }
-.cover__cta{
-  appearance:none; border:1px solid var(--accent); background:transparent; color:var(--accent);
-  border-radius: 999px; padding: 10px 18px; font: inherit; cursor:pointer;
-  margin-top: 0;
-}
-
-.content__text{ font: 16px/1.7 'Raleway',sans-serif; }
-.content--center .content__text{ text-align:center; }
-.content__text p{ margin: 0 0 12px; }
-
-.final-line{
-  font-family: 'Great Vibes', cursive;
-  font-style: italic;
-  font-size: clamp(22px, 3.6vw, 32px);
-  color: rgb(120,90,55);
-  margin-top: 10px;
-}
-
-.content__media{
-  display: grid; gap: 14px; min-height: 0;
-  align-content: center; align-items: center; justify-items: center;
-  padding-bottom: 6px; 
-}
-.content__media--one{ grid-template-columns: 1fr; grid-auto-rows: 1fr; }
-.content__media--two{ grid-template-columns: 1fr 1fr; grid-auto-rows: 1fr; }
+/* Fotostrana */
 .photo{ margin:0; width:100%; height:100%; display:grid; place-items:center; min-height:0; }
 .photo img{
-  max-width: 100%; max-height: 100%;
-  width: auto; height: auto;
-  object-fit: contain; border-radius: 12px; opacity: 1;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 12px;
+  filter: drop-shadow(0 20px 38px rgba(0,0,0,.20));
 }
 
+/* CTA tlačítka (vkládá je JS jen na 1. a 7. stránce) */
+.cover__cta{
+  appearance:none;
+  border:1px solid var(--accent);
+  background: rgba(248,247,242,.9);
+  color:var(--accent);
+  border-radius: 999px;
+  padding: 10px 18px;
+  font: inherit;
+  cursor:pointer;
+  backdrop-filter: blur(2px);
+  position: absolute; /* vždy absolutně vůči .photo */
+}
+
+/* Desktop rozmisťování CTA */
+@media (min-width: 769px){
+  /* 1. stránka – uprostřed dole */
+  .cta--center-bottom{
+    left: 50%;
+    bottom: clamp(16px, 6vh, 56px);
+    transform: translateX(-50%);
+    right: auto; top: auto;
+  }
+  /* 7. stránka – přesně doprostřed */
+  .cta--center-center{
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    right: auto; bottom: auto;
+  }
+}
+
+/* Status pod knihou */
 .book__status{ margin-top: 8px; color: var(--accent); font-size: 14px; opacity: .9; }
 
-@media (max-width: 768px){
-  .content__media--two{ grid-template-columns: 1fr; grid-auto-rows: 1fr 1fr; }
-  .page__paper{ padding: 20px; }
-  .content__text{ font-size: 15px; line-height: 1.6; }
-  .pidi-section{ --media-min: 48%; } 
-}
-
-@media (min-width: 769px){
-  .book.is-cover{
-    grid-template-columns: 1fr !important;
-    gap: 0 !important;
-    justify-items: center !important;
-  }
-  .book.is-cover .page--left{
-    width: min(var(--page-w), 100%) !important;   
-    justify-self: center !important;
-  }
-  .book.is-cover .page--left .page__paper{
-    width: 100% !important;                      
-    isolation: isolate;
-  }
-
-  .book.is-cover .page__paper::before{ 
-    content:"";
-    position:absolute;
-    top:-1px; bottom:-1px; left:-1px;
-    width:22px;
-    border-radius: var(--radius) 0 0 var(--radius);
-    background: linear-gradient(to right, rgba(0,0,0,.08), rgba(0,0,0,.03));
-    box-shadow: inset -1px 0 0 rgba(255,255,255,.35);
-    z-index:0;
-  }
-  .book.is-cover .page__paper::after{ 
-    content:"";
-    position:absolute;
-    top:4px; bottom:4px; right:4px;
-    width:12px;
-    border-radius: 0 var(--radius) var(--radius) 0;
-    background: linear-gradient(to left, rgba(0,0,0,.06), rgba(0,0,0,0));
-    z-index:0;
-  }
-
-  .book:not(.is-cover) .photo img{ max-height: 86%; }
-}
-
-.swap-out-left  { opacity:0; transform: translateX(-8px); }
-.swap-out-right { opacity:0; transform: translateX( 8px); }
-.swap-in        { opacity:0; transform: translateY(6px); }
+/* Jemná animace „listování“ */
+.swap-out-left  { opacity:0; transform: translateX(-8px); transition: opacity .28s ease, transform .28s ease; }
+.swap-out-right { opacity:0; transform: translateX( 8px); transition: opacity .28s ease, transform .28s ease; }
+.swap-in        { opacity:0; transform: translateY(6px);   transition: opacity .28s ease, transform .28s ease; }
 .swap-in.active { opacity:1; transform:none; }
 
-@media (prefers-reduced-motion: reduce){
-  .photo img{ transition: none; }
-}
-@keyframes pidi-foil {
-  0%   { background-position: 0% 0; }
-  100% { background-position: 200% 0; }
-}
 
-.book.is-cover .cover__title-line,
-.book.is-end   .final-line{
-  color: var(--accent);
 
-  background-image: linear-gradient(
-    120deg,
-    #b58e3b 0%,
-    #d1ae63 20%,
-    #ffffff 35%,
-    #d1ae63 50%,
-    #b58e3b 70%,
-    #b58e3b 100%
-  );
-  background-size: 200% auto;
-
-  animation: pidi-foil 9s linear infinite;
-  will-change: background-position;
-
-  background-clip: text;
-}
-
-@supports (-webkit-background-clip: text) {
-  .book.is-cover .cover__title-line,
-  .book.is-end   .final-line{
-    -webkit-text-fill-color: transparent;
-  }
-}
-
-@supports (background-clip: text) {
-  .book.is-cover .cover__title-line,
-  .book.is-end   .final-line{
-    color: transparent;
-  }
-}
-
-@media (prefers-reduced-motion: reduce){
-  .book.is-cover .cover__title-line,
-  .book.is-end   .final-line{
-    animation: none;
-  }
-}
-@media (max-width: 768px){
-  .book.is-end .book__nav--next{ display: none !important; }
-}
-@media (min-width: 769px){
-  .book.is-end .page--right .end-actions{
-    margin-top: 94px; 
-  }
-}
-@media (min-width: 769px){
-  .book.is-end .page--right .final-line{
-    margin-top: 74px; 
-  }
-}
-.book.is-cover .book__nav--next{
-  display: none !important;
-}
 
 
 

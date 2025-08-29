@@ -25,7 +25,8 @@
   font-family: 'Great Vibes', cursive;
   font-style: italic;
   line-height: 1.25;
-  font-size: clamp(18px, 2.6vw, 28px);
+  letter-spacing: 0.5;
+  font-size: clamp(20px, 2.6vw, 28px);
   margin: 10px 0 clamp(44px, 4.5vw, 64px); /* větší odstup pod textem */
 }
 .pidi-spokojeni .reviews-intro p{ margin: .3em 0; }
@@ -41,7 +42,7 @@
 .pidi-spokojeni .reviews-viewport{
   overflow: hidden;
   outline: none;
-  border-radius: 16px;
+  border-radius: 20px;
   touch-action: pan-y;
   box-sizing: border-box;
 
@@ -137,7 +138,7 @@
 
 /* Typografie uvnitř karty */
 .pidi-spokojeni .review-text{ 
-  font: 15px/1.6 'Raleway', sans-serif;
+  font: 16px/1.6 'Raleway', sans-serif;
   margin: 0 0 14px;
 }
 .pidi-spokojeni .review-author{
@@ -146,7 +147,7 @@
   color: var(--accent);
 }
 .pidi-spokojeni .review-meta{
-  font-size: 12px;
+  font-size: 14px;
   opacity: .85;
   margin: 0 0 10px;
   color: inherit;
