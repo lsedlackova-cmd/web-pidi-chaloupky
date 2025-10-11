@@ -1,23 +1,47 @@
 <!doctype html>
 <html lang="cs">
-<link rel="canonical" href="https://pidichaloupky.cz/">
-
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <title>Pidichaloupky – Malý svět, velká radost</title>
 
+  <!-- SEO -->
+  <meta name="description" content="Pidichaloupky – kouzelné mini domečky, které přinášejí radost dětem i dospělým. Ruční výroba, detailní zpracování a příběh v každé chaloupce.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://www.pidichaloupky.cz/">
+
+  <!-- Open Graph / Facebook / Messenger -->
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="cs_CZ">
+  <meta property="og:url" content="https://www.pidichaloupky.cz/">
+  <meta property="og:title" content="Pidichaloupky – Malý svět, velká radost">
+  <meta property="og:description" content="Objevte kouzelné mini domečky, vyrobené s láskou v Česku.">
+  <meta property="og:image" content="https://www.pidichaloupky.cz/img/og-image.jpg">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Pidichaloupky – Malý svět, velká radost">
+  <meta name="twitter:description" content="Kouzelné mini domečky z Česka, vyrobené s láskou a fantazií.">
+  <meta name="twitter:image" content="https://www.pidichaloupky.cz/img/og-image.jpg">
+
+  <!-- Pomůcka pro roboty mimo Google -->
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="https://www.pidichaloupky.cz/sitemap.xml">
+
+  <!-- Favicon (nevadí, když soubor zatím nemáš) -->
+  <link rel="icon" type="image/png" href="/img/favicon.png">
+
+  <!-- Písma -->
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Great+Vibes:ital,wght@1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet">
 
+  <!-- CSS -->
   <link rel="stylesheet" href="/header/header.css">
   <link rel="stylesheet" href="/footer/footer.css">
   <link rel="stylesheet" href="/domu/domu.css">
   <link rel="prefetch" href="/galerie/galerie.html">
   <link rel="prefetch" href="/spokojeni-pidilidi/spokojeni-pidilidi.html">
   <link rel="prefetch" href="/ozvete-se-nam/ozvete-se-nam.html">
-
-
 
   <style>
     :root{
@@ -33,6 +57,18 @@
     .section-wrap.reveal{ opacity: 1; transform: none; }
     .section-divider{ width:100%; height:1px; background:var(--accent); opacity:.7; }
   </style>
+
+  <!-- Strukturovaná data (Google) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Pidichaloupky",
+    "url": "https://www.pidichaloupky.cz/",
+    "logo": "https://www.pidichaloupky.cz/img/logo.png",
+    "sameAs": []
+  }
+  </script>
 </head>
 <body>
   <div id="header-root"></div>
@@ -72,7 +108,6 @@
   <script src="/spokojeni-pidilidi/spokojeni-pidilidi.js" defer></script>
   <script src="/ozvete-se-nam/ozvete-se-nam.js" defer></script>
   <script src="/loading-section.js" defer></script>
-
 </body>
 </html>
 
